@@ -1,0 +1,4 @@
+repository "ClashGame/ClashGame@18966719261931@cloud"
+  path "/"
+    br "/main"
+    co "/main"
