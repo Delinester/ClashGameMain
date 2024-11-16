@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerNetworking : NetworkBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerNetworking : NetworkBehaviour
     }
 
     private UserData localUserData;
+
     [SyncVar(hook = nameof(OnUserDataUpdate))]
     private UserData syncronizedUserData;
 
@@ -33,7 +35,25 @@ public class PlayerNetworking : NetworkBehaviour
         return syncronizedUserData;
     }
 
-    
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadSceneAsync(sceneName);
+    }
+
+    override public void OnStartClient() 
+    {
+
+        Debug.Log("OnConnected is called!");
+        if (isLocalPlayer)
+        {
+            LocalStateManager.instance.localPlayer = gameObject;
+        }
+    }
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         

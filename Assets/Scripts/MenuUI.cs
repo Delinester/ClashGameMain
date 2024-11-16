@@ -65,6 +65,11 @@ public class MenuUI : MonoBehaviour
         authScript.Register(userData, clientConn);
     }
 
+    public void OnPlayButtonPressed()
+    {
+        playerNetworking.ChangeScene("Lobby");
+    }
+
     private bool CheckInputFields()
     {
         if (usernameInputField.text.Length < 5 || usernameInputField.text.Length > 12)

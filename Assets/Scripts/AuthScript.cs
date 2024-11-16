@@ -19,9 +19,8 @@ public class AuthScript : NetworkBehaviour
 
     public void Login(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
     {
-
         //Debug.Log("Client is " + conn.address);
-        playerNetworking = FindObjectOfType<PlayerNetworking>();
+        playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         playerNetworking.AssignUserData(userData);
         menuController = FindObjectOfType<MenuUI>();
         LoginUser_Server(conn);
@@ -73,6 +72,7 @@ public class AuthScript : NetworkBehaviour
 
     public void Register(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
     {
+        playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         //Debug.Log("Client is " + conn.address);
         menuController = FindObjectOfType<MenuUI>();
         Debug.Log("Register userData is " + userData.GetType());
