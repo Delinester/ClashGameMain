@@ -13,6 +13,8 @@ public class PlayerNetworking : NetworkBehaviour
         public string username;
         // Add other fields as needed
     }
+    public bool isInMatch = false;
+    public Match matchPtr = null;
 
     private UserData localUserData;
 
@@ -38,6 +40,7 @@ public class PlayerNetworking : NetworkBehaviour
     public void ChangeScene(string sceneName)
     {
         SceneManager.LoadSceneAsync(sceneName);
+        //SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
 
     override public void OnStartClient() 
