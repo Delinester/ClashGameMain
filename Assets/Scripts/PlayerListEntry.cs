@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-public class RoomListEntry : MonoBehaviour
+using UnityEngine;
+
+public class PlayerListEntry : MonoBehaviour
 {
-    
-    public TextMeshProUGUI nameText;
-    public TextMeshProUGUI numberOfPlayers;
-    public Match matchPtr;
+    public TextMeshProUGUI playerNameText;
     // Start is called before the first frame update
     void Start()
     {

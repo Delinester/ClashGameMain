@@ -15,13 +15,13 @@ public class Match
     public string matchName;
     public List<PlayerNetworking> players = new List<PlayerNetworking>();
 
-    public Match(string matchID, string matchName, PlayerNetworking player, bool passwordProtected, string password = "")
+    public Match(string matchID, string matchName, bool passwordProtected, string password = "")
     {
         matchFull = false;
         inMatch = false;
         this.matchID = matchID;
         this.matchName = matchName;
-        players.Add(player);
+        //players.Add(player);
         this.passwordProtected = passwordProtected;
         this.password = password;
     }
@@ -45,10 +45,57 @@ public class LobbyManager : NetworkBehaviour
         string matchId = GenerateRandomString(10);
        // PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         matchIDs.Add(matchId);
-        Match match = new Match(matchId, matchName, player, false);
+        Match match = new Match(matchId, matchName, false);
         matchesList.Add(match);
-        player.matchPtr = match;
+        //player.matchPtr = match;
         Debug.Log("Match with ID " + matchId + " was created and name " + match.matchName);
+
+        JoinAfterCreate(player.gameObject.GetComponent<NetworkIdentity>().connectionToClient, matchId, player);
+    }
+
+    [TargetRpc]
+    private void JoinAfterCreate(NetworkConnectionToClient conn, string matchID, PlayerNetworking player)
+    {
+        CMDJoinMatch(matchID, player);
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CMDJoinMatch(string matchID, PlayerNetworking player)
+    {
+        if (matchIDs.Contains(matchID))
+        {
+            Match match = null;
+            foreach (Match m in matchesList)
+            {
+                if (m.matchID == matchID)
+                {
+                    match = m;
+                    m.players.Add(player);
+                    player.matchPtr = match;
+
+                    //NetworkConnectionToClient clientConn = player.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+                    //JoinMatch_Client(clientConn, match);
+                    foreach (PlayerNetworking p in m.players)
+                    {
+                        NetworkConnectionToClient clientConn = p.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+                        if (clientConn == null) Debug.LogError("Client conn is null on " + p.GetUserData().username);
+                        JoinMatch_Client(clientConn, match);
+                    }
+                }                
+            }
+
+            if (match == null) { Debug.LogError("Match is null in joining!"); }
+        }
+    }
+
+    [TargetRpc]
+    private void JoinMatch_Client(NetworkConnectionToClient conn, Match match)
+    {
+        //TODO
+        lobbyUI = FindObjectOfType<LobbyUI>();
+        Debug.Log("Initiated joining!!! and match is " + match != null ? "GOOD" : "BAAAAD");
+        lobbyUI.OpenWaitingRoom();
+        lobbyUI.UpdateWaitingRoom(match);
     }
 
     private string GenerateRandomString(int length)

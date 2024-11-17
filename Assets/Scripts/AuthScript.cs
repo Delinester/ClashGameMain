@@ -84,7 +84,7 @@ public class AuthScript : NetworkBehaviour
     private void RegisterUser_Server(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
     {
 
-        Debug.LogError("RegisterUser_Server userData is " + userData.GetType());
+        //Debug.LogError("RegisterUser_Server userData is " + userData.GetType());
         StartCoroutine(PostRequest(baseAPIurl, registerUserEndpoint, RegisterUser_Client, userData, conn));
     }
 
@@ -103,7 +103,7 @@ public class AuthScript : NetworkBehaviour
     }
     private IEnumerator GetRequest(string uri, string endpoint, ResponseHandler handler, NetworkConnection conn = null)
     {
-        Debug.LogError("Type is " + conn.GetType());
+        //Debug.LogError("Type is " + conn.GetType());
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri + endpoint))
         {
             // Send the request and wait for a response
@@ -125,7 +125,7 @@ public class AuthScript : NetworkBehaviour
     private IEnumerator PostRequest(string uri, string endpoint, PostResponseHandler handler, PlayerNetworking.UserData postData, NetworkConnectionToClient conn)
     {
         string json = JsonUtility.ToJson(postData);
-        Debug.LogError("Type is " + conn.GetType() + " Another is " + postData.GetType());
+        //Debug.LogError("Type is " + conn.GetType() + " Another is " + postData.GetType());
         using (UnityWebRequest www = new UnityWebRequest(uri + endpoint, "POST"))
         {
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
@@ -144,7 +144,7 @@ public class AuthScript : NetworkBehaviour
                 string responseText = www.downloadHandler.text;
                 if (www.responseCode == 201)
                 {
-                    Debug.LogError("POST Request Successful!");
+                    //Debug.LogError("POST Request Successful!");
                 }
                 else
                 {
