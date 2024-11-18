@@ -4,17 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class PlayerGameData
+{
+    public Match matchPtr;
+    public bool isInMatch;
+    public int teamNumber;
+    GameManager.GameRole role;
+    public PlayerGameData()
+    {
+        teamNumber = 1;
+    }
+}
 public class PlayerNetworking : NetworkBehaviour
 {
-    // Start is called before the first frame update
     [System.Serializable]
-    public class UserData // Replace with your actual data structure
+    public class UserData 
     {
         public string username;
-        // Add other fields as needed
     }
-    public bool isInMatch = false;
-    public Match matchPtr = null;
+
+    [SyncVar(hook = nameof(OnGameDataUpdate))]
+    public PlayerGameData synchronizedPlayerGameData = new PlayerGameData();
+
+    private PlayerGameData localPlayerGameData = new PlayerGameData();
+
+
+    //public bool isInMatch = false;
+    //public Match matchPtr = null;
+    public NetworkConnectionToClient clientConnection;
 
     private UserData localUserData;
 
@@ -26,15 +44,31 @@ public class PlayerNetworking : NetworkBehaviour
         localUserData = _new;
     }
 
+    private void OnGameDataUpdate(PlayerGameData _old, PlayerGameData _new)
+    {
+        localPlayerGameData = _new;
+    }
+
     [Command]
     public void AssignUserData(UserData data)
     {
         syncronizedUserData = data;
     }
 
+    [Command]
+    public void AssignGameData(PlayerGameData data)
+    {
+        synchronizedPlayerGameData = data;
+    }
+
     public UserData GetUserData()
     {
         return syncronizedUserData;
+    }
+
+    public PlayerGameData GetGameData()
+    {
+        return localPlayerGameData;
     }
 
     public void ChangeScene(string sceneName)
@@ -50,6 +84,7 @@ public class PlayerNetworking : NetworkBehaviour
         if (isLocalPlayer)
         {
             LocalStateManager.instance.localPlayer = gameObject;
+            clientConnection = GetComponent<NetworkIdentity>().connectionToClient;
         }
     }
     private void Awake()

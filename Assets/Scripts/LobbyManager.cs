@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEditor;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class Match
@@ -39,6 +40,39 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField]
     private LobbyUI lobbyUI;
 
+    
+    private void PlayerLeaveMatch(PlayerNetworking player, string matchID)
+    {
+        if (matchIDs.Contains(matchID))
+        {
+            Match matchPtr = player.GetGameData().matchPtr;
+            matchPtr.players.Remove(player);
+            PlayerGameData gameData = player.GetGameData();
+            gameData.isInMatch = false;
+            player.synchronizedPlayerGameData = gameData;
+            if (matchPtr.players.Count == 0)
+            {
+                matchIDs.Remove(matchID);
+                matchesList.Remove(matchPtr);
+                return;
+            }
+            RPCSendWaitingRoomUpdateForClients(matchPtr);
+        }
+    }
+
+    [Server]
+    public void ServerPlayerLeaveMatch(PlayerNetworking player, string matchID)
+    {
+        PlayerLeaveMatch(player, matchID);
+    }
+
+    [Command]
+    public void CMDPlayerLeaveMatch(PlayerNetworking player, string matchID)
+    {
+        PlayerLeaveMatch(player, matchID);
+    }
+
+
     [Command(requiresAuthority =false)]
     public void CreateMatch(string matchName, PlayerNetworking player)
     {
@@ -58,7 +92,7 @@ public class LobbyManager : NetworkBehaviour
     {
         CMDJoinMatch(matchID, player);
     }
-
+        
     [Command(requiresAuthority = false)]
     public void CMDJoinMatch(string matchID, PlayerNetworking player)
     {
@@ -71,16 +105,23 @@ public class LobbyManager : NetworkBehaviour
                 {
                     match = m;
                     m.players.Add(player);
-                    player.matchPtr = match;
+                    PlayerGameData gameData = player.GetGameData();
+                    gameData.matchPtr = match;
+                    gameData.isInMatch = true;
+
+                    player.synchronizedPlayerGameData = gameData;
 
                     //NetworkConnectionToClient clientConn = player.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
                     //JoinMatch_Client(clientConn, match);
-                    foreach (PlayerNetworking p in m.players)
-                    {
-                        NetworkConnectionToClient clientConn = p.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
-                        if (clientConn == null) Debug.LogError("Client conn is null on " + p.GetUserData().username);
-                        JoinMatch_Client(clientConn, match);
-                    }
+                    //foreach (PlayerNetworking p in m.players)
+                    //{
+                    //    NetworkConnectionToClient clientConn = p.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+                    //    if (clientConn == null) Debug.LogError("Client conn is null on " + p.GetUserData().username);
+                    //    JoinMatch_Client(clientConn, match);
+                    //}
+                    Debug.LogError("Client team is " + player.synchronizedPlayerGameData.teamNumber);
+                    RPCSendWaitingRoomUpdateForClients(match);
+                    return;
                 }                
             }
 
@@ -88,10 +129,27 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
+    [Command(requiresAuthority = false)]
+    public void CMDSendWaitingRoomUpdateRPC(Match match)
+    {
+        RPCSendWaitingRoomUpdateForClients(match);
+    }
+
+    [Server]
+    public void RPCSendWaitingRoomUpdateForClients(Match match)
+    {
+        foreach (PlayerNetworking p in match.players)
+        {
+            NetworkConnectionToClient clientConn = p.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+            if (clientConn == null) Debug.LogError("Client conn is null on " + p.GetUserData().username);
+            JoinMatch_Client(clientConn, match);
+        }
+    }
+
     [TargetRpc]
     private void JoinMatch_Client(NetworkConnectionToClient conn, Match match)
     {
-        //TODO
+        
         lobbyUI = FindObjectOfType<LobbyUI>();
         Debug.Log("Initiated joining!!! and match is " + match != null ? "GOOD" : "BAAAAD");
         lobbyUI.OpenWaitingRoom();

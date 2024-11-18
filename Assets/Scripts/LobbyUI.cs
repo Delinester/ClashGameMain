@@ -59,6 +59,35 @@ public class LobbyUI : MonoBehaviour
         OpenCreateRoomPanel();
     }
 
+    public void OnChangeTeamLeftPressed()
+    {
+        PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        PlayerGameData gameData = player.GetGameData();
+        Debug.Log("Change team left");
+        if (gameData.teamNumber != 1)
+        {
+            gameData.teamNumber = 1;
+            Debug.Log("Before assigning matchID is " + player.GetGameData().matchPtr.matchID);
+            player.AssignGameData(gameData);
+            Debug.Log("After assigning matchID is " + player.GetGameData().matchPtr.matchID);
+            //UpdateWaitingRoom(gameData.matchPtr);
+            LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
+        }
+    }
+
+    public void OnChangeTeamRightPressed()
+    {
+        PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        PlayerGameData gameData = player.GetGameData();
+        Debug.Log("Change team right");
+        if (gameData.teamNumber != 2)
+        {
+            gameData.teamNumber = 2;
+            player.AssignGameData(gameData);
+            LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
+        }
+    }
+
     public void UpdateWaitingRoom(Match matchInfo)
     {
         PlayerListEntry[] playersObjects = playerList1ContentObject.GetComponentsInChildren<PlayerListEntry>();
@@ -66,12 +95,24 @@ public class LobbyUI : MonoBehaviour
         {
             Destroy(playerListEntry.gameObject);
         }
+        PlayerListEntry[] playersObjects2 = playerList2ContentObject.GetComponentsInChildren<PlayerListEntry>();
+        foreach (PlayerListEntry playerListEntry in playersObjects2)
+        {
+            Destroy(playerListEntry.gameObject);
+        }
 
         foreach (PlayerNetworking p in matchInfo.players)
         {
-            GameObject playerObject = Instantiate(playerListEntryPrefab, playerList1ContentObject.transform);
+            Debug.Log("Player is in team number " + p.synchronizedPlayerGameData.teamNumber);
+            Transform contentTransform = p.synchronizedPlayerGameData.teamNumber == 1 ? playerList1ContentObject.transform : playerList2ContentObject.transform;
+            GameObject playerObject = Instantiate(playerListEntryPrefab, contentTransform);
             playerObject.GetComponent<PlayerListEntry>().playerNameText.text = p.GetUserData().username;
         }
+    }
+
+    public void UpdateRoomsList()
+    {
+        // TODO!!!
     }
 
     public void OnConfirmCreateRoomPressed()
@@ -90,7 +131,6 @@ public class LobbyUI : MonoBehaviour
 
     void Start()
     {
-
        //playerNameText.text = "You are "+ LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username;
        LobbyManager manager = LobbyManager.instance;
        for (int i = 0; i < manager.matchesList.Count; i++)
