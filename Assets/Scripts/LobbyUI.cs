@@ -32,6 +32,12 @@ public class LobbyUI : MonoBehaviour
     private GameObject playerList1ContentObject;
     [SerializeField]
     private GameObject playerList2ContentObject;
+    [SerializeField]
+    private Sprite warriorIcon;
+    [SerializeField]
+    private Sprite townmanagerIcon;
+    [SerializeField]
+    private Sprite minerIcon;
 
     // Start is called before the first frame update
     public void OpenCreateRoomPanel()
@@ -66,10 +72,13 @@ public class LobbyUI : MonoBehaviour
         Debug.Log("Change team left");
         if (gameData.teamNumber != 1)
         {
-            gameData.teamNumber = 1;
-            Debug.Log("Before assigning matchID is " + player.GetGameData().matchPtr.matchID);
-            player.AssignGameData(gameData);
-            Debug.Log("After assigning matchID is " + player.GetGameData().matchPtr.matchID);
+            Debug.Log("MUST CHANGE TEAM TO 1");
+            PlayerGameData playerGameData = new PlayerGameData(gameData);
+            playerGameData.teamNumber = 1;
+
+            //Debug.Log("Before assigning matchID is " + player.GetGameData().matchPtr.matchID);
+            player.CMDAssignGameData(playerGameData);
+           // Debug.Log("After assigning matchID is " + player.GetGameData().matchPtr.matchID);
             //UpdateWaitingRoom(gameData.matchPtr);
             LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
         }
@@ -82,9 +91,15 @@ public class LobbyUI : MonoBehaviour
         Debug.Log("Change team right");
         if (gameData.teamNumber != 2)
         {
-            gameData.teamNumber = 2;
-            player.AssignGameData(gameData);
+            Debug.Log("MUST CHANGE TEAM TO 2");
+            PlayerGameData playerGameData = new PlayerGameData(gameData);
+            playerGameData.teamNumber = 2;
+            player.CMDAssignGameData(playerGameData);
+
+            Debug.Log("Team number of player in PLAYER DATA is " + player.synchronizedPlayerGameData.teamNumber);
             LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
+
+            Debug.Log("Team number of player AFTER RPC ROOM UPDATE IS is " + player.synchronizedPlayerGameData.teamNumber);
         }
     }
 
@@ -104,10 +119,29 @@ public class LobbyUI : MonoBehaviour
         foreach (PlayerNetworking p in matchInfo.players)
         {
             Debug.Log("Player is in team number " + p.synchronizedPlayerGameData.teamNumber);
+          //  Debug.Log("PlayerRRR is in team number " + LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
             Transform contentTransform = p.synchronizedPlayerGameData.teamNumber == 1 ? playerList1ContentObject.transform : playerList2ContentObject.transform;
             GameObject playerObject = Instantiate(playerListEntryPrefab, contentTransform);
-            playerObject.GetComponent<PlayerListEntry>().playerNameText.text = p.GetUserData().username;
+
+            PlayerListEntry playerListEntry = playerObject.GetComponent<PlayerListEntry>();
+            playerListEntry.playerNameText.text = p.GetUserData().username;
+            switch (p.GetGameData().role)
+            {
+                case GameRole.WARRIOR: playerListEntry.roleImage.sprite = warriorIcon; break;
+                case GameRole.TOWN_MANAGER: playerListEntry.roleImage.sprite = townmanagerIcon; break;
+                case GameRole.MINER: playerListEntry.roleImage.sprite = minerIcon; break;
+            }
         }
+    }
+
+    public void OnChangeRolePressed(GameObject button)
+    {
+        PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        PlayerGameData playerGameData = new PlayerGameData(player.synchronizedPlayerGameData);
+        playerGameData.role = button.GetComponent<RoleChangeButton>().buttonRole;
+        player.CMDAssignGameData(playerGameData);
+
+        LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
     }
 
     public void UpdateRoomsList()

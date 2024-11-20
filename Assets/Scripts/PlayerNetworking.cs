@@ -10,10 +10,18 @@ public class PlayerGameData
     public Match matchPtr;
     public bool isInMatch;
     public int teamNumber;
-    GameManager.GameRole role;
+    public GameRole role;
     public PlayerGameData()
     {
-        teamNumber = 1;
+        this.teamNumber = 1;
+    }
+
+    public PlayerGameData(PlayerGameData copy)
+    {
+        this.teamNumber = copy.teamNumber;
+        this.matchPtr = copy.matchPtr;
+        this.isInMatch = copy.isInMatch;
+        this.role = copy.role;
     }
 }
 public class PlayerNetworking : NetworkBehaviour
@@ -27,17 +35,19 @@ public class PlayerNetworking : NetworkBehaviour
     [SyncVar(hook = nameof(OnGameDataUpdate))]
     public PlayerGameData synchronizedPlayerGameData = new PlayerGameData();
 
-    private PlayerGameData localPlayerGameData = new PlayerGameData();
+
+    
+    public PlayerGameData localPlayerGameData = new PlayerGameData();
 
 
     //public bool isInMatch = false;
     //public Match matchPtr = null;
     public NetworkConnectionToClient clientConnection;
 
-    private UserData localUserData;
+    private UserData localUserData = new UserData();
 
     [SyncVar(hook = nameof(OnUserDataUpdate))]
-    private UserData syncronizedUserData;
+    private UserData syncronizedUserData = new UserData();
 
     private void OnUserDataUpdate(UserData _old, UserData _new)
     {
@@ -46,7 +56,16 @@ public class PlayerNetworking : NetworkBehaviour
 
     private void OnGameDataUpdate(PlayerGameData _old, PlayerGameData _new)
     {
-        localPlayerGameData = _new;
+        //localPlayerGameData.matchPtr = _new.matchPtr;
+        //localPlayerGameData.teamNumber = _new.teamNumber;
+        //localPlayerGameData.isInMatch = _new.isInMatch;
+        //localPlayerGameData.role = _new.role;
+        localPlayerGameData = new PlayerGameData(_new);
+    }
+
+    public void CopyGameData(PlayerGameData data)
+    {
+
     }
 
     [Command]
@@ -55,10 +74,19 @@ public class PlayerNetworking : NetworkBehaviour
         syncronizedUserData = data;
     }
 
-    [Command]
-    public void AssignGameData(PlayerGameData data)
+    [Server]
+    public void ServerAssignGameData(PlayerGameData data)
     {
-        synchronizedPlayerGameData = data;
+        PlayerGameData newGameData = new PlayerGameData(data);
+        synchronizedPlayerGameData = newGameData;
+        LobbyManager.instance.ServerUpdateMatchPlayerData(this, data);
+        Debug.LogError("SYNC BECOMES TEAM " + synchronizedPlayerGameData.teamNumber);
+    }
+
+    [Command]
+    public void CMDAssignGameData(PlayerGameData data)
+    {
+        ServerAssignGameData(data);
     }
 
     public UserData GetUserData()

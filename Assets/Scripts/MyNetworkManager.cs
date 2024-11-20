@@ -8,7 +8,6 @@ public class MyNetworkManager : NetworkManager
     
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        base.OnServerDisconnect(conn);
         Debug.Log("Client disconnected!!!");
         foreach (Match m in LobbyManager.instance.matchesList)
         {
@@ -18,8 +17,11 @@ public class MyNetworkManager : NetworkManager
                 {
                     Debug.Log("Disconnected from match " + m.matchName + " with ID " + m.matchID);
                     LobbyManager.instance.ServerPlayerLeaveMatch(p, m.matchID);
+                    break;
                 }
             }
         }
+
+        base.OnServerDisconnect(conn);
     }
 }

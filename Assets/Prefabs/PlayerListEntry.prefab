@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNameText: {fileID: 2455433294171965951}
+  roleImage: {fileID: 3125691300878062984}
 --- !u!1 &7002786948865378148
 GameObject:
   m_ObjectHideFlags: 0

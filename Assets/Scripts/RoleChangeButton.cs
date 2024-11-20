@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameRole
+public class RoleChangeButton : MonoBehaviour
 {
-    TOWN_MANAGER,
-    WARRIOR,
-    MINER
-}
-public class GameManager : MonoBehaviour
-{
-   
+    public GameRole buttonRole;
     // Start is called before the first frame update
     void Start()
     {
