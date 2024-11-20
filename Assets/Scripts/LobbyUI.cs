@@ -78,18 +78,13 @@ public class LobbyUI : MonoBehaviour
 
             //Debug.Log("Before assigning matchID is " + player.GetGameData().matchPtr.matchID);
             player.CMDAssignGameData(playerGameData);
-            StartCoroutine(WaitBeforeUpdate());
+            StartCoroutine(DelayedRoomUpdateRPCRequest());
             // Debug.Log("After assigning matchID is " + player.GetGameData().matchPtr.matchID);
             //UpdateWaitingRoom(gameData.matchPtr);
             //LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
         }
     }
 
-    private IEnumerator WaitBeforeUpdate()
-    {
-        yield return new WaitForSeconds(0.2f);
-        LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr);
-    }
     public void OnChangeTeamRightPressed()
     {
         PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
@@ -101,10 +96,44 @@ public class LobbyUI : MonoBehaviour
             PlayerGameData playerGameData = new PlayerGameData(gameData);
             playerGameData.teamNumber = 2;
             player.CMDAssignGameData(playerGameData);
-            
+
             //LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
-            StartCoroutine(WaitBeforeUpdate());
+            //LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr);
+            StartCoroutine(DelayedRoomUpdateRPCRequest());
         }
+    }
+    public void OnChangeRolePressed(GameObject button)
+    {
+        PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        PlayerGameData playerGameData = new PlayerGameData(player.synchronizedPlayerGameData);
+        playerGameData.role = button.GetComponent<RoleChangeButton>().buttonRole;
+        player.CMDAssignGameData(playerGameData);
+
+        // LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
+        StartCoroutine(DelayedRoomUpdateRPCRequest());
+    }
+
+    public void OnLeaveRoomPressed()
+    {
+        //PlayerGameData playerGameData = new PlayerGameData(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData);
+        //playerGameData.matchPtr = null;
+        //playerGameData.isInMatch = false;
+        PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        LobbyManager.instance.CMDPlayerLeaveMatch(player, player.synchronizedPlayerGameData.matchPtr.matchID);
+        OpenRoomsList();
+        StartCoroutine(DelayedRoomsListUpdate());
+    }
+
+    private IEnumerator DelayedRoomUpdateRPCRequest()
+    {
+        yield return new WaitForSeconds(0.2f);
+        LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr);
+    }
+
+    private IEnumerator DelayedRoomsListUpdate()
+    {
+        yield return new WaitForSeconds(0.5f);
+        UpdateRoomsList();
     }
 
     public void UpdateWaitingRoom(Match matchInfo)
@@ -138,19 +167,19 @@ public class LobbyUI : MonoBehaviour
         }
     }
 
-    public void OnChangeRolePressed(GameObject button)
-    {
-        PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-        PlayerGameData playerGameData = new PlayerGameData(player.synchronizedPlayerGameData);
-        playerGameData.role = button.GetComponent<RoleChangeButton>().buttonRole;
-        player.CMDAssignGameData(playerGameData);
-
-        LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
-    }
-
     public void UpdateRoomsList()
     {
-        // TODO!!!
+        LobbyManager manager = LobbyManager.instance;
+        for (int i = 0; i < manager.matchesList.Count; i++)
+        {
+            GameObject obj = Instantiate(listEntryPrefab, listContentObject.transform);
+            RoomListEntry listEntry = obj.GetComponent<RoomListEntry>();
+            listEntry.matchPtr = manager.matchesList[i];
+            listEntry.numberOfPlayers.text = manager.matchesList[i].players.Count.ToString() + "/4";
+            listEntry.nameText.text = manager.matchesList[i].matchName;
+
+            //obj.GetComponentInChildren<JoinRoomButtonScript>().gameObject.GetComponent<Button>().clicked += () => OnJoinRoomPressed(listEntry);
+        }
     }
 
     public void OnConfirmCreateRoomPressed()
@@ -169,18 +198,8 @@ public class LobbyUI : MonoBehaviour
 
     void Start()
     {
-       //playerNameText.text = "You are "+ LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username;
-       LobbyManager manager = LobbyManager.instance;
-       for (int i = 0; i < manager.matchesList.Count; i++)
-        {
-            GameObject obj = Instantiate(listEntryPrefab, listContentObject.transform);
-            RoomListEntry listEntry = obj.GetComponent<RoomListEntry>();
-            listEntry.matchPtr = manager.matchesList[i];
-            listEntry.numberOfPlayers.text = manager.matchesList[i].players.Count.ToString() + "/4";
-            listEntry.nameText.text = manager.matchesList[i].matchName;
-
-            //obj.GetComponentInChildren<JoinRoomButtonScript>().gameObject.GetComponent<Button>().clicked += () => OnJoinRoomPressed(listEntry);
-        }
+        //playerNameText.text = "You are "+ LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username;
+        UpdateRoomsList();
        //for (int i = 0; i < 25; i++) 
        // {
        //     GameObject obj = Instantiate(listEntryPrefab, listContentObject.transform);

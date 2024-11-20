@@ -85,7 +85,7 @@ public class LobbyManager : NetworkBehaviour
         PlayerLeaveMatch(player, matchID);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CMDPlayerLeaveMatch(PlayerNetworking player, string matchID)
     {
         PlayerLeaveMatch(player, matchID);
@@ -176,6 +176,7 @@ public class LobbyManager : NetworkBehaviour
     [Server]
     public void RPCSendWaitingRoomUpdateForClients(string matchID)
     {
+        
         Match match = null;
         foreach (Match m in matchesList)
         {
