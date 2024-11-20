@@ -69,6 +69,11 @@ public class LobbyManager : NetworkBehaviour
             gameData.isInMatch = false;
             //player.synchronizedPlayerGameData = gameData;
             player.ServerAssignGameData(gameData);
+
+            Match dummy = new Match();
+            matchesList.Add(dummy);
+            matchesList.Remove(dummy);
+
             if (matchPtr.players.Count == 0)
             {
                 matchIDs.Remove(matchID);

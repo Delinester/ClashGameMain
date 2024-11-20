@@ -20,6 +20,7 @@ public class AuthScript : NetworkBehaviour
     public void Login(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
     {
         //Debug.Log("Client is " + conn.address);
+        LoadingCanvas.instance.gameObject.SetActive(true);
         playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         playerNetworking.AssignUserData(userData);
         menuController = FindObjectOfType<MenuUI>();
@@ -36,6 +37,7 @@ public class AuthScript : NetworkBehaviour
     private void LoginUser_Client(NetworkConnection conn, string response)
     {        
         PlayerNetworking.UserData userData = playerNetworking.GetUserData();
+        LoadingCanvas.instance.gameObject.SetActive(false);
         // Parse JSON response
         try
         {
@@ -51,6 +53,7 @@ public class AuthScript : NetworkBehaviour
                     {
                         menuController.SetStatusString("Welcome back, " + data.username);
                         Debug.Log("Username: " + data.username);
+                        menuController.UnlockPlayButton();
                         return;
                     }
                 }
@@ -72,6 +75,7 @@ public class AuthScript : NetworkBehaviour
 
     public void Register(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
     {
+        LoadingCanvas.instance.gameObject.SetActive(true);
         playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         //Debug.Log("Client is " + conn.address);
         menuController = FindObjectOfType<MenuUI>();
@@ -91,6 +95,7 @@ public class AuthScript : NetworkBehaviour
     [TargetRpc]
     private void RegisterUser_Client(NetworkConnectionToClient conn, int code)
     {
+        LoadingCanvas.instance.gameObject.SetActive(false);
         Debug.Log("Client RPC reached");
         if (code == 201)
         {
@@ -103,6 +108,7 @@ public class AuthScript : NetworkBehaviour
     }
     private IEnumerator GetRequest(string uri, string endpoint, ResponseHandler handler, NetworkConnection conn = null)
     {
+        
         //Debug.LogError("Type is " + conn.GetType());
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri + endpoint))
         {
@@ -120,10 +126,12 @@ public class AuthScript : NetworkBehaviour
                 handler(conn, webRequest.downloadHandler.text);
             }
         }
+        
     }
 
     private IEnumerator PostRequest(string uri, string endpoint, PostResponseHandler handler, PlayerNetworking.UserData postData, NetworkConnectionToClient conn)
     {
+        
         string json = JsonUtility.ToJson(postData);
         //Debug.LogError("Type is " + conn.GetType() + " Another is " + postData.GetType());
         using (UnityWebRequest www = new UnityWebRequest(uri + endpoint, "POST"))
@@ -154,6 +162,7 @@ public class AuthScript : NetworkBehaviour
             }
             handler(conn, (int)www.responseCode);
         }
+        
     }
 
     public static class JsonHelper

@@ -14,28 +14,44 @@ public class MenuUI : MonoBehaviour
     private PlayerNetworking playerNetworking;
     private AuthScript authScript;
     private NetworkConnectionToClient clientConn;
+
+    [SerializeField]
+    private GameObject allowWhenClientConnected;
+    [SerializeField]
+    private GameObject playButtonObject;
+    [SerializeField]
+    private GameObject connectButtonObject;
+
     public void ConnectToServer()
     {
         NetworkManager manager = NetworkManager.singleton;
         if (!NetworkClient.isConnected)
         {
             manager.StartClient();
-        }
+            StartCoroutine(DelayedLoginTextCheck());
+        }        
+    }
 
+    private IEnumerator DelayedLoginTextCheck()
+    {
+        yield return new WaitForSeconds(0.5f);
         if (NetworkClient.isConnected)
         {
-            statusText.text = "Connected to " + manager.networkAddress;
+            statusText.text = "Connected to " + NetworkManager.singleton.networkAddress;
             connectButton.enabled = false;
-
+            UnlockClientConnectMenu();
         }
-        else statusText.text = "Connection failed to " + manager.networkAddress;
+        else statusText.text = "Connection failed to " + NetworkManager.singleton.networkAddress;
     }
 
     public void CreateServer()
     {
         NetworkManager.singleton.StartServer();
         if (NetworkServer.active)
+        {
             statusText.text = "Server created";
+            connectButtonObject.SetActive(false);
+        }
         else statusText.text = "Server cannot be created";
     }
 
@@ -70,6 +86,16 @@ public class MenuUI : MonoBehaviour
         playerNetworking.ChangeScene("Lobby");
     }
 
+    public void UnlockClientConnectMenu()
+    {
+        allowWhenClientConnected.SetActive(true);
+    }
+
+    public void UnlockPlayButton()
+    {
+        playButtonObject.SetActive(true);
+    }
+
     private bool CheckInputFields()
     {
         if (usernameInputField.text.Length < 5 || usernameInputField.text.Length > 12)
@@ -81,9 +107,16 @@ public class MenuUI : MonoBehaviour
     }
 
 
+
     public void SetStatusString(string text)
     {
         statusText.text = text;
+    }
+
+    void Awake()
+    {
+        playButtonObject.SetActive(false);
+        allowWhenClientConnected.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()

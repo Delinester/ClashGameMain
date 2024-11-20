@@ -49,6 +49,7 @@ public class LobbyUI : MonoBehaviour
 
     public void OpenRoomsList()
     {
+        StartCoroutine(DelayedRoomsListUpdate());
         listViewObject.SetActive(true);
         waitingRoomObject.SetActive(false);
         createRoomPanel.SetActive(false);
@@ -121,7 +122,7 @@ public class LobbyUI : MonoBehaviour
         PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         LobbyManager.instance.CMDPlayerLeaveMatch(player, player.synchronizedPlayerGameData.matchPtr.matchID);
         OpenRoomsList();
-        StartCoroutine(DelayedRoomsListUpdate());
+        
     }
 
     private IEnumerator DelayedRoomUpdateRPCRequest()
@@ -132,7 +133,8 @@ public class LobbyUI : MonoBehaviour
 
     private IEnumerator DelayedRoomsListUpdate()
     {
-        yield return new WaitForSeconds(0.5f);
+        LoadingCanvas.instance.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
         UpdateRoomsList();
     }
 
@@ -170,6 +172,11 @@ public class LobbyUI : MonoBehaviour
     public void UpdateRoomsList()
     {
         LobbyManager manager = LobbyManager.instance;
+        RoomListEntry[] listEntries = listContentObject.GetComponentsInChildren<RoomListEntry>();
+        foreach (RoomListEntry entry in listEntries)
+        {
+            Destroy(entry.gameObject);
+        }
         for (int i = 0; i < manager.matchesList.Count; i++)
         {
             GameObject obj = Instantiate(listEntryPrefab, listContentObject.transform);
@@ -179,7 +186,9 @@ public class LobbyUI : MonoBehaviour
             listEntry.nameText.text = manager.matchesList[i].matchName;
 
             //obj.GetComponentInChildren<JoinRoomButtonScript>().gameObject.GetComponent<Button>().clicked += () => OnJoinRoomPressed(listEntry);
+            
         }
+        LoadingCanvas.instance.gameObject.SetActive(false);
     }
 
     public void OnConfirmCreateRoomPressed()
