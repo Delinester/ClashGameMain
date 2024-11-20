@@ -78,12 +78,18 @@ public class LobbyUI : MonoBehaviour
 
             //Debug.Log("Before assigning matchID is " + player.GetGameData().matchPtr.matchID);
             player.CMDAssignGameData(playerGameData);
-           // Debug.Log("After assigning matchID is " + player.GetGameData().matchPtr.matchID);
+            StartCoroutine(WaitBeforeUpdate());
+            // Debug.Log("After assigning matchID is " + player.GetGameData().matchPtr.matchID);
             //UpdateWaitingRoom(gameData.matchPtr);
-            LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
+            //LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
         }
     }
 
+    private IEnumerator WaitBeforeUpdate()
+    {
+        yield return new WaitForSeconds(0.2f);
+        LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr);
+    }
     public void OnChangeTeamRightPressed()
     {
         PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
@@ -95,11 +101,9 @@ public class LobbyUI : MonoBehaviour
             PlayerGameData playerGameData = new PlayerGameData(gameData);
             playerGameData.teamNumber = 2;
             player.CMDAssignGameData(playerGameData);
-
-            Debug.Log("Team number of player in PLAYER DATA is " + player.synchronizedPlayerGameData.teamNumber);
-            LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
-
-            Debug.Log("Team number of player AFTER RPC ROOM UPDATE IS is " + player.synchronizedPlayerGameData.teamNumber);
+            
+            //LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
+            StartCoroutine(WaitBeforeUpdate());
         }
     }
 
