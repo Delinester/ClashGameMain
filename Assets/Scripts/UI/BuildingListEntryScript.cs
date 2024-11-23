@@ -13,6 +13,10 @@ public class BuildingListEntryScript : MonoBehaviour
     [SerializeField]
     private BuildingData buildingData;
 
+    public BuildingData GetBuildingData()
+    {
+        return buildingData;
+    }
     public void SetBuildingData(BuildingData buildingData)
     {
         this.buildingData = buildingData;

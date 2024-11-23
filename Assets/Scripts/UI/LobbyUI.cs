@@ -125,6 +125,11 @@ public class LobbyUI : MonoBehaviour
         
     }
 
+    public void OnStartGamePressed()
+    {
+        LobbyManager.instance.StartGame(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr);
+    }
+
     private IEnumerator DelayedRoomUpdateRPCRequest()
     {
         yield return new WaitForSeconds(0.2f);

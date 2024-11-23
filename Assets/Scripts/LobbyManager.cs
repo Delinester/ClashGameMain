@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Match
@@ -214,6 +215,22 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log("Initiated joining!!! and match is " + (match != null ? "GOOD" : "BAAAAD"));
         lobbyUI.OpenWaitingRoom();
         lobbyUI.UpdateWaitingRoom(match);
+    }
+
+    [Command (requiresAuthority = false)]
+    public void StartGame(Match match)
+    {
+        foreach (PlayerNetworking player in match.players)
+        {
+            NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
+            LoadGameScene(conn);
+        }
+    }
+
+    [TargetRpc]
+    private void LoadGameScene(NetworkConnectionToClient conn)
+    {
+        SceneManager.LoadSceneAsync("Game");
     }
 
     private string GenerateRandomString(int length)

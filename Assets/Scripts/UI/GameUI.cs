@@ -13,7 +13,16 @@ public class GameUI : MonoBehaviour
 
     [SerializeField]
     private BuildingData[] buildingsDataArray;
+    ////////////////////////////////////////////////////////
+    private bool isInBuildingMode = false;
+    private GameObject currentBuildingObject;
+    private BuildingData currentBuildingData;
+    private Camera mainCamera;
 
+    void Awake()
+    {
+        mainCamera = FindObjectOfType<Camera>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +33,29 @@ public class GameUI : MonoBehaviour
         }
     }
 
+    public void EnterBuidingMode(BuildingData building)
+    {
+        currentBuildingData = building;
+        isInBuildingMode = true;
+        currentBuildingObject = Instantiate(building.buildingPrefab);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        if (isInBuildingMode && currentBuildingObject)
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos = mainCamera.ScreenToWorldPoint(mousePos);
+            Vector3 buildingPos = new Vector3(mousePos.x, mousePos.y, -3);
+            currentBuildingObject.gameObject.transform.position = buildingPos;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                GameManager.instance.PlaceBuilding(currentBuildingData, buildingPos);
+                Destroy(currentBuildingObject);
+                isInBuildingMode = false;
+            }
+        }
     }
 }

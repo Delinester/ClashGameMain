@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         // Set camera position to the location according to player's role!
-        Vector3 townPos = GameManager.instance.GetTownTeamPosition(1);
+        Vector3 townPos = GameManager.instance.GetTownTeamPosition(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
         m_camera.transform.position = new Vector3(townPos.x, townPos.y, m_camera.transform.position.z);
     }
 
