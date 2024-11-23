@@ -8,6 +8,14 @@ public enum GameRole
     WARRIOR,
     MINER
 }
+
+public enum Resource
+{
+    NONE,
+    GOLD,
+    FOOD,
+    MINERAL
+}
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;

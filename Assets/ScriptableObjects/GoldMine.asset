@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0999bf488af844bba438d8683151b8, type: 3}
+  m_Name: GoldMine
+  m_EditorClassIdentifier: 
+  buildingName: GoldMine
+  buildingSprite: {fileID: 21300000, guid: 5167a54b80caa2e42b57724d48c489e1, type: 3}
+  buildingPrefab: {fileID: 9094118914640151468, guid: cd0aee5dfe941984abbf420ebf088f27, type: 3}
+  resourceProduces: 1
+  hp: 250
+  costGold: 0
+  producingAmount: 2
+  producingTimeSecs: 10
+  maxQuantity: 1

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0999bf488af844bba438d8683151b8, type: 3}
+  m_Name: TownHall
+  m_EditorClassIdentifier: 
+  buildingName: TownHall
+  buildingSprite: {fileID: 21300000, guid: 3394ce2dc689dea4797aa0465c192b51, type: 3}
+  buildingPrefab: {fileID: 5720777011359994023, guid: 4e88805888e6db74aa4cbe9b6b0805dc, type: 3}
+  resourceProduces: 0
+  hp: 500
+  costGold: 0
+  producingAmount: 0
+  producingTimeSecs: 0
+  maxQuantity: 1

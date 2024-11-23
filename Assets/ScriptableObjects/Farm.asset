@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0999bf488af844bba438d8683151b8, type: 3}
+  m_Name: Farm
+  m_EditorClassIdentifier: 
+  buildingName: Farm
+  buildingSprite: {fileID: 21300000, guid: 239ac9c1a09273b439fed918f1d3c6ca, type: 3}
+  buildingPrefab: {fileID: 4723251347989904215, guid: 26107491b8e20134e93d13e789bb7352, type: 3}
+  resourceProduces: 2
+  hp: 0
+  costGold: 1
+  producingAmount: 5
+  producingTimeSecs: 10
+  maxQuantity: 9999

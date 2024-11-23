@@ -6,17 +6,21 @@ public class GameUI : MonoBehaviour
 {
     [Header("Building Menu")]
     [SerializeField]
-    private GameObject viewPortContent;
+    private GameObject buildingViewPortContent;
 
     [SerializeField]
     private GameObject buildingListEntryPrefab;
 
+    [SerializeField]
+    private BuildingData[] buildingsDataArray;
+
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        foreach (BuildingData building in buildingsDataArray)
         {
-            GameObject obj = Instantiate(buildingListEntryPrefab, viewPortContent.transform);
+            GameObject obj = Instantiate(buildingListEntryPrefab, buildingViewPortContent.transform);
+            obj.GetComponent<BuildingListEntryScript>().SetBuildingData(building);
         }
     }
 
