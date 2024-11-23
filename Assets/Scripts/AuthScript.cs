@@ -24,7 +24,19 @@ public class AuthScript : NetworkBehaviour
         playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         playerNetworking.AssignUserData(userData);
         menuController = FindObjectOfType<MenuUI>();
-        LoginUser_Server(conn);
+
+        // WITHOUT DATABASE
+        // LoginUser_Server(conn);
+        StartCoroutine(WaitToLogin());
+    }
+
+    private IEnumerator WaitToLogin()
+    {
+        yield return new WaitForSeconds(1.0f);
+        menuController.SetStatusString("Welcome back, " + playerNetworking.GetUserData().username);
+        Debug.Log("Username: " + playerNetworking.GetUserData().username);
+        menuController.UnlockPlayButton();
+        LoadingCanvas.instance.gameObject.SetActive(false);
     }
 
     [Command]
