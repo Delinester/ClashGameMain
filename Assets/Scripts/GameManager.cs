@@ -1,5 +1,4 @@
 using Mirror;
-using Mono.CecilX;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -79,6 +78,7 @@ public class GameData
     public void AddFood(int food, int teamNum) 
     {
         if (teamNum == 1) foodTeam1 += food;
+        else foodTeam2 += food;
     }
     public void AddMinerals(int minerals, int teamNum) 
     {
@@ -98,7 +98,7 @@ public class ResourceUpdateMsg
     public ResourceUpdateMsg()
     {
         matchID = string.Empty;
-        teamNumber = -1;
+        teamNumber = 0;
         amount = 0;
         resource = Resource.NONE;
     }
