@@ -80,7 +80,7 @@ public class PlayerNetworking : NetworkBehaviour
         PlayerGameData newGameData = new PlayerGameData(data);
         synchronizedPlayerGameData = newGameData;
         LobbyManager.instance.ServerUpdateMatchPlayerData(this, data);
-        Debug.LogError("SYNC BECOMES TEAM " + synchronizedPlayerGameData.teamNumber);
+        //Debug.LogError("SYNC BECOMES TEAM " + synchronizedPlayerGameData.teamNumber);
     }
 
     [Command]

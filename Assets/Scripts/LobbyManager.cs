@@ -106,6 +106,7 @@ public class LobbyManager : NetworkBehaviour
         matchIDs.Add(matchId);
         Match match = new Match(matchId, matchName, false);
         matchesList.Add(match);
+        GameManager.instance.InsertGameDataServer(matchId, new GameData());
         //player.matchPtr = match;
         Debug.Log("Match with ID " + matchId + " was created and name " + match.matchName);
 
@@ -227,6 +228,18 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
+    public List<PlayerNetworking> GetPlayersInMatch(string matchID)
+    {
+        foreach (Match m in matchesList)
+        {
+            if (m.matchID == matchID)
+            {
+                return m.players;
+            }
+        }
+        return null;
+    }
+
     [TargetRpc]
     private void LoadGameScene(NetworkConnectionToClient conn)
     {
@@ -243,6 +256,7 @@ public class LobbyManager : NetworkBehaviour
         }
         return new string(randChars);
     }
+
 
     private void Start()
     {

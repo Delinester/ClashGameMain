@@ -9,6 +9,8 @@ public class LocalStateManager : MonoBehaviour
 
     public GameObject localPlayer;
 
+    public GameData localGameData;
+
     private void Awake()
     {
         if (instance == null)

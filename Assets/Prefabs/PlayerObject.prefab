@@ -63,6 +63,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3772a4e0468534147b32d9f63b0e892f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  synchronizedPlayerGameData:
+    matchPtr:
+      matchID: 
+      inMatch: 0
+      matchFull: 0
+      passwordProtected: 0
+      password: 
+      matchName: 
+      players: []
+    isInMatch: 0
+    teamNumber: 1
+    role: 0
+  localPlayerGameData:
+    matchPtr:
+      matchID: 
+      inMatch: 0
+      matchFull: 0
+      passwordProtected: 0
+      password: 
+      matchName: 
+      players: []
+    isInMatch: 0
+    teamNumber: 1
+    role: 0
 --- !u!114 &545934103899441761
 MonoBehaviour:
   m_ObjectHideFlags: 0
