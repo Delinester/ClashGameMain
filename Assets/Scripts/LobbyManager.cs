@@ -137,7 +137,7 @@ public class LobbyManager : NetworkBehaviour
                     // player.synchronizedPlayerGameData = gameData;
                     player.ServerAssignGameData(gameData);
 
-                    Debug.LogError("Client team is " + player.synchronizedPlayerGameData.teamNumber);
+                    //Debug.LogError("Client team is " + player.synchronizedPlayerGameData.teamNumber);
                     RPCSendWaitingRoomUpdateForClients(match.matchID);
                     return;
                 }                
@@ -167,7 +167,7 @@ public class LobbyManager : NetworkBehaviour
                     {
                         p.synchronizedPlayerGameData = new PlayerGameData(newData);
                         matchesList[i] = new Match(m);
-                        Debug.LogError("Update match for " + p.GetUserData().username + " to TEAM " + p.synchronizedPlayerGameData.teamNumber);
+                       // Debug.LogError("Update match for " + p.GetUserData().username + " to TEAM " + p.synchronizedPlayerGameData.teamNumber);
                     }
                 }
             }
@@ -189,7 +189,7 @@ public class LobbyManager : NetworkBehaviour
             if (m.matchID == matchID)
             {
                 match = m;
-                Debug.LogError("TEAM ON SERVER IS " + m.players[0].synchronizedPlayerGameData.teamNumber);
+               // Debug.LogError("TEAM ON SERVER IS " + m.players[0].synchronizedPlayerGameData.teamNumber);
             }
         }
         foreach (PlayerNetworking p in match.players)
@@ -197,12 +197,12 @@ public class LobbyManager : NetworkBehaviour
             NetworkConnectionToClient clientConn = p.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
             // TEST CODE
             PlayerGameData gameData = new PlayerGameData(p.synchronizedPlayerGameData);
-            Debug.LogError("GAME DATA ON RPC IS " + gameData.teamNumber);
+            //Debug.LogError("GAME DATA ON RPC IS " + gameData.teamNumber);
             gameData.matchPtr = match;
             p.ServerAssignGameData(gameData);
             //
             if (clientConn == null) Debug.LogError("Client conn is null on " + p.GetUserData().username);
-            Debug.LogError("TEAM NUM BEFORE RPC CALL ON SERVER IS " + match.players[0].synchronizedPlayerGameData.teamNumber);
+            //Debug.LogError("TEAM NUM BEFORE RPC CALL ON SERVER IS " + match.players[0].synchronizedPlayerGameData.teamNumber);
             JoinMatch_Client(clientConn, new Match(match));
         }
     }

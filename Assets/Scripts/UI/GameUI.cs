@@ -11,8 +11,6 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private GameObject buildingListEntryPrefab;
 
-    [SerializeField]
-    private BuildingData[] buildingsDataArray;
     ////////////////////////////////////////////////////////
     private bool isInBuildingMode = false;
     private GameObject currentBuildingObject;
@@ -26,7 +24,7 @@ public class GameUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (BuildingData building in buildingsDataArray)
+        foreach (BuildingData building in GameManager.instance.buildingManager.GetBuildingsDataList())
         {
             GameObject obj = Instantiate(buildingListEntryPrefab, buildingViewPortContent.transform);
             obj.GetComponent<BuildingListEntryScript>().SetBuildingData(building);
@@ -52,7 +50,7 @@ public class GameUI : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                GameManager.instance.PlaceBuilding(currentBuildingData, buildingPos);
+                GameManager.instance.buildingManager.PlaceBuilding(currentBuildingData.buildingName, buildingPos);
                 Destroy(currentBuildingObject);
                 isInBuildingMode = false;
             }

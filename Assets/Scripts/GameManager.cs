@@ -25,13 +25,15 @@ public class GameManager : NetworkBehaviour
     private Vector3 town1Pos = new Vector3(0, 0, 0);
     private Vector3 town2Pos = new Vector3(0, 100, 0);
 
-
     [SerializeField]
     private GameObject townPrefab;
     [SerializeField]
     private GameObject townTeam1;
     [SerializeField]
     private GameObject townTeam2;
+
+    [HideInInspector]
+    public BuildingManager buildingManager;
 
     public Vector2 GetTownTeamPosition(int teamNum)
     {
@@ -47,19 +49,14 @@ public class GameManager : NetworkBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        buildingManager = gameObject.GetComponent<BuildingManager>();
+        if (buildingManager == null) Debug.Log("Building manager is null!!");
         //else if (instance != this)
         //{
         //    Destroy(gameObject);
         //}
-    }
-
-    [Command]
-    public void PlaceBuilding(BuildingData data, Vector3 position)
-    {
-        Debug.LogError("Place building is called!!!");
-        GameObject obj = Instantiate(data.buildingPrefab, position, data.buildingPrefab.transform.rotation);
-        NetworkServer.Spawn(obj);
-    }
+    }    
 
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
