@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Changer
   - Building
+  - Town
   layers:
   - Default
   - TransparentFX

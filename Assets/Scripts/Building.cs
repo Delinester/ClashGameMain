@@ -12,6 +12,9 @@ public class Building : MonoBehaviour
    // private NetworkConnectionToClient connectionToClient;
     private float currentHp;
     private bool isFunctional = false;
+    private bool isColliding = false;
+    private bool isOutOfBounds = false;
+    private bool isBuildingMode = false;
     void Awake()
     {
         //player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
@@ -38,6 +41,93 @@ public class Building : MonoBehaviour
         if (isFunctional && player.GetUserData().username == LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username)
         {
             StartCoroutine(ProduceResource());
+        }
+    }
+
+    public void SetBuildingMode(bool isBuildingMode)
+    {
+        this.isBuildingMode = isBuildingMode;
+    }
+
+    public bool IsColliding()
+    {
+        return isColliding;
+    }
+
+    public bool IsOutOfBounds()
+    {
+        return isOutOfBounds;
+    }
+
+    private void PaintItColor(float r, float g, float b, float a)
+    {
+        try
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(r, g, b, a);
+        }
+        catch (MissingComponentException)
+        {
+            SpriteRenderer[] spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+            {
+                spriteRenderer.color = new Color(r, g, b, a);
+            }
+        }
+    }
+
+    private void PaintItRed()
+    {
+        PaintItColor(255, 0, 0, 255);
+    }
+
+    private void PaintItGreen()
+    {
+        PaintItColor(0, 255, 0, 255);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isBuildingMode && collision.gameObject.tag == "Building")
+        {
+            isColliding = true;
+            PaintItRed();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (isBuildingMode && collision.gameObject.tag == "Building")
+        {
+            isColliding = false;
+            PaintItGreen();
+
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (isBuildingMode && collision.gameObject.tag == "Building")
+        {
+            isColliding = true;
+            PaintItRed();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (isBuildingMode && collision.gameObject.tag == "Town")
+        {
+            PaintItRed();
+            isOutOfBounds = true;    
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isBuildingMode && collision.gameObject.tag == "Town")
+        {
+            PaintItGreen();
+            isOutOfBounds = false;     
         }
     }
     // Start is called before the first frame update

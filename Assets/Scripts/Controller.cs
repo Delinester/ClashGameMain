@@ -52,8 +52,8 @@ public class Controller : NetworkBehaviour
     {
        if (collision.gameObject.tag == "Changer")
         {
-            ChangerScript data = (collision.gameObject.GetComponent<ChangerScript>());
-            changeCharacter(data.colorChangeColor, data.nameChangeName);
+            
+            //changeCharacter(data.colorChangeColor, data.nameChangeName);
             Debug.Log("Changer detected");
         }
         Debug.Log("Got trigger");

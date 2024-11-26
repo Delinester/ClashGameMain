@@ -53,6 +53,7 @@ public class GameUI : MonoBehaviour
         currentBuildingData = building;
         isInBuildingMode = true;
         currentBuildingObject = Instantiate(building.buildingPrefab);
+        currentBuildingObject.GetComponent<Building>().SetBuildingMode(true);
     }
 
     // Update is called once per frame
@@ -64,8 +65,9 @@ public class GameUI : MonoBehaviour
             mousePos = mainCamera.ScreenToWorldPoint(mousePos);
             Vector3 buildingPos = new Vector3(mousePos.x, mousePos.y, -3);
             currentBuildingObject.gameObject.transform.position = buildingPos;
+            Building buildingComponent = currentBuildingObject.GetComponent<Building>();
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !buildingComponent.IsColliding() && !buildingComponent.IsOutOfBounds())
             {
                 PlayerNetworking currentPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
                 GameManager.instance.buildingManager.PlaceBuilding(currentBuildingData.buildingName, buildingPos, currentPlayer.synchronizedPlayerGameData.matchPtr.matchID, currentPlayer); ;

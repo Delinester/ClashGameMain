@@ -120,10 +120,14 @@ public class GameManager : NetworkBehaviour
 
     private Vector3 town1Pos = new Vector3(0, 0, 0);
     private Vector3 town2Pos = new Vector3(0, 100, 0);
+    private Vector3 townManagerSpawnPosOffset = new Vector3(5, 5, -1);
 
     [SerializeField]
     private GameObject townPrefab;
+    [SerializeField]
+    private GameObject townManagerCharacterPrefab;
 
+    private GameObject townManagerCharacter;
     private GameObject townTeam1;
     private GameObject townTeam2;
 
@@ -226,8 +230,12 @@ public class GameManager : NetworkBehaviour
     {
         if (scene.name == "Game")
         {
+            PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
             townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
             townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
+
+            Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
+            townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
         }
     }
     // Start is called before the first frame update

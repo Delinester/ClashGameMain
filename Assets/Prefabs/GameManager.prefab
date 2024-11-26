@@ -11,13 +11,14 @@ GameObject:
   - component: {fileID: 7032030901291204185}
   - component: {fileID: 8563792869672932462}
   - component: {fileID: 4036296986935498750}
+  - component: {fileID: 7543914281797886095}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7032030901291204185
 Transform:
   m_ObjectHideFlags: 0
@@ -65,6 +66,25 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  buildingManager: {fileID: 0}
   townPrefab: {fileID: 8377242900698384207, guid: 5e56e561600cf2a49a1432baa2308024, type: 3}
-  townTeam1: {fileID: 0}
-  townTeam2: {fileID: 0}
+  townManagerCharacterPrefab: {fileID: 1959210465276336, guid: 80009d592906c7b4f8b0948f687288cf, type: 3}
+--- !u!114 &7543914281797886095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198235366432209557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7346edcdb7c6e334e99aab759c68a7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  buildings:
+  - {fileID: 11400000, guid: 0273d7e7e875dd24baab7439080be67d, type: 2}
+  - {fileID: 11400000, guid: 9cf0d41130d8d1342ba0e8443923bbcc, type: 2}
+  - {fileID: 11400000, guid: d3961f57f1a2efd478d7fb9cd35a60eb, type: 2}

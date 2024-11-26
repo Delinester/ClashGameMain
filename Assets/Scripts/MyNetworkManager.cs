@@ -15,7 +15,7 @@ public class MyNetworkManager : NetworkManager
             {
                 if (p.connectionToClient == conn)
                 {
-                    Debug.Log("Disconnected from match " + m.matchName + " with ID " + m.matchID);
+                    Debug.Log("Disconnected from match " + m.matchName + " with ID " + m.matchID + " player " + p.GetUserData().username);
                     LobbyManager.instance.ServerPlayerLeaveMatch(p, m.matchID);
                     break;
                 }
