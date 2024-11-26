@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingName: GoldMine
   buildingSprite: {fileID: 21300000, guid: 5167a54b80caa2e42b57724d48c489e1, type: 3}
   buildingPrefab: {fileID: 9094118914640151468, guid: cd0aee5dfe941984abbf420ebf088f27, type: 3}
+  spawnResourcePrefab: {fileID: 8954334647741383559, guid: e147fd87a8248f241b182d91f2c5f150, type: 3}
   resourceProduces: 1
   hp: 250
   costGold: 0

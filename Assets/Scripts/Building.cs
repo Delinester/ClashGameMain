@@ -7,8 +7,13 @@ public class Building : MonoBehaviour
 {
     [SerializeField]
     private BuildingData buildingData;
+    [SerializeField]
+    private GameObject resourceSpawnPointObject;
+    [SerializeField]
+    private float spawnRadius = 1.0f;
 
     private PlayerNetworking player;
+
    // private NetworkConnectionToClient connectionToClient;
     private float currentHp;
     private bool isFunctional = false;
@@ -24,9 +29,13 @@ public class Building : MonoBehaviour
     private IEnumerator ProduceResource()
     {
         yield return new WaitForSeconds(buildingData.producingTimeSecs);
-        ResourceUpdateMsg msg = new ResourceUpdateMsg(player.synchronizedPlayerGameData.matchPtr.matchID, player.synchronizedPlayerGameData.teamNumber, buildingData.producingAmount, buildingData.resourceProduces);
-        GameManager.instance.CMDUpdateResource(msg);
+        
+        Instantiate(buildingData.spawnResourcePrefab, resourceSpawnPointObject.transform.position + (Vector3)Random.insideUnitCircle*spawnRadius, buildingData.spawnResourcePrefab.transform.rotation); 
+        //ResourceUpdateMsg msg = new ResourceUpdateMsg(player.synchronizedPlayerGameData.matchPtr.matchID, player.synchronizedPlayerGameData.teamNumber, buildingData.producingAmount, buildingData.resourceProduces);
+        //GameManager.instance.CMDUpdateResource(msg);
         StartCoroutine(ProduceResource());
+
+
         // Play animation and spawn resource on ground??? for pawn to pick it up and bring to base or for player himself
     }
 
@@ -38,7 +47,9 @@ public class Building : MonoBehaviour
     public void SetFunctional(bool isFunctional) 
     { 
         this.isFunctional = isFunctional; 
-        if (isFunctional && player.GetUserData().username == LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username)
+        if (isFunctional 
+            && player.GetUserData().username == LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username 
+            && buildingData.resourceProduces != Resource.NONE)
         {
             StartCoroutine(ProduceResource());
         }
@@ -57,6 +68,11 @@ public class Building : MonoBehaviour
     public bool IsOutOfBounds()
     {
         return isOutOfBounds;
+    }
+
+    public BuildingData GetBuildingData()
+    {
+        return buildingData;
     }
 
     private void PaintItColor(float r, float g, float b, float a)

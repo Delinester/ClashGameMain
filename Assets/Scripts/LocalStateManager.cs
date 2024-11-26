@@ -11,6 +11,8 @@ public class LocalStateManager : MonoBehaviour
 
     public GameData localGameData;
 
+    public GameObject localPlayerCharacter;
+
     private void Awake()
     {
         if (instance == null)

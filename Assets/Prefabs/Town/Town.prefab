@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1008506096055826147}
   - component: {fileID: 2927297384987084859}
   - component: {fileID: 3055197275322615869}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tilemap_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15868,7 +15868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2164013926052846985}
   - component: {fileID: 1178682814525424325}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15914,7 +15914,7 @@ GameObject:
   m_Component:
   - component: {fileID: 407727570843913088}
   - component: {fileID: 3278690326045632651}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: B1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15999,7 +15999,7 @@ GameObject:
   - component: {fileID: 2981589620563105671}
   - component: {fileID: 7986939209003585220}
   - component: {fileID: 8601841548055616467}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TileMapBuildings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16119,7 +16119,7 @@ GameObject:
   - component: {fileID: 5781163924951819584}
   - component: {fileID: 524284005610347902}
   - component: {fileID: 3764243595635132148}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Town
   m_TagString: Town
   m_Icon: {fileID: 0}

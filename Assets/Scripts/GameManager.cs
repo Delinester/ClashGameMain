@@ -236,6 +236,7 @@ public class GameManager : NetworkBehaviour
 
             Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
             townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
+            LocalStateManager.instance.localPlayerCharacter = townManagerCharacter;
         }
     }
     // Start is called before the first frame update

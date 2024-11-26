@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
 
 
     private Vector3 mousePosition;
-
+    private GameObject playerToFollow;
     void Awake()
     {
         m_camera = GetComponent<Camera>();
@@ -21,14 +21,17 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        playerToFollow = LocalStateManager.instance.localPlayerCharacter;
         // Set camera position to the location according to player's role!
-        Vector3 townPos = GameManager.instance.GetTownTeamPosition(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
-        m_camera.transform.position = new Vector3(townPos.x, townPos.y, m_camera.transform.position.z);
+        //Vector3 townPos = GameManager.instance.GetTownTeamPosition(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
+        //m_camera.transform.position = new Vector3(townPos.x, townPos.y, m_camera.transform.position.z);
     }
 
     // Update is called once per frame
     void Update()
     {
+        m_camera.transform.position = new Vector3(playerToFollow.transform.position.x, playerToFollow.transform.position.y, m_camera.transform.position.z) ;
         // Zooming
         float mouseScrolDelta = Input.mouseScrollDelta.y;
         float ortoSize = m_camera.orthographicSize;
