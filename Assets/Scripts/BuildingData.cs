@@ -14,4 +14,6 @@ public class BuildingData : ScriptableObject
     public int producingAmount = 0;
     public int producingTimeSecs;
     public int maxQuantity;
+    [System.NonSerialized]
+    public int currentlyBuiltAmount = 0;
 }

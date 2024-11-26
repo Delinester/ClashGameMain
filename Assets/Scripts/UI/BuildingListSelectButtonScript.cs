@@ -7,6 +7,8 @@ public class BuildingListSelectButtonScript : MonoBehaviour
 {
     public BuildingData buildingData;
     public GameUI gameUI;
+
+    private bool isDisabled = false;
     void Awake()
     {
         gameUI = FindObjectOfType<GameUI>();
@@ -21,6 +23,10 @@ public class BuildingListSelectButtonScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!isDisabled && buildingData.currentlyBuiltAmount >= buildingData.maxQuantity)
+        {
+            GetComponent<Button>().interactable = false;
+            isDisabled = true;
+        }
     }
 }

@@ -71,6 +71,7 @@ public class GameUI : MonoBehaviour
                 GameManager.instance.buildingManager.PlaceBuilding(currentBuildingData.buildingName, buildingPos, currentPlayer.synchronizedPlayerGameData.matchPtr.matchID, currentPlayer); ;
                 Destroy(currentBuildingObject);
                 isInBuildingMode = false;
+                currentBuildingData.currentlyBuiltAmount += 1;
             }
         }
 

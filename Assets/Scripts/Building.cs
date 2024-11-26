@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Building : MonoBehaviour
     private BuildingData buildingData;
 
     private PlayerNetworking player;
+   // private NetworkConnectionToClient connectionToClient;
     private float currentHp;
     private bool isFunctional = false;
     void Awake()
@@ -28,11 +30,12 @@ public class Building : MonoBehaviour
     public void SetPlayer(PlayerNetworking player)
     {
         this.player = player; 
+        //connectionToClient = player.GetComponent<NetworkIdentity>().connectionToClient;
     }
     public void SetFunctional(bool isFunctional) 
     { 
         this.isFunctional = isFunctional; 
-        if (isFunctional)
+        if (isFunctional && player.GetUserData().username == LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username)
         {
             StartCoroutine(ProduceResource());
         }

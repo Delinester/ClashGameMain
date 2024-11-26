@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8240674283637401373}
   - component: {fileID: 6554739317592125302}
   - component: {fileID: -3616090824235337800}
+  - component: {fileID: 9181188407651784189}
   m_Layer: 0
   m_Name: Castle_Purple
   m_TagString: Building
@@ -136,3 +137,16 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!114 &9181188407651784189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720777011359994023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a162d1868167bc44c85708484e6121f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingData: {fileID: 11400000, guid: 0273d7e7e875dd24baab7439080be67d, type: 2}
