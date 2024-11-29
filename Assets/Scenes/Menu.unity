@@ -1206,6 +1206,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7543914281797886095, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: buildings.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543914281797886095, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: buildings.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: d8d34db9d4473f049920c6bb6b403bf8, type: 2}
+    - target: {fileID: 7543914281797886095, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: buildings.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e4d118001f582f44b704a18d4fe01c1, type: 2}
     - target: {fileID: 8563792869672932462, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: sceneId
       value: 1525159124

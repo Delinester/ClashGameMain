@@ -168,7 +168,7 @@ public class Building : MonoBehaviour
         // Distance to player check
         if (isBuildingMode)
         {
-            float distanceToPlayer = (transform.position - playerCharacter.transform.position).magnitude;
+            float distanceToPlayer = ((Vector2)(transform.position - playerCharacter.transform.position)).magnitude;
             Debug.Log("Distance to player is " + distanceToPlayer);
             if (distanceToPlayer > maxDistanceToPlayerToBuild) isFarFromPlayer = true;
             else isFarFromPlayer = false;

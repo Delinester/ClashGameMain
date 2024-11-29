@@ -15,8 +15,6 @@ public class CharacterControllerBase : NetworkBehaviour
     [SerializeField]
     private float collectItemsRadius = 1.5f;
 
-    private NetworkAnimator networkAnimator;
-
     [SerializeField]
     private Image resourceInHandImage;
     [SerializeField]
@@ -29,11 +27,14 @@ public class CharacterControllerBase : NetworkBehaviour
     private PlayerNetworking networkPlayer;
     private float rayLen = 0.5f;
 
+    private NetworkAnimator networkAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
         UpdateResourceCountText(resourcesInHand);
         networkPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        networkAnimator = GetComponent<NetworkAnimator>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -129,6 +130,8 @@ public class CharacterControllerBase : NetworkBehaviour
             movementY = 0;
             CheckBuildingIfTownHallAndDepositResources(hitDown.collider);
         }
+
+        networkAnimator.animator.SetFloat("MovingSpeed", Mathf.Abs(movementX) + Mathf.Abs(movementY));
 
         transform.Translate(new Vector2(movementX * moveSpeed * Time.deltaTime, movementY * moveSpeed * Time.deltaTime));
 
