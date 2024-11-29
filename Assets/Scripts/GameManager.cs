@@ -235,14 +235,18 @@ public class GameManager : NetworkBehaviour
         {
             gameUI = FindObjectOfType<GameUI>();
             PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-            townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
-            townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
 
-            Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
-            //townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
-            townManagerCharacter = Instantiate(townManagerCharacterPrefab, player.gameObject.transform);
-            townManagerCharacter.transform.position = townManagerSpawnPos;
-            LocalStateManager.instance.localPlayerCharacter = townManagerCharacter;
+            if (player.synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER)
+            {
+                townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
+                townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
+
+                Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
+                //townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
+                townManagerCharacter = Instantiate(townManagerCharacterPrefab, player.gameObject.transform);
+                townManagerCharacter.transform.position = townManagerSpawnPos;
+                LocalStateManager.instance.localPlayerCharacter = townManagerCharacter;
+            }
         }
     }
     // Start is called before the first frame update
