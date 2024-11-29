@@ -13,6 +13,7 @@ public class Building : MonoBehaviour
     private float spawnRadius = 1.0f;
 
     private PlayerNetworking player;
+    private GameObject playerCharacter;
 
    // private NetworkConnectionToClient connectionToClient;
     private float currentHp;
@@ -20,6 +21,10 @@ public class Building : MonoBehaviour
     private bool isColliding = false;
     private bool isOutOfBounds = false;
     private bool isBuildingMode = false;
+    private bool isFarFromPlayer = false;
+
+
+    float maxDistanceToPlayerToBuild = 15f;
     void Awake()
     {
         //player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
@@ -70,6 +75,11 @@ public class Building : MonoBehaviour
         return isOutOfBounds;
     }
 
+    public bool IsFarFromPlayer()
+    {
+        return isFarFromPlayer;
+    }
+
     public BuildingData GetBuildingData()
     {
         return buildingData;
@@ -103,7 +113,7 @@ public class Building : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isBuildingMode && collision.gameObject.tag == "Building")
+        if (isBuildingMode && (collision.gameObject.tag == "Building" || collision.gameObject.tag == "Player"))
         {
             isColliding = true;
             PaintItRed();
@@ -112,7 +122,7 @@ public class Building : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (isBuildingMode && collision.gameObject.tag == "Building")
+        if (isBuildingMode && (collision.gameObject.tag == "Building" || collision.gameObject.tag == "Player"))
         {
             isColliding = false;
             PaintItGreen();
@@ -122,7 +132,7 @@ public class Building : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (isBuildingMode && collision.gameObject.tag == "Building")
+        if (isBuildingMode && (collision.gameObject.tag == "Building" || collision.gameObject.tag == "Player"))
         {
             isColliding = true;
             PaintItRed();
@@ -149,11 +159,14 @@ public class Building : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerCharacter = LocalStateManager.instance.localPlayer.gameObject.GetComponentInChildren<CharacterControllerBase>().gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        float distanceToPlayer = (transform.position - playerCharacter.transform.position).magnitude;
+        if (distanceToPlayer > maxDistanceToPlayerToBuild) isFarFromPlayer = true;
+        else isFarFromPlayer = false;
     }
 }

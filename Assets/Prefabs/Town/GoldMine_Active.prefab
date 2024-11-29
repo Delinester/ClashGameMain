@@ -185,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingData: {fileID: 11400000, guid: d3961f57f1a2efd478d7fb9cd35a60eb, type: 2}
   resourceSpawnPointObject: {fileID: 8705869712723963111}
+  spawnRadius: 0.8
 --- !u!61 &3252208927872024942
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -235,7 +235,9 @@ public class GameManager : NetworkBehaviour
             townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
 
             Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
-            townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
+            //townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
+            townManagerCharacter = Instantiate(townManagerCharacterPrefab, player.gameObject.transform);
+            townManagerCharacter.transform.position = townManagerSpawnPos;
             LocalStateManager.instance.localPlayerCharacter = townManagerCharacter;
         }
     }

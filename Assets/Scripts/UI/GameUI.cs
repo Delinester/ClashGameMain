@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
     [Header("Building Menu")]
     [SerializeField]
     private GameObject buildingViewPortContent;
+    float maxDistanceToPlayerToBuild = 15f;
 
     [SerializeField]
     private GameObject buildingListEntryPrefab;
@@ -24,11 +26,17 @@ public class GameUI : MonoBehaviour
 
 
     ////////////////////////////////////////////////////////
+
     private bool isInBuildingMode = false;
     private GameObject currentBuildingObject;
     private BuildingData currentBuildingData;
     private Camera mainCamera;
     private PlayerNetworking player;
+    private GameObject playerCharacter;
+
+    [SerializeField]
+    private Animator buildingMenuAnimator;
+    private bool isBuildingMenuUp = false;
 
     void Awake()
     {
@@ -36,7 +44,7 @@ public class GameUI : MonoBehaviour
         goldAmountText.text = "0";
         foodAmountText.text = "0";
         mineralsAmountText.text = "0";
-        player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();        
     }
     // Start is called before the first frame update
     void Start()
@@ -46,14 +54,30 @@ public class GameUI : MonoBehaviour
             GameObject obj = Instantiate(buildingListEntryPrefab, buildingViewPortContent.transform);
             obj.GetComponent<BuildingListEntryScript>().SetBuildingData(building);
         }
+        playerCharacter = player.gameObject.GetComponentInChildren<CharacterControllerBase>().gameObject;
     }
-
+   
     public void EnterBuidingMode(BuildingData building)
     {
         currentBuildingData = building;
         isInBuildingMode = true;
         currentBuildingObject = Instantiate(building.buildingPrefab);
         currentBuildingObject.GetComponent<Building>().SetBuildingMode(true);
+    }
+
+    public void SlideBuildingMenu()
+    {
+        if (isBuildingMenuUp)
+        {
+            buildingMenuAnimator.SetTrigger("SlideDown");
+        }
+        else
+        {
+            buildingMenuAnimator.SetTrigger("SlideUp");
+        }
+
+        
+        isBuildingMenuUp = !isBuildingMenuUp;
     }
 
     // Update is called once per frame
@@ -67,7 +91,7 @@ public class GameUI : MonoBehaviour
             currentBuildingObject.gameObject.transform.position = buildingPos;
             Building buildingComponent = currentBuildingObject.GetComponent<Building>();
 
-            if (Input.GetMouseButtonDown(0) && !buildingComponent.IsColliding() && !buildingComponent.IsOutOfBounds())
+            if (Input.GetMouseButtonDown(0) && !buildingComponent.IsColliding() && !buildingComponent.IsOutOfBounds() && !buildingComponent.IsFarFromPlayer())
             {
                 PlayerNetworking currentPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
                 GameManager.instance.buildingManager.PlaceBuilding(currentBuildingData.buildingName, buildingPos, currentPlayer.synchronizedPlayerGameData.matchPtr.matchID, currentPlayer); ;

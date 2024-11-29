@@ -1020,10 +1020,10 @@ GameObject:
   - component: {fileID: 5041535576553250198}
   - component: {fileID: 217799873192106354}
   - component: {fileID: 5506662508402014795}
-  - component: {fileID: 2655802500011949546}
   - component: {fileID: 7959622832190389356}
   - component: {fileID: 7976082618400801919}
   - component: {fileID: 5389555558771426369}
+  - component: {fileID: -6511440149146929342}
   m_Layer: 2
   m_Name: TownManagerCharacter
   m_TagString: Player
@@ -1138,7 +1138,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959210465276336}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
   m_Name: 
@@ -1148,23 +1148,6 @@ MonoBehaviour:
   syncInterval: 0
   clientAuthority: 1
   animator: {fileID: 0}
---- !u!114 &2655802500011949546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959210465276336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 128480975
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!114 &7959622832190389356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,6 +1224,23 @@ MonoBehaviour:
   collectItemsRadius: 1.5
   resourceInHandImage: {fileID: 5902098998751900574}
   resourceInHandCountText: {fileID: 6065324076654009023}
+--- !u!114 &-6511440149146929342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959210465276336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 128480975
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &2425948235118812187
 GameObject:
   m_ObjectHideFlags: 0

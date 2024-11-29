@@ -7,11 +7,12 @@ TagManager:
   - Changer
   - Building
   - Town
+  - Collectible
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Collectibles
   - Water
   - UI
   - 
