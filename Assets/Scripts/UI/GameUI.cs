@@ -9,7 +9,6 @@ public class GameUI : MonoBehaviour
     [Header("Building Menu")]
     [SerializeField]
     private GameObject buildingViewPortContent;
-    float maxDistanceToPlayerToBuild = 15f;
 
     [SerializeField]
     private GameObject buildingListEntryPrefab;
@@ -80,6 +79,18 @@ public class GameUI : MonoBehaviour
         isBuildingMenuUp = !isBuildingMenuUp;
     }
 
+    public void UpdateBuildingMenuEntries()
+    {
+        BuildingListSelectButtonScript[] entries = buildingViewPortContent.GetComponentsInChildren<BuildingListSelectButtonScript>();
+        foreach (BuildingListSelectButtonScript entry in entries)
+        {
+            int goldInPossession;
+            if (player.synchronizedPlayerGameData.teamNumber == 1) goldInPossession = LocalStateManager.instance.localGameData.goldTeam1;
+            else goldInPossession = LocalStateManager.instance.localGameData.goldTeam2;
+            entry.UpdateGoldInteractable(goldInPossession);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -98,6 +109,11 @@ public class GameUI : MonoBehaviour
                 Destroy(currentBuildingObject);
                 isInBuildingMode = false;
                 currentBuildingData.currentlyBuiltAmount += 1;
+
+                string matchID = player.synchronizedPlayerGameData.matchPtr.matchID;
+                int teamNum = player.synchronizedPlayerGameData.teamNumber;
+                ResourceUpdateMsg msg = new ResourceUpdateMsg(matchID, teamNum, -currentBuildingData.costGold, Resource.GOLD);
+                GameManager.instance.CMDUpdateResource(msg);
             }
         }
 

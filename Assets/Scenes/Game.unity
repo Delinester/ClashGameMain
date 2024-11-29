@@ -547,7 +547,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingViewPortContent: {fileID: 2002400773}
-  maxDistanceToPlayerToBuild: 10
   buildingListEntryPrefab: {fileID: 6337302869696343874, guid: c42ed09e0b5ddf44b846115d1410a59a, type: 3}
   goldAmountText: {fileID: 1652883972}
   foodAmountText: {fileID: 531632411}

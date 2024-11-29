@@ -928,6 +928,7 @@ MonoBehaviour:
     goldTeam2: 0
     foodTeam2: 0
     mineralsTeam2: 0
+  localPlayerCharacter: {fileID: 0}
 --- !u!1 &559728954
 GameObject:
   m_ObjectHideFlags: 0

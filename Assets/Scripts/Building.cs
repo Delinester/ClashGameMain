@@ -24,7 +24,7 @@ public class Building : MonoBehaviour
     private bool isFarFromPlayer = false;
 
 
-    float maxDistanceToPlayerToBuild = 15f;
+    float maxDistanceToPlayerToBuild = 5f;
     void Awake()
     {
         //player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
@@ -116,7 +116,7 @@ public class Building : MonoBehaviour
         if (isBuildingMode && (collision.gameObject.tag == "Building" || collision.gameObject.tag == "Player"))
         {
             isColliding = true;
-            PaintItRed();
+            //PaintItRed();
         }
     }
 
@@ -125,7 +125,7 @@ public class Building : MonoBehaviour
         if (isBuildingMode && (collision.gameObject.tag == "Building" || collision.gameObject.tag == "Player"))
         {
             isColliding = false;
-            PaintItGreen();
+            //PaintItGreen();
 
         }
     }
@@ -135,7 +135,7 @@ public class Building : MonoBehaviour
         if (isBuildingMode && (collision.gameObject.tag == "Building" || collision.gameObject.tag == "Player"))
         {
             isColliding = true;
-            PaintItRed();
+            //PaintItRed();
         }
     }
 
@@ -143,7 +143,7 @@ public class Building : MonoBehaviour
     {
         if (isBuildingMode && collision.gameObject.tag == "Town")
         {
-            PaintItRed();
+           // PaintItRed();
             isOutOfBounds = true;    
         }
     }
@@ -152,7 +152,7 @@ public class Building : MonoBehaviour
     {
         if (isBuildingMode && collision.gameObject.tag == "Town")
         {
-            PaintItGreen();
+            //PaintItGreen();
             isOutOfBounds = false;     
         }
     }
@@ -165,8 +165,19 @@ public class Building : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distanceToPlayer = (transform.position - playerCharacter.transform.position).magnitude;
-        if (distanceToPlayer > maxDistanceToPlayerToBuild) isFarFromPlayer = true;
-        else isFarFromPlayer = false;
+        // Distance to player check
+        if (isBuildingMode)
+        {
+            float distanceToPlayer = (transform.position - playerCharacter.transform.position).magnitude;
+            Debug.Log("Distance to player is " + distanceToPlayer);
+            if (distanceToPlayer > maxDistanceToPlayerToBuild) isFarFromPlayer = true;
+            else isFarFromPlayer = false;
+
+            if (isColliding || isFarFromPlayer || isOutOfBounds) PaintItRed();
+            else PaintItGreen();
+        }
+
+        //if (isFarFromPlayer) PaintItRed();
+        //else PaintItGreen();
     }
 }

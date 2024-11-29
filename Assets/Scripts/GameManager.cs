@@ -131,6 +131,8 @@ public class GameManager : NetworkBehaviour
     private GameObject townTeam1;
     private GameObject townTeam2;
 
+    private GameUI gameUI;
+
     // It will be updated accordingly
     private Dictionary<string, GameData> gameDataHashTable = new Dictionary<string, GameData>();
 
@@ -200,6 +202,7 @@ public class GameManager : NetworkBehaviour
     private void RPCUpdateGameDataOnClients(NetworkConnectionToClient conn, GameData gameData)
     {
         LocalStateManager.instance.localGameData.Copy(gameData);
+        gameUI.UpdateBuildingMenuEntries();
     }
 
     public Vector2 GetTownTeamPosition(int teamNum)
@@ -230,6 +233,7 @@ public class GameManager : NetworkBehaviour
     {
         if (scene.name == "Game")
         {
+            gameUI = FindObjectOfType<GameUI>();
             PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
             townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
             townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);

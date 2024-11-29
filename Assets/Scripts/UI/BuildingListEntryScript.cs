@@ -11,6 +11,8 @@ public class BuildingListEntryScript : MonoBehaviour
     [SerializeField]
     private Image buildingImage;
     [SerializeField]
+    private TextMeshProUGUI costGoldText;
+    [SerializeField]
     private BuildingData buildingData;
 
     public BuildingData GetBuildingData()
@@ -22,6 +24,7 @@ public class BuildingListEntryScript : MonoBehaviour
         this.buildingData = buildingData;
         buildingNameText.text = buildingData.buildingName;
         buildingImage.sprite = buildingData.buildingSprite;
+        costGoldText.text = buildingData.costGold.ToString();
     }
     // Start is called before the first frame update
     void Start()
