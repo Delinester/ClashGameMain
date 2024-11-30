@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9088bc7012b8aa4da1d05996a5c2f1a, type: 3}
+  m_Name: EggRock
+  m_EditorClassIdentifier: 
+  objName: EggRock
+  prefabs:
+  - {fileID: 66162993592002947, guid: eb986d46bc686f241b7dbd1637a54b4d, type: 3}
+  spawnChanceRange: 5
+  resourceCanDrop: []
+  reourceCanDropChangeRange: 

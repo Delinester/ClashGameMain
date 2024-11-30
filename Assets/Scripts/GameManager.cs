@@ -117,6 +117,8 @@ public class GameManager : NetworkBehaviour
 
     [HideInInspector]
     public BuildingManager buildingManager;
+    [HideInInspector]
+    public MineManager mineManager;
 
     private Vector3 town1Pos = new Vector3(0, 0, 0);
     private Vector3 town2Pos = new Vector3(0, 100, 0);
@@ -124,7 +126,7 @@ public class GameManager : NetworkBehaviour
 
     private Vector3 minerShack1Location = new Vector3(0, 500, 0);
     private Vector3 minerShack2Location = new Vector3(0, 1000, 0);
-    private Vector3 minerSpawnPosOffset = new Vector3(5, 5, -1);
+    private Vector3 minerSpawnPosOffset = new Vector3(1, 1, -1);
 
     [Header("Town stuff")]
     [SerializeField]
@@ -163,6 +165,11 @@ public class GameManager : NetworkBehaviour
             return null;
         }
         return data;
+    }
+
+    public Vector3 GetMineShackLocation(int team)
+    {
+        return team == 1 ? minerShack1Location : minerShack2Location;
     }
 
     [Server]
@@ -220,6 +227,8 @@ public class GameManager : NetworkBehaviour
         gameUI.UpdateBuildingMenuEntries();
     }
 
+   
+
     public Vector2 GetTownTeamPosition(int teamNum)
     {
         if (teamNum == 1)
@@ -237,6 +246,8 @@ public class GameManager : NetworkBehaviour
 
         buildingManager = gameObject.GetComponent<BuildingManager>();
         if (buildingManager == null) Debug.Log("Building manager is null!!");
+        mineManager = GetComponent<MineManager>();
+        if (mineManager == null) Debug.Log("Mine manager is NULL");
         //else if (instance != this)
         //{
         //    Destroy(gameObject);
@@ -252,6 +263,8 @@ public class GameManager : NetworkBehaviour
             PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
 
             GameRole role = player.synchronizedPlayerGameData.role;
+
+            mineManager.GenerateMine();
 
             if (role == GameRole.TOWN_MANAGER)
             {

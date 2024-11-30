@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9088bc7012b8aa4da1d05996a5c2f1a, type: 3}
+  m_Name: Rock
+  m_EditorClassIdentifier: 
+  objName: RockUsual
+  prefabs:
+  - {fileID: 3019474124069635071, guid: 1f9f04cdbfe1a2d4b884bb836b52f5ec, type: 3}
+  - {fileID: 3875942547316333451, guid: ec1c5a16cff35b64e893a10a460e6950, type: 3}
+  - {fileID: 4421254228558717897, guid: 72ce6712b21aab447b29787f16bb3fd9, type: 3}
+  - {fileID: 7961406122462896937, guid: 56b3bdd755d6299479afb0d685c32ef5, type: 3}
+  - {fileID: 8743400426165109801, guid: c458a0285dff13e46a2e2c8f90b1d6cc, type: 3}
+  - {fileID: 3828518262954908651, guid: a86db42093ec9294399282c6bf608571, type: 3}
+  spawnChanceRange: 2
+  resourceCanDrop: []
+  reourceCanDropChangeRange: 

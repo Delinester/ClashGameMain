@@ -9,6 +9,7 @@ TagManager:
   - Town
   - Collectible
   - Nature
+  - ToMineTeleporter
   layers:
   - Default
   - TransparentFX
