@@ -1162,6 +1162,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: minerShackPrefab
+      value: 
+      objectReference: {fileID: 8377242900698384207, guid: 891c698c2250e03408462087aa04ec6d, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: minerCharacterPrefab
+      value: 
+      objectReference: {fileID: 1565338173445856, guid: 0543bac9568eb544da066d47c8c300aa, type: 3}
     - target: {fileID: 7032030901291204185, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 310.1982

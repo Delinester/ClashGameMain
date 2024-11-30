@@ -122,6 +122,11 @@ public class GameManager : NetworkBehaviour
     private Vector3 town2Pos = new Vector3(0, 100, 0);
     private Vector3 townManagerSpawnPosOffset = new Vector3(5, 5, -1);
 
+    private Vector3 minerShack1Location = new Vector3(0, 500, 0);
+    private Vector3 minerShack2Location = new Vector3(0, 1000, 0);
+    private Vector3 minerSpawnPosOffset = new Vector3(5, 5, -1);
+
+    [Header("Town stuff")]
     [SerializeField]
     private GameObject townPrefab;
     [SerializeField]
@@ -130,6 +135,16 @@ public class GameManager : NetworkBehaviour
     private GameObject townManagerCharacter;
     private GameObject townTeam1;
     private GameObject townTeam2;
+
+    [Header("Mining stuff")]
+    [SerializeField]
+    private GameObject minerCharacterPrefab;
+    [SerializeField]
+    private GameObject minerShackPrefab;
+
+    private GameObject minerCharacter;
+    private GameObject minerShack1;
+    private GameObject minerShack2;
 
     private GameUI gameUI;
 
@@ -236,16 +251,35 @@ public class GameManager : NetworkBehaviour
             gameUI = FindObjectOfType<GameUI>();
             PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
 
-            if (player.synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER)
+            GameRole role = player.synchronizedPlayerGameData.role;
+
+            if (role == GameRole.TOWN_MANAGER)
             {
+                Debug.Log("You are TOWN MANAGER");
                 townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
                 townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
 
                 Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
                 //townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
+
+                // The character is invisible for all clients
                 townManagerCharacter = Instantiate(townManagerCharacterPrefab, player.gameObject.transform);
                 townManagerCharacter.transform.position = townManagerSpawnPos;
                 LocalStateManager.instance.localPlayerCharacter = townManagerCharacter;
+            }
+
+            else if (role == GameRole.MINER)
+            {
+                Debug.Log("You are MINER");
+
+                Vector3 minerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? minerShack1Location + minerSpawnPosOffset : minerShack2Location + minerSpawnPosOffset;
+
+                minerShack1 = Instantiate(minerShackPrefab, minerShack1Location, minerCharacterPrefab.transform.rotation);
+                minerShack2 = Instantiate(minerShackPrefab, minerShack2Location, minerCharacterPrefab.transform.rotation);
+
+                minerCharacter = Instantiate(minerCharacterPrefab, player.gameObject.transform);
+                minerCharacter.transform.position = minerSpawnPos;
+                LocalStateManager.instance.localPlayerCharacter = minerCharacter;
             }
         }
     }

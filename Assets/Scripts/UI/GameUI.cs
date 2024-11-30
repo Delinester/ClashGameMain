@@ -33,6 +33,14 @@ public class GameUI : MonoBehaviour
     private PlayerNetworking player;
     private GameObject playerCharacter;
 
+    private GameRole currentPlayerRole;
+
+    [Header("Misc")]
+    [SerializeField]
+    private GameObject townManagerUI;
+    [SerializeField]
+    private GameObject minerUI;
+
     [SerializeField]
     private Animator buildingMenuAnimator;
     private bool isBuildingMenuUp = false;
@@ -43,7 +51,8 @@ public class GameUI : MonoBehaviour
         goldAmountText.text = "0";
         foodAmountText.text = "0";
         mineralsAmountText.text = "0";
-        player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();        
+        player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+        currentPlayerRole = player.synchronizedPlayerGameData.role;
     }
     // Start is called before the first frame update
     void Start()
