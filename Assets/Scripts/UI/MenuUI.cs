@@ -4,6 +4,8 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 using UnityEngine.UI;
+using System;
+using kcp2k;
 
 public class MenuUI : MonoBehaviour
 {
@@ -22,8 +24,18 @@ public class MenuUI : MonoBehaviour
     [SerializeField]
     private GameObject connectButtonObject;
 
+    [SerializeField]
+    private TMP_InputField ipField;
+    [SerializeField]
+    private TMP_InputField portField;
+
+    private string ip;
+    private int port;
+
     public void ConnectToServer()
     {
+        NetworkManager.singleton.networkAddress = ipField.text;
+        NetworkManager.singleton.GetComponent<KcpTransport>().port = Convert.ToUInt16(portField.text);
         NetworkManager manager = NetworkManager.singleton;
         if (!NetworkClient.isConnected)
         {
@@ -46,6 +58,8 @@ public class MenuUI : MonoBehaviour
 
     public void CreateServer()
     {
+        NetworkManager.singleton.networkAddress = ipField.text;
+        NetworkManager.singleton.GetComponent<KcpTransport>().port = Convert.ToUInt16(portField.text);
         NetworkManager.singleton.StartServer();
         if (NetworkServer.active)
         {
