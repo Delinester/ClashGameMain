@@ -34,8 +34,12 @@ public class MenuUI : MonoBehaviour
 
     public void ConnectToServer()
     {
-        NetworkManager.singleton.networkAddress = ipField.text;
-        NetworkManager.singleton.GetComponent<KcpTransport>().port = Convert.ToUInt16(portField.text);
+        string ip = ipField.text;
+        if (ip != string.Empty)
+        {
+            NetworkManager.singleton.networkAddress = ipField.text;
+            NetworkManager.singleton.GetComponent<KcpTransport>().port = Convert.ToUInt16(portField.text);
+        }
         NetworkManager manager = NetworkManager.singleton;
         if (!NetworkClient.isConnected)
         {
@@ -58,8 +62,12 @@ public class MenuUI : MonoBehaviour
 
     public void CreateServer()
     {
-        NetworkManager.singleton.networkAddress = ipField.text;
-        NetworkManager.singleton.GetComponent<KcpTransport>().port = Convert.ToUInt16(portField.text);
+        string ip = ipField.text;
+        if (ip != string.Empty)
+        {
+            NetworkManager.singleton.networkAddress = ip;
+            NetworkManager.singleton.GetComponent<KcpTransport>().port = Convert.ToUInt16(portField.text);
+        }
         NetworkManager.singleton.StartServer();
         if (NetworkServer.active)
         {

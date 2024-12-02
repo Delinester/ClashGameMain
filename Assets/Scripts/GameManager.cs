@@ -8,7 +8,8 @@ public enum GameRole
 {
     TOWN_MANAGER,
     WARRIOR,
-    MINER
+    MINER,
+    ADMIN
 }
 
 public enum Resource
@@ -264,7 +265,7 @@ public class GameManager : NetworkBehaviour
 
             GameRole role = player.synchronizedPlayerGameData.role;
 
-            mineManager.GenerateMine();
+            mineManager.CMDGenerateMine(player.synchronizedPlayerGameData.matchPtr.matchID);
 
             if (role == GameRole.TOWN_MANAGER)
             {

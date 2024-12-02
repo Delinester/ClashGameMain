@@ -18,9 +18,11 @@ public class MineInteriorGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // SPAWN ON ALL CLIENTS!!!
         if (isFirstRoom)
         {
             // SPAWN LADDER
+
         }
         foreach (GameObject spawner in spawnersInRoom)
         {

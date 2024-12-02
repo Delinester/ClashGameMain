@@ -48,14 +48,27 @@ public class MineManager : NetworkBehaviour
         return team == 1 ? mine1Location : mine2Location;
     }
 
-    public void GenerateMine()
+    [Command (requiresAuthority = false)]
+    public void CMDGenerateMine(string matchID)
     {
         for (int i = 0; i < mineRoomPrefabs.Length; i++)
         {
             int randIdx = Random.Range(0, mineRoomPrefabs.Length);
-            GameObject room = Instantiate(mineRoomPrefabs[randIdx], mine1Location, mineRoomPrefabs[randIdx].transform.rotation);
-            GameObject room2 = Instantiate(mineRoomPrefabs[randIdx], mine2Location, mineRoomPrefabs[randIdx].transform.rotation);
+            foreach (PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
+            {
+                NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
+                RPCSpawnMineRoom(conn, randIdx, GetMineLocation(player.synchronizedPlayerGameData.teamNumber));
+            }
+            //GameObject room = Instantiate(mineRoomPrefabs[randIdx], mine1Location, mineRoomPrefabs[randIdx].transform.rotation);
+            //GameObject room2 = Instantiate(mineRoomPrefabs[randIdx], mine2Location, mineRoomPrefabs[randIdx].transform.rotation);
         }
+    }
+
+    [TargetRpc]
+    private void RPCSpawnMineRoom(NetworkConnectionToClient conn, int prefabIdx, Vector2 pos)
+    {
+        GameObject room = Instantiate(mineRoomPrefabs[prefabIdx], pos, mineRoomPrefabs[prefabIdx].transform.rotation);
+        GameObject room2 = Instantiate(mineRoomPrefabs[prefabIdx], pos, mineRoomPrefabs[prefabIdx].transform.rotation);
     }
 
     // Start is called before the first frame update

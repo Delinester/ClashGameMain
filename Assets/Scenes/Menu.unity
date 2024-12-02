@@ -1511,11 +1511,15 @@ PrefabInstance:
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: minerShackPrefab
       value: 
-      objectReference: {fileID: 1305411684157796328, guid: 6a89f1171ac9ecb40ac8fd60a6a4b05c, type: 3}
+      objectReference: {fileID: 375612016174204231, guid: 6a89f1171ac9ecb40ac8fd60a6a4b05c, type: 3}
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: minerCharacterPrefab
       value: 
-      objectReference: {fileID: 1727754260569904, guid: 99a7370081ed38349b36b29943a0cf1c, type: 3}
+      objectReference: {fileID: 1766047596753512, guid: 0a8c4fd8e84e49e4cb459ebe80d7e84f, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: townManagerCharacterPrefab
+      value: 
+      objectReference: {fileID: 1104465774215058, guid: ce35193a39275224397f65748f404ba6, type: 3}
     - target: {fileID: 7032030901291204185, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 310.1982
