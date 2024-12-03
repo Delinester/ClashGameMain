@@ -15,12 +15,13 @@ public class MineInteriorGenerator : MonoBehaviour
                                     // Up    Down   Left   Right
     public bool[] jammedPassages = { false, false, false, false };
     public GameObject[] jammedPassagesObjects;
-    // Start is called before the first frame update
-    void Start()
+
+    public void InitRoom(bool[] jammedPassages, bool isFirst)
     {
         // SPAWN ON ALL CLIENTS!!!
-        if (isFirstRoom)
+        if (isFirst)
         {
+            isFirstRoom = isFirst;
             // SPAWN LADDER
 
         }
@@ -33,10 +34,15 @@ public class MineInteriorGenerator : MonoBehaviour
 
             for (int i = 0; i < Random.Range(3, 7); i++)
             {
-                Debug.Log("Spawn Request initiated!");
+                Debug.Log("Spawn Request of mine room interior initiated!");
                 GameManager.instance.mineManager.CMDPlaceRandomObject(matchID, minPos, maxPos);
             }
         }
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame

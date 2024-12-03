@@ -10,6 +10,7 @@ TagManager:
   - Collectible
   - Nature
   - ToMineTeleporter
+  - RoomBoundary
   layers:
   - Default
   - TransparentFX

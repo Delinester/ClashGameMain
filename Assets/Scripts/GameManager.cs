@@ -265,7 +265,7 @@ public class GameManager : NetworkBehaviour
 
             GameRole role = player.synchronizedPlayerGameData.role;
 
-            mineManager.CMDGenerateMine(player.synchronizedPlayerGameData.matchPtr.matchID);
+            //mineManager.CMDGenerateMine(player.synchronizedPlayerGameData.matchPtr.matchID);
 
             if (role == GameRole.TOWN_MANAGER)
             {
@@ -294,6 +294,8 @@ public class GameManager : NetworkBehaviour
                 minerCharacter = Instantiate(minerCharacterPrefab, player.gameObject.transform);
                 minerCharacter.transform.position = minerSpawnPos;
                 LocalStateManager.instance.localPlayerCharacter = minerCharacter;
+
+                mineManager.SpawnMine(player.synchronizedPlayerGameData.teamNumber);
             }
         }
     }
