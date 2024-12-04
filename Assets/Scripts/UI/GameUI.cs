@@ -100,6 +100,18 @@ public class GameUI : MonoBehaviour
         }
     }
 
+    public void TurnTownManagerUI(bool turnOn)
+    {
+        if (turnOn) townManagerUI.SetActive(true);
+        else townManagerUI.SetActive(false);
+    }
+
+    public void TurnMinerUI(bool turnOn)
+    {
+        if (turnOn) minerUI.SetActive(true) ;
+        else minerUI.SetActive(false) ;
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -11,6 +11,7 @@ TagManager:
   - Nature
   - ToMineTeleporter
   - RoomBoundary
+  - Destructible
   layers:
   - Default
   - TransparentFX

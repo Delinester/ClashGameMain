@@ -18,6 +18,11 @@ public class MineInteriorGenerator : MonoBehaviour
 
     public void InitRoom(bool[] jammedPassages, bool isFirst)
     {
+        this.jammedPassages = jammedPassages;
+        for (int i = 0; i < 4; i++)
+        {
+            if (!jammedPassages[i]) jammedPassagesObjects[i].SetActive(false);
+        }
         // SPAWN ON ALL CLIENTS!!!
         if (isFirst)
         {

@@ -18,12 +18,16 @@ public class CharacterControllerBase : NetworkBehaviour
     protected Animator animator;
     protected NetworkAnimator networkAnimator;
 
+    private float scaleX;
+
+
     // Start is called before the first frame update
     virtual protected void Start()
     {
         networkPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         networkAnimator = GetComponent<NetworkAnimator>();
         animator = GetComponent<Animator>();
+        scaleX = transform.localScale.x;
     }
 
     virtual protected void OnCollisionEnter2D(Collision2D collision)
@@ -57,6 +61,8 @@ public class CharacterControllerBase : NetworkBehaviour
 
         GetComponent<Rigidbody2D>().MovePosition((Vector2)(gameObject.transform.position) + new Vector2(movementX, movementY) * moveSpeed * Time.deltaTime);
         animator.SetFloat("MoveSpeed", Mathf.Abs(movementX) + Mathf.Abs(movementY));
+        if (movementX < 0) transform.localScale = new Vector3(-scaleX, transform.localScale.y, transform.localScale.z);
+        else if (movementX > 0) transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
         
     }
 

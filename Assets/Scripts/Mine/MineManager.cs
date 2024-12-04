@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Cell
 {
     public Vector2Int position = new Vector2Int();
@@ -28,6 +29,8 @@ public class Cell
             jammedPassages[i] = (Random.Range(0, 2) == 0) ? false : true;
         }
     }
+
+    public Cell() { }
 }
 
 public class MineManager : NetworkBehaviour
@@ -137,55 +140,71 @@ public class MineManager : NetworkBehaviour
             cell = new Cell(0, 0);
             board.Add(cell);
         }
-        if (!cell.isJammedUp() && board.Count < maxRoomsInMine)
+        if (!cell.isJammedUp())
         {
             Cell neighborUp = GetNeighbourUp(cell, teamNum);
             if (neighborUp != null) neighborUp.SetJammedDown(false);
             else
             {
-                Cell newUpperCell = new Cell(cell.position.x, cell.position.y + 1);
-                newUpperCell.SetJammedDown(false);
-                board.Add(newUpperCell);
-                GenerateMineMap(newUpperCell, teamNum);
+                if (board.Count >= maxRoomsInMine) cell.SetJammedUp(true);
+                else
+                {
+                    Cell newUpperCell = new Cell(cell.position.x, cell.position.y + 1);
+                    newUpperCell.SetJammedDown(false);
+                    board.Add(newUpperCell);
+                    GenerateMineMap(newUpperCell, teamNum);
+                }
             }
         }
 
-        if (!cell.isJammedDown() && board.Count < maxRoomsInMine)
+        if (!cell.isJammedDown())
         {
             Cell neighborDown = GetNeighbourDown(cell, teamNum);
             if (neighborDown != null) neighborDown.SetJammedUp(false);
             else
             {
-                Cell newDownCell = new Cell(cell.position.x, cell.position.y - 1);
-                newDownCell.SetJammedUp(false);
-                board.Add(newDownCell);
-                GenerateMineMap(newDownCell, teamNum);
+                if (board.Count >= maxRoomsInMine) cell.SetJammedDown(true);
+                else
+                {
+                    Cell newDownCell = new Cell(cell.position.x, cell.position.y - 1);
+                    newDownCell.SetJammedUp(false);
+                    board.Add(newDownCell);
+                    GenerateMineMap(newDownCell, teamNum);
+                }
             }
         }
 
-        if (!cell.isJammedLeft() && board.Count < maxRoomsInMine)
+        if (!cell.isJammedLeft())
         {
-            Cell neighborLeft = GetNeighbourUp(cell, teamNum);
+            Cell neighborLeft = GetNeighbourLeft(cell, teamNum);
             if (neighborLeft != null) neighborLeft.SetJammedRight(false);
             else
             {
-                Cell newLeftCell = new Cell(cell.position.x - 1, cell.position.y);
-                newLeftCell.SetJammedRight(false);
-                board.Add(newLeftCell);
-                GenerateMineMap(newLeftCell, teamNum);
+                if (board.Count >= maxRoomsInMine) cell.SetJammedLeft(true);
+                else
+                {
+                    Cell newLeftCell = new Cell(cell.position.x - 1, cell.position.y);
+                    newLeftCell.SetJammedRight(false);
+                    board.Add(newLeftCell);
+                    GenerateMineMap(newLeftCell, teamNum);
+                }
             }
         }
 
-        if (!cell.isJammedRight() && board.Count < maxRoomsInMine)
+        if (!cell.isJammedRight())
         {
             Cell neighborRight = GetNeighbourRight(cell, teamNum);
             if (neighborRight != null) neighborRight.SetJammedLeft(false);
             else
             {
-                Cell newRightCell = new Cell(cell.position.x + 1, cell.position.y);
-                newRightCell.SetJammedLeft(false);
-                board.Add(newRightCell);
-                GenerateMineMap(newRightCell, teamNum);
+                if (board.Count >= maxRoomsInMine) cell.SetJammedRight(true);
+                else
+                {
+                    Cell newRightCell = new Cell(cell.position.x + 1, cell.position.y);
+                    newRightCell.SetJammedLeft(false);
+                    board.Add(newRightCell);
+                    GenerateMineMap(newRightCell, teamNum);
+                }
             }
         }
     }
@@ -205,59 +224,36 @@ public class MineManager : NetworkBehaviour
             //Vector2 roomPos = (Vector2)GetMineLocation(teamNum) + c.position * new Vector2(roomWidth, roomHeight);
             //Debug.Log("Room pos " + roomPos + "Cell pos is " + c.position + "Room WH is " + roomWidth + " " + roomHeight + " and bounds are " + collider.bounds.max + "and min " + collider.bounds.min);
 
-            CMDSpawnMineRoom(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID, c.position, randRoomIdx);
+            CMDSpawnMineRoom(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID, c, randRoomIdx);
             Debug.Log("Cell111  + " + c.position);
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void CMDSpawnMineRoom(string matchID, Vector2 cellPos, int prefabIdx)
+    public void CMDSpawnMineRoom(string matchID, Cell cell, int prefabIdx)
     {
         foreach (PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
         {
             NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
-            RPCSpawnMineRoom(conn, cellPos, prefabIdx);
+            RPCSpawnMineRoom(conn, cell, prefabIdx);
         }
     }
 
-    //[Command (requiresAuthority = false)]
-    //public void CMDGenerateMine(string matchID)
-    //{        
-    //    for (int i = 0; i < mineMap1.Count; i++)
-    //    {
-    //        int randIdx = Random.Range(0, mineRoomPrefabs.Length);
-    //        BoxCollider2D collider = mineRoomPrefabs[randIdx].GetComponentInChildren<RoomBoundary>().GetComponent<BoxCollider2D>();
-
-    //        roomWidth = collider.bounds.max.x - collider.bounds.min.x;
-    //        roomHeight = collider.bounds.max.y - collider.bounds.min.y;
-
-    //        foreach (PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
-    //        {
-    //            NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
-    //            RPCSpawnMineRoom(conn, randIdx, GetMineLocation(player.synchronizedPlayerGameData.teamNumber));
-    //        }
-    //        //GameObject room = Instantiate(mineRoomPrefabs[randIdx], mine1Location, mineRoomPrefabs[randIdx].transform.rotation);
-    //        //GameObject room2 = Instantiate(mineRoomPrefabs[randIdx], mine2Location, mineRoomPrefabs[randIdx].transform.rotation);
-    //    }
-    //}
-
     [TargetRpc]
-    private void RPCSpawnMineRoom(NetworkConnectionToClient conn, Vector2 cellPos, int prefabIdx)
+    private void RPCSpawnMineRoom(NetworkConnectionToClient conn, Cell cell, int prefabIdx)
     {
-
-
         Vector2 minePosBase = (Vector2)GetMineLocation(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
-        
-        GameObject room = Instantiate(mineRoomPrefabs[prefabIdx], mine1Location, mineRoomPrefabs[prefabIdx].transform.rotation);
+
+        Vector2 roomPos = minePosBase + cell.position * new Vector2(roomWidth, roomHeight);
+        GameObject room = Instantiate(mineRoomPrefabs[prefabIdx], roomPos, mineRoomPrefabs[prefabIdx].transform.rotation);
+        room.GetComponent<MineInteriorGenerator>().InitRoom(cell.jammedPassages, (cell.position.x == 0 && cell.position.y == 0) ? true : false);
 
         //BoxCollider2D collider = room.GetComponentInChildren<RoomBoundary>().gameObject.GetComponent<BoxCollider2D>();
         //if (collider == null) Debug.LogError("Collider is null");
         //roomWidth = collider.bounds.max.x - collider.bounds.min.x;
         //roomHeight = collider.bounds.max.y - collider.bounds.min.y;
-        Vector2 roomPos = minePosBase + cellPos * new Vector2(roomWidth, roomHeight);
-        Debug.Log("Room pos " + roomPos + "Cell pos is " + cellPos + "Room WH is " + roomWidth + " " + roomHeight);
+        Debug.Log("Room pos " + roomPos + "Cell pos is " + cell.position + "Room WH is " + roomWidth + " " + roomHeight);
 
-        room.transform.position = roomPos;
         // GameObject room2 = Instantiate(mineRoomPrefabs[prefabIdx], pos, mineRoomPrefabs[prefabIdx].transform.rotation);
     }
 
