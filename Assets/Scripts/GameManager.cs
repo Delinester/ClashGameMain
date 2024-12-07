@@ -271,6 +271,7 @@ public class GameManager : NetworkBehaviour
             {
                 Debug.Log("You are TOWN MANAGER");
                 gameUI.TurnTownManagerUI(true);
+                gameUI.TurnMinerUI(false);
                 townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
                 townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
 
@@ -287,11 +288,13 @@ public class GameManager : NetworkBehaviour
             {
                 Debug.Log("You are MINER");
                 gameUI.TurnMinerUI(true);
+                gameUI.TurnTownManagerUI(false);
                 Vector3 minerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? minerShack1Location + minerSpawnPosOffset : minerShack2Location + minerSpawnPosOffset;
 
                 minerShack1 = Instantiate(minerShackPrefab, minerShack1Location, minerCharacterPrefab.transform.rotation);
                 minerShack2 = Instantiate(minerShackPrefab, minerShack2Location, minerCharacterPrefab.transform.rotation);
 
+                // Miner should be visible for all clients!
                 minerCharacter = Instantiate(minerCharacterPrefab, player.gameObject.transform);
                 minerCharacter.transform.position = minerSpawnPos;
                 LocalStateManager.instance.localPlayerCharacter = minerCharacter;

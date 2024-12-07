@@ -32,7 +32,7 @@ public class CharacterControllerBase : NetworkBehaviour
 
     virtual protected void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Entered collision with " + collision.gameObject.tag);
+        //Debug.Log("Entered collision with " + collision.gameObject.tag);
         
         //if (collision.gameObject.tag == "Collectible" && resourcesInHand < maxResourcesInHand)
         //{

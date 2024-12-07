@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Mirror.Examples.Common.Controllers.Player;
 
 public class GameUI : MonoBehaviour
 {
@@ -25,12 +26,19 @@ public class GameUI : MonoBehaviour
 
 
     ////////////////////////////////////////////////////////
+    [Header("Miner tab")]
+    [SerializeField]
+    private TextMeshProUGUI goldOreAmountText;
+    [SerializeField]
+    private TextMeshProUGUI mineralOreAmountText;
+    //////////////////////////////////////////////
 
     private bool isInBuildingMode = false;
     private GameObject currentBuildingObject;
     private BuildingData currentBuildingData;
     private Camera mainCamera;
     private PlayerNetworking player;
+    private CharacterControllerBase playerController;
     private GameObject playerCharacter;
 
     private GameRole currentPlayerRole;
@@ -63,6 +71,8 @@ public class GameUI : MonoBehaviour
             obj.GetComponent<BuildingListEntryScript>().SetBuildingData(building);
         }
         playerCharacter = player.gameObject.GetComponentInChildren<CharacterControllerBase>().gameObject;
+
+        playerController = player.gameObject.GetComponentInChildren<CharacterControllerBase>();
     }
    
     public void EnterBuidingMode(BuildingData building)
@@ -146,6 +156,11 @@ public class GameUI : MonoBehaviour
             goldAmountText.text = gameData.GetGold(playerTeam).ToString();
             foodAmountText.text = gameData.GetFood(playerTeam).ToString();
             mineralsAmountText.text = gameData.GetMinerals(playerTeam).ToString();
+        }
+        else if (player.synchronizedPlayerGameData.role == GameRole.MINER)
+        {
+            goldOreAmountText.text = ((MinerController)playerController).GetGoldOreCount().ToString();
+            mineralOreAmountText.text = ((MinerController)playerController).GetMineralOreCount().ToString(); 
         }
     }
 }

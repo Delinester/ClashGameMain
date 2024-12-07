@@ -224,27 +224,29 @@ public class MineManager : NetworkBehaviour
             //Vector2 roomPos = (Vector2)GetMineLocation(teamNum) + c.position * new Vector2(roomWidth, roomHeight);
             //Debug.Log("Room pos " + roomPos + "Cell pos is " + c.position + "Room WH is " + roomWidth + " " + roomHeight + " and bounds are " + collider.bounds.max + "and min " + collider.bounds.min);
 
-            CMDSpawnMineRoom(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID, c, randRoomIdx);
+            CMDSpawnMineRoom(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID, c, randRoomIdx, teamNum);
             Debug.Log("Cell111  + " + c.position);
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void CMDSpawnMineRoom(string matchID, Cell cell, int prefabIdx)
+    public void CMDSpawnMineRoom(string matchID, Cell cell, int prefabIdx, int teamNumber)
     {
         foreach (PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
         {
+            Debug.LogError("Spawning room at " + cell.position + " for  Player is " + player.GetUserData().username);
             NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
-            RPCSpawnMineRoom(conn, cell, prefabIdx);
+            RPCSpawnMineRoom(conn, cell, prefabIdx, teamNumber);
         }
     }
 
     [TargetRpc]
-    private void RPCSpawnMineRoom(NetworkConnectionToClient conn, Cell cell, int prefabIdx)
+    private void RPCSpawnMineRoom(NetworkConnectionToClient conn, Cell cell, int prefabIdx, int teamNum)
     {
-        Vector2 minePosBase = (Vector2)GetMineLocation(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
+        Vector2 minePosBase = (Vector2)GetMineLocation(teamNum);
 
         Vector2 roomPos = minePosBase + cell.position * new Vector2(roomWidth, roomHeight);
+        Debug.Log("Spawning room at " + roomPos);
         GameObject room = Instantiate(mineRoomPrefabs[prefabIdx], roomPos, mineRoomPrefabs[prefabIdx].transform.rotation);
         room.GetComponent<MineInteriorGenerator>().InitRoom(cell.jammedPassages, (cell.position.x == 0 && cell.position.y == 0) ? true : false);
 
