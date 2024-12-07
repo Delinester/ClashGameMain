@@ -9,5 +9,6 @@ public class DestructibleObjectData : ScriptableObject
     public GameObject[] prefabs;
     public int spawnChanceRange;
     public GameObject[] resourceCanDrop;
-    public int[] reourceCanDropChangeRange;
+    public int[] resourceCanDropChanceRange;
+    public int health;
 }

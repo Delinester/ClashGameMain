@@ -8,6 +8,8 @@ public class ResourceScript : MonoBehaviour
     private float attractionSpeed = 6f;
     [SerializeField]
     private Resource resourceType;
+    [SerializeField]
+    private int resourceAmount;
 
     private bool isAttracted = false;
     private Vector2 attractionPoint;
@@ -28,6 +30,9 @@ public class ResourceScript : MonoBehaviour
     {
         return GetComponent<SpriteRenderer>().sprite;
     }
+
+    public int GetResourceAmount()
+    { return resourceAmount; }  
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

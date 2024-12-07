@@ -20,6 +20,8 @@ MonoBehaviour:
   - {fileID: 7961406122462896937, guid: 56b3bdd755d6299479afb0d685c32ef5, type: 3}
   - {fileID: 8743400426165109801, guid: c458a0285dff13e46a2e2c8f90b1d6cc, type: 3}
   - {fileID: 3828518262954908651, guid: a86db42093ec9294399282c6bf608571, type: 3}
-  spawnChanceRange: 2
-  resourceCanDrop: []
-  reourceCanDropChangeRange: 
+  spawnChanceRange: 6
+  resourceCanDrop:
+  - {fileID: 7260340097740110781, guid: 0649671546352644baedabf4cdf5c5e7, type: 3}
+  resourceCanDropChanceRange: 07000000
+  health: 100

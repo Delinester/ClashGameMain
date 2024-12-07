@@ -23,6 +23,8 @@ public class PickaxeController : MonoBehaviour
             Debug.Log("Pickaxe collided with destructible");
             collisionParticleSystem.Play();
             isAlreadyCollided = true;
+            collision.gameObject.GetComponent<DestructibleObject>().Damage(minerController.GetDamage());
+            Debug.Log("Current object health is " + collision.gameObject.GetComponent<DestructibleObject>().GetHealth());
         }
     }
     // Start is called before the first frame update

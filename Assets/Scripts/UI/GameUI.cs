@@ -77,6 +77,7 @@ public class GameUI : MonoBehaviour
    
     public void EnterBuidingMode(BuildingData building)
     {
+        if (isInBuildingMode && currentBuildingObject != null) Destroy(currentBuildingObject);
         currentBuildingData = building;
         isInBuildingMode = true;
         currentBuildingObject = Instantiate(building.buildingPrefab);
@@ -159,8 +160,9 @@ public class GameUI : MonoBehaviour
         }
         else if (player.synchronizedPlayerGameData.role == GameRole.MINER)
         {
-            goldOreAmountText.text = ((MinerController)playerController).GetGoldOreCount().ToString();
-            mineralOreAmountText.text = ((MinerController)playerController).GetMineralOreCount().ToString(); 
+            int playerTeam = player.synchronizedPlayerGameData.teamNumber;
+            goldOreAmountText.text = gameData.GetGoldOre(playerTeam).ToString();
+            mineralOreAmountText.text = gameData.GetMinerals(playerTeam).ToString(); 
         }
     }
 }

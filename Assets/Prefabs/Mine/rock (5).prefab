@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -4995242987077055996}
   - component: {fileID: 7001369669730545466}
   - component: {fileID: -3544978496975568067}
+  - component: {fileID: 7510027811514240414}
   m_Layer: 0
   m_Name: rock (5)
   m_TagString: Destructible
@@ -171,3 +172,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7510027811514240414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4421254228558717897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -6.508913, y: -16.002386, z: 0}
+  - {x: -9.499394, y: -12.421418, z: 0}
+  - {x: -10.011303, y: -10.629745, z: 0}
+  - {x: -7.963677, y: -7.046398, z: 0}
+  - {x: -7.2767797, y: 13.954749, z: 0}
+  - {x: -3.8684325, y: 16.885263, z: 0}
+  - {x: 3.4374754, y: 17.538094, z: 0}
+  - {x: 6.2417173, y: 13.173944, z: 0}
+  - {x: 6.2417173, y: 4.087606, z: 0}
+  - {x: 8.67328, y: 1.2720892, z: 0}
+  - {x: 9.708329, y: -13.44285, z: 0}
+  - {x: 3.29826, y: -16.004759, z: 0}
+  m_ShapePathHash: -1185863840
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -29632
+  m_LocalBounds:
+    m_Center: {x: -0.15148735, y: 0.7666683, z: 0}
+    m_Extent: {x: 9.859816, y: 16.771427, z: 0}

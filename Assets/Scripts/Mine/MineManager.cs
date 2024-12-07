@@ -7,6 +7,7 @@ using UnityEngine;
 public class Cell
 {
     public Vector2Int position = new Vector2Int();
+    
                                     // Up    Down   Left   Right
     public bool[] jammedPassages = { false, false, false, false };
 
@@ -19,6 +20,10 @@ public class Cell
     public bool isJammedDown() { return jammedPassages[1]; }
     public bool isJammedLeft() { return jammedPassages[2]; }
     public bool isJammedRight() { return jammedPassages[3]; }
+    public bool isFullyJammed()
+    {
+        return isJammedUp() && isJammedDown() && isJammedLeft() && isJammedRight();
+    }
 
     public Cell(int x, int y)
     {
@@ -36,7 +41,7 @@ public class Cell
 public class MineManager : NetworkBehaviour
 {
     [SerializeField]
-    public List<DestructibleObjectData> spawnableObjectsList;
+    public List<DestructibleObjectData> destructibleObjectsList;
     
     [SerializeField]
     private GameObject[] mineRoomPrefabs;
@@ -47,38 +52,57 @@ public class MineManager : NetworkBehaviour
     List<Cell> mineMap1 = new List<Cell>();
     List<Cell> mineMap2 = new List<Cell>();
 
+    private Dictionary<string, DestructibleObject> destructibleObjectDict = new Dictionary<string, DestructibleObject>();
+
     private float roomWidth = 21.62693f;
     private float roomHeight = 13.77677f;
 
     private const int maxRoomsInMine = 15;
 
     [Command(requiresAuthority = false)]
-    public void CMDPlaceRandomObject(string matchID, Vector2 minPos, Vector2 maxPos) 
-    {
-        for (int i = 0; i < spawnableObjectsList.Count; i++) 
-        {
-            DestructibleObjectData obj = spawnableObjectsList[i];
-            int mustGet = Random.Range(0, obj.spawnChanceRange);
-            int got = Random.Range(0, obj.spawnChanceRange);
-            if (mustGet == got)
-            {
-                float randX = Random.Range(minPos.x, maxPos.x);
-                float randY = Random.Range(minPos.y, maxPos.y);
-
-                int randPrefabIdx = Random.Range(0, obj.prefabs.Length);
+    public void CMDPlaceRandomObject(string matchID, int listIdx, int prefabIdx, Vector2 pos) 
+    {        
                 foreach(PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
                 {
-                    RPCSpawnObjectOnClients(player.GetComponent<NetworkIdentity>().connectionToClient, i, randPrefabIdx, new Vector2(randX, randY));
+                    RPCSpawnObjectOnClients(player.GetComponent<NetworkIdentity>().connectionToClient, listIdx, prefabIdx, pos);
                 }
-            }
-        }
-
+            
     }
     [TargetRpc]
     private void RPCSpawnObjectOnClients(NetworkConnectionToClient conn, int listIdx, int prefabIdx, Vector2 pos)
     {
-        GameObject prefab = spawnableObjectsList[listIdx].prefabs[prefabIdx];
-        Instantiate(prefab, new Vector3(pos.x, pos.y, prefab.transform.position.z), prefab.transform.rotation);
+        GameObject prefab = destructibleObjectsList[listIdx].prefabs[prefabIdx];
+        GameObject obj = Instantiate(prefab, new Vector3(pos.x, pos.y, prefab.transform.position.z), prefab.transform.rotation);
+        obj.GetComponent<DestructibleObject>().SetObjectData(destructibleObjectsList[listIdx]);
+        //destructibleObjectsList.Add(obj.GetComponent<DestructibleObject>());
+        destructibleObjectDict.Add((obj.transform.position.x.ToString() + obj.transform.position.y.ToString()), obj.GetComponent<DestructibleObject>());
+    }
+
+    public List<DestructibleObjectData> GetDestructibleObjectsData()
+    {
+        return destructibleObjectsList;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CMDDestroyDestructibleObject(string matchID, string hash)
+    {
+        foreach (PlayerNetworking p in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            RPCDestroyDestructibleObjectClients(p.GetComponent<NetworkIdentity>().connectionToClient, hash);
+        }
+    }
+
+    [TargetRpc]
+    private void RPCDestroyDestructibleObjectClients(NetworkConnectionToClient conn, string hash)
+    {
+        Debug.Log("Triggered destruction of " + hash);
+        if (!destructibleObjectDict.TryGetValue(hash, out DestructibleObject obj))
+        {
+            Debug.LogError("Cannot get destructible object with hash " + hash);
+            return;
+        }
+        obj.SpawnResourcesAndDestroy();
+        destructibleObjectDict.Remove(hash);
     }
 
     public Vector3 GetMineLocation(int team)
@@ -139,6 +163,12 @@ public class MineManager : NetworkBehaviour
         {
             cell = new Cell(0, 0);
             board.Add(cell);
+            //Check if the first room jammed right away
+            while (cell.isFullyJammed())
+            {
+                board.Remove(cell);
+                cell = new Cell(0, 0);
+            }
         }
         if (!cell.isJammedUp())
         {

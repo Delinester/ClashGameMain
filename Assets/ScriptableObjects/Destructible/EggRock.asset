@@ -15,6 +15,8 @@ MonoBehaviour:
   objName: EggRock
   prefabs:
   - {fileID: 66162993592002947, guid: eb986d46bc686f241b7dbd1637a54b4d, type: 3}
-  spawnChanceRange: 5
-  resourceCanDrop: []
-  reourceCanDropChangeRange: 
+  spawnChanceRange: 2
+  resourceCanDrop:
+  - {fileID: 2542956212519273482, guid: e7ec0c5998ebae24eb2b0db10db1782d, type: 3}
+  resourceCanDropChanceRange: 05000000
+  health: 150

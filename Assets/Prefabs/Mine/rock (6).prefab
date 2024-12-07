@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5351363454790304323}
   - component: {fileID: 816552193014564853}
   - component: {fileID: -4252250642444748515}
+  - component: {fileID: 8288910705502663627}
   m_Layer: 0
   m_Name: rock (6)
   m_TagString: Destructible
@@ -171,3 +172,48 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8288910705502663627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7961406122462896937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -5.462051, y: -10.0376, z: -0.00000047683716}
+  - {x: -10.816941, y: -8.3348465, z: -0.00000047683716}
+  - {x: -13.618437, y: -4.210418, z: -0.00000047683716}
+  - {x: -11.361677, y: 1.93733, z: -0.00000047683716}
+  - {x: -8.637992, y: 3.6493661, z: -0.00000047683716}
+  - {x: -7.7041597, y: 6.2952256, z: -0.00000047683716}
+  - {x: -6.4590497, y: 6.684321, z: -0.00000047683716}
+  - {x: -5.4478264, y: 9.479845, z: -0.00000047683716}
+  - {x: -1.2821826, y: 11.83852, z: -0.00000047683716}
+  - {x: 6.0935073, y: 10.512942, z: -0.00000047683716}
+  - {x: 7.628269, y: 8.351821, z: -0.00000047683716}
+  - {x: 8.790503, y: 8.222686, z: -0.00000047683716}
+  - {x: 10.598419, y: 4.99426, z: -0.00000047683716}
+  - {x: 11.88979, y: 4.735986, z: -0.00000047683716}
+  - {x: 13.052022, y: 2.4115188, z: -0.00000047683716}
+  - {x: 13.826843, y: -2.8830976, z: -0.00000047683716}
+  - {x: 12.373199, y: -7.3231745, z: -0.00000047683716}
+  - {x: 8.886101, y: -9.415048, z: -0.00000047683716}
+  - {x: 2.4901443, y: -10.980714, z: -0.00000047683716}
+  m_ShapePathHash: -571905376
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -31826
+  m_LocalBounds:
+    m_Center: {x: 0.104203224, y: 0.42890263, z: 0}
+    m_Extent: {x: 13.72264, y: 11.409616, z: 0}

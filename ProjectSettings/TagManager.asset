@@ -12,6 +12,7 @@ TagManager:
   - ToMineTeleporter
   - RoomBoundary
   - Destructible
+  - TeleportToShack
   layers:
   - Default
   - TransparentFX

@@ -66,8 +66,12 @@ public class CharacterControllerBase : NetworkBehaviour
         
     }
 
-    virtual protected void Update()
+    void FixedUpdate()
     {
         MoveCharacter();
+    }
+
+    virtual protected void Update()
+    {
     }
 }

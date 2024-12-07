@@ -16,10 +16,16 @@ public class MinerController : CharacterControllerBase
     private int mineralOreCount = 0;
     private int goldOrdeCount = 0;
 
+    private float collectItemsRadius = 5f;
+
+    private int damage = 25;
+
     public int GetMineralOreCount() { return mineralOreCount; }
     public int GetGoldOreCount() {  return goldOrdeCount; }
     public void AddMineralOre(int amountToAdd) {  mineralOreCount += amountToAdd;}
     public void AddGoldOreCount(int amountToAdd) { goldOrdeCount += amountToAdd;}
+
+    public int GetDamage() { return damage; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -35,6 +41,39 @@ public class MinerController : CharacterControllerBase
         else if (collision.gameObject.tag == "RoomBoundary")
         {
             CameraController.instance.SetBounds(collision.bounds);
+        }
+        else if (collision.gameObject.tag == "Collectible")
+        {
+            ResourceScript resource = collision.gameObject.GetComponent<ResourceScript>();
+            ResourceUpdateMsg msg = new ResourceUpdateMsg(
+                    networkPlayer.synchronizedPlayerGameData.matchPtr.matchID,
+                    networkPlayer.synchronizedPlayerGameData.teamNumber,
+                    resource.GetResourceAmount(),
+                    resource.GetResourceType());
+            GameManager.instance.CMDUpdateResource(msg);
+            Destroy(collision.gameObject);            
+        }
+        else if (collision.gameObject.tag == "TeleportToShack")
+        {
+            Vector2 pos = GameManager.instance.GetMineShackLocation(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
+            transform.position = pos + new Vector2(6, -3);
+        }
+    }
+
+    private void AttractResources()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectItemsRadius);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject.tag == "Collectible")
+            {
+                ResourceScript resource = collider.gameObject.GetComponent<ResourceScript>();
+                if (!resource.IsAttractedAlready())
+                {
+                    resource.AttractToPoint(transform.position);                    
+                }
+            }
         }
     }
 
@@ -54,6 +93,6 @@ public class MinerController : CharacterControllerBase
             isAttacking = true;
             StartCoroutine(AttackDelayCoro());
         }
-        
+        AttractResources();
     }
 }

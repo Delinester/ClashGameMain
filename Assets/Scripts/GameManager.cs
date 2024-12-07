@@ -17,6 +17,7 @@ public enum Resource
     NONE,
     GOLD,
     FOOD,
+    GOLD_ORE,
     MINERAL
 }
 
@@ -28,10 +29,12 @@ public class GameData
     public int goldTeam1;
     public int foodTeam1;
     public int mineralsTeam1;
+    public int minerGoldOre1;
 
     public int goldTeam2;
     public int foodTeam2;
     public int mineralsTeam2;
+    public int minerGoldOre2;
 
     public GameData()
     {
@@ -39,9 +42,11 @@ public class GameData
         goldTeam1 = 0;
         foodTeam1 = 0;
         mineralsTeam1 = 0;
+        minerGoldOre1 = 0;
         goldTeam2 = 0;
         foodTeam2 = 0;
         mineralsTeam2 = 0;
+        minerGoldOre2 = 0;
     }
     public GameData(GameData newData)
     {
@@ -53,10 +58,12 @@ public class GameData
         this.goldTeam1 = newData.goldTeam1;
         this.foodTeam1 = newData.foodTeam1;
         this.mineralsTeam1 = newData.mineralsTeam1;
+        this.minerGoldOre1 = newData.minerGoldOre1;
 
         this.goldTeam2 = newData.goldTeam2;
         this.foodTeam2 = newData.foodTeam2;
         this.mineralsTeam2 = newData.mineralsTeam2;
+        this.minerGoldOre2 = newData.minerGoldOre2;
     }
 
     public int GetGold(int teamNum)
@@ -70,6 +77,10 @@ public class GameData
     public int GetMinerals(int teamNum)
     {
         return teamNum == 1 ? mineralsTeam1 : mineralsTeam2;
+    }
+    public int GetGoldOre(int teamNum)
+    {
+        return teamNum == 1 ? minerGoldOre1 : minerGoldOre2;
     }
     public void AddGold(int gold, int teamNum) 
     {
@@ -85,6 +96,11 @@ public class GameData
     {
         if (teamNum == 1) mineralsTeam1 += minerals;
         else mineralsTeam2 += minerals;
+    }
+    public void AddGoldOre(int ore, int teamNum)
+    {
+        if (teamNum == 1) minerGoldOre1 += ore;
+        else minerGoldOre2 += ore;
     }
 }
 
@@ -127,7 +143,7 @@ public class GameManager : NetworkBehaviour
 
     private Vector3 minerShack1Location = new Vector3(0, 500, 0);
     private Vector3 minerShack2Location = new Vector3(0, 1000, 0);
-    private Vector3 minerSpawnPosOffset = new Vector3(1, 1, -1);
+    private Vector3 minerSpawnPosOffset = new Vector3(1, -3, -1);
 
     [Header("Town stuff")]
     [SerializeField]
@@ -225,7 +241,9 @@ public class GameManager : NetworkBehaviour
     private void RPCUpdateGameDataOnClients(NetworkConnectionToClient conn, GameData gameData)
     {
         LocalStateManager.instance.localGameData.Copy(gameData);
-        gameUI.UpdateBuildingMenuEntries();
+
+        if (LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER)
+            gameUI.UpdateBuildingMenuEntries();
     }
 
    
@@ -319,6 +337,7 @@ public class GameManager : NetworkBehaviour
         while (resourcesUpdateQueue.Count > 0)
         {
             ResourceUpdateMsg msg = resourcesUpdateQueue.Dequeue();
+            Debug.LogError("Message received " + msg);
             string matchID = msg.matchID;
             GameData gameData = GetGameData(matchID);
             if (gameData == null)
@@ -331,6 +350,7 @@ public class GameManager : NetworkBehaviour
                 case Resource.FOOD: gameData.AddFood(msg.amount, msg.teamNumber); break;
                 case Resource.GOLD: gameData.AddGold(msg.amount, msg.teamNumber); break;
                 case Resource.MINERAL: gameData.AddMinerals(msg.amount, msg.teamNumber); break;
+                case Resource.GOLD_ORE: gameData.AddGoldOre(msg.amount, msg.teamNumber); break;
             }
             UpdateGameDataAndSync(matchID, gameData);
         }
