@@ -41,7 +41,7 @@ public class MinerController : CharacterControllerBase
     private IEnumerator AttackDelayCoro()
     {
         yield return new WaitForSeconds(0.5f);
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && isAttacking) isAttacking = false;
+        isAttacking = false;
     }
     // Update is called once per frame
     override protected void Update()
