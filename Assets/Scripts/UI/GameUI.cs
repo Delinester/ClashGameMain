@@ -31,6 +31,8 @@ public class GameUI : MonoBehaviour
     private TextMeshProUGUI goldOreAmountText;
     [SerializeField]
     private TextMeshProUGUI mineralOreAmountText;
+    [SerializeField]
+    private TextMeshProUGUI damageBuffText;
     //////////////////////////////////////////////
 
     private bool isInBuildingMode = false;
@@ -163,6 +165,7 @@ public class GameUI : MonoBehaviour
             int playerTeam = player.synchronizedPlayerGameData.teamNumber;
             goldOreAmountText.text = gameData.GetGoldOre(playerTeam).ToString();
             mineralOreAmountText.text = gameData.GetMinerals(playerTeam).ToString(); 
+            damageBuffText.text = ((MinerController)playerController).GetDamageBuffPercent().ToString() + "%";
         }
     }
 }

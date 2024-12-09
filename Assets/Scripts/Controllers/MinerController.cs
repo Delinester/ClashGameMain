@@ -18,14 +18,27 @@ public class MinerController : CharacterControllerBase
 
     private float collectItemsRadius = 5f;
 
-    private int damage = 25;
+    [SerializeField]
+    private int baseDamage = 25;
+    private int currentDamage = 25;
 
     public int GetMineralOreCount() { return mineralOreCount; }
     public int GetGoldOreCount() {  return goldOrdeCount; }
     public void AddMineralOre(int amountToAdd) {  mineralOreCount += amountToAdd;}
     public void AddGoldOreCount(int amountToAdd) { goldOrdeCount += amountToAdd;}
 
-    public int GetDamage() { return damage; }
+    public int GetDamage() { return currentDamage; }
+
+    public void IncreaseDamageBy(int amount)
+    {
+        currentDamage += amount;
+        Debug.Log("Now current miner's damage is " + currentDamage);
+    }
+
+    public int GetDamageBuffPercent()
+    {
+        return (int)((float)currentDamage / baseDamage * 100f);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
