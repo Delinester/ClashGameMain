@@ -146,7 +146,7 @@ public class GameManager : NetworkBehaviour
     private Vector3 minerShack2Location = new Vector3(0, 1000, 0);
     private Vector3 minerSpawnPosOffset = new Vector3(1, -3, -1);
 
-    private Vector3 worldMapSpawnPos = new Vector3(0, 4999, 0);
+    private Vector3 worldMapSpawnPos = new Vector3(0, 3000, 0);
 
     List<CharacterControllerBase> puppetsList = new List<CharacterControllerBase>();
 
@@ -173,6 +173,9 @@ public class GameManager : NetworkBehaviour
     [Header("Warrior stuff")]
     [SerializeField]
     private GameObject worldMap;
+    [SerializeField]
+    private GameObject worldMapCharacterPrefab;
+    private GameObject worldMapCharacter;
 
     private GameUI gameUI;
 
@@ -343,7 +346,17 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnTownManagerUI(false);
 
                 Instantiate(worldMap, worldMapSpawnPos, worldMap.transform.rotation);
-                LocalStateManager.instance.localPlayer.transform.position.Set(worldMapSpawnPos.x, worldMapSpawnPos.y, worldMapSpawnPos.z); //= worldMapSpawnPos;
+
+                worldMapCharacter = Instantiate(worldMapCharacterPrefab, player.transform);
+                worldMapCharacter.transform.position = worldMapSpawnPos;
+                string hash = LobbyManager.instance.GenerateRandomString(20);
+                worldMapCharacter.GetComponent<CharacterControllerBase>().SetHash(hash);
+
+                LocalStateManager.instance.localPlayerCharacter = worldMapCharacter;
+
+                CMDSpawnCharacterOnClients(player.synchronizedPlayerGameData.matchPtr.matchID, player.GetUserData().username, hash, role, worldMapSpawnPos);
+
+                //LocalStateManager.instance.localPlayer.transform.position.Set(worldMapSpawnPos.x, worldMapSpawnPos.y, worldMapSpawnPos.z); //= worldMapSpawnPos;
             }
         }
     }
@@ -399,7 +412,7 @@ public class GameManager : NetworkBehaviour
         {
             case GameRole.TOWN_MANAGER: character = townManagerCharacterPrefab; break;
             case GameRole.MINER: character = minerCharacterPrefab; break;
-            //case GameRole.WARRIOR: Instantiate(w)
+            case GameRole.WARRIOR: character = worldMapCharacterPrefab; break;
         }
         GameObject obj = Instantiate(character, position, character.transform.rotation);
         Debug.Log("Puppet is spawned!");

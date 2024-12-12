@@ -1523,6 +1523,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1208990338294124, guid: c1b8545ec4e5e7743a4e08be784c1590, type: 3}
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: worldMapCharacterPrefab
+      value: 
+      objectReference: {fileID: 5022896179827055719, guid: 8f53ee39b3739184bb2dbf850c7bdecd, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: townManagerCharacterPrefab
       value: 
       objectReference: {fileID: 1104465774215058, guid: ce35193a39275224397f65748f404ba6, type: 3}

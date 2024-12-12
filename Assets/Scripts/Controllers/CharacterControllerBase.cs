@@ -17,7 +17,7 @@ public class CharacterControllerBase : NetworkBehaviour
 
     protected PlayerNetworking networkPlayer;
     protected Animator animator;
-    protected NetworkAnimator networkAnimator;
+    //protected NetworkAnimator networkAnimator;
 
     private Vector3 lastPosition;
     private Vector3 lastScale;
@@ -34,7 +34,7 @@ public class CharacterControllerBase : NetworkBehaviour
         if (!isServer)
         {
             networkPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-            networkAnimator = GetComponent<NetworkAnimator>();
+           // networkAnimator = GetComponent<NetworkAnimator>();
             animator = GetComponent<Animator>();
             scaleX = transform.localScale.x;
             lastPosition = transform.position;
