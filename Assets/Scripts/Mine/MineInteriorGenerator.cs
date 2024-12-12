@@ -42,7 +42,7 @@ public class MineInteriorGenerator : MonoBehaviour
             Vector2 minPos = collider.bounds.min;
             Vector2 maxPos = collider.bounds.max;
             string matchID = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID;
-            Debug.Log("Initiated object spawn");
+            //Debug.Log("Initiated object spawn");
             for (int j = 0; j < destructibleObjectsList.Count; j++)
             {
                 DestructibleObjectData obj = destructibleObjectsList[j];

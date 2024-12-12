@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -146,6 +147,8 @@ public class GameManager : NetworkBehaviour
     private Vector3 minerSpawnPosOffset = new Vector3(1, -3, -1);
 
     private Vector3 worldMapSpawnPos = new Vector3(0, 4999, 0);
+
+    List<CharacterControllerBase> puppetsList = new List<CharacterControllerBase>();
 
     [Header("Town stuff")]
     [SerializeField]
@@ -306,6 +309,9 @@ public class GameManager : NetworkBehaviour
                 townManagerCharacter = Instantiate(townManagerCharacterPrefab, player.gameObject.transform);
                 townManagerCharacter.transform.position = townManagerSpawnPos;
                 LocalStateManager.instance.localPlayerCharacter = townManagerCharacter;
+                string hash = LobbyManager.instance.GenerateRandomString(20);
+                townManagerCharacter.GetComponent<CharacterControllerBase>().SetHash(hash);
+                CMDSpawnCharacterOnClients(player.synchronizedPlayerGameData.matchPtr.matchID, player.GetUserData().username, hash,role, townManagerSpawnPos);
             }
 
             else if (role == GameRole.MINER)
@@ -324,6 +330,10 @@ public class GameManager : NetworkBehaviour
                 LocalStateManager.instance.localPlayerCharacter = minerCharacter;
 
                 mineManager.SpawnMine(player.synchronizedPlayerGameData.teamNumber);
+                string hash = LobbyManager.instance.GenerateRandomString(20);
+                minerCharacter.GetComponent<CharacterControllerBase>().SetHash(hash);
+
+                CMDSpawnCharacterOnClients(player.synchronizedPlayerGameData.matchPtr.matchID, player.GetUserData().username, hash,role, minerSpawnPos);
             }
 
             else if (role == GameRole.WARRIOR)
@@ -336,6 +346,67 @@ public class GameManager : NetworkBehaviour
                 LocalStateManager.instance.localPlayer.transform.position.Set(worldMapSpawnPos.x, worldMapSpawnPos.y, worldMapSpawnPos.z); //= worldMapSpawnPos;
             }
         }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CMDUpdateTransformCharacter(string matchID, string ownerUsername, string hash, Vector3 position, Vector3 scale)
+    {
+        foreach (PlayerNetworking p in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            NetworkConnectionToClient conn = p.GetComponent<NetworkIdentity>().connectionToClient;
+            string username = p.GetUserData().username;
+            if (username != ownerUsername)
+            {
+                RPCUpdateTransformCharacter(conn, hash, position, scale);
+            }
+        }
+    }
+
+    [TargetRpc]
+    private void RPCUpdateTransformCharacter(NetworkConnectionToClient conn, string hash, Vector3 position, Vector3 scale)
+    {
+        foreach(CharacterControllerBase puppet in puppetsList)
+        {
+            if (puppet.GetHash() == hash)
+            {
+                puppet.gameObject.transform.position = position;
+                puppet.gameObject.transform.localScale = scale;
+            }
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CMDSpawnCharacterOnClients(string matchID, string ownerUser, string hash, GameRole role, Vector3 position)
+    {
+
+        Debug.LogError("Calling RPC on " + role + " " + position);
+        foreach (PlayerNetworking p in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            NetworkConnectionToClient conn = p.GetComponent<NetworkIdentity>().connectionToClient;
+            string user = p.GetUserData().username;
+            if (ownerUser != user)
+            {
+                RPCSpawnCharacterOnClients(conn,hash, role, position);
+            }
+        }
+    }
+
+    [TargetRpc]
+    private void RPCSpawnCharacterOnClients(NetworkConnectionToClient conn, string hash, GameRole role, Vector3 position)
+    {
+        GameObject character = null;
+        switch (role)
+        {
+            case GameRole.TOWN_MANAGER: character = townManagerCharacterPrefab; break;
+            case GameRole.MINER: character = minerCharacterPrefab; break;
+            //case GameRole.WARRIOR: Instantiate(w)
+        }
+        GameObject obj = Instantiate(character, position, character.transform.rotation);
+        Debug.Log("Puppet is spawned!");
+        CharacterControllerBase charac = obj.GetComponent<CharacterControllerBase>();
+        charac.SetIsPuppet(true);
+        charac.SetHash(hash);
+        puppetsList.Add(charac);
     }
     // Start is called before the first frame update
     

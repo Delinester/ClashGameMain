@@ -246,7 +246,7 @@ public class LobbyManager : NetworkBehaviour
         SceneManager.LoadSceneAsync("Game");
     }
 
-    private string GenerateRandomString(int length)
+    public string GenerateRandomString(int length)
     {
         string allowed = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         char[] randChars = new char[length];

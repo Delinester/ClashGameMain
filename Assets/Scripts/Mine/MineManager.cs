@@ -255,7 +255,7 @@ public class MineManager : NetworkBehaviour
             //Debug.Log("Room pos " + roomPos + "Cell pos is " + c.position + "Room WH is " + roomWidth + " " + roomHeight + " and bounds are " + collider.bounds.max + "and min " + collider.bounds.min);
 
             CMDSpawnMineRoom(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID, c, randRoomIdx, teamNum);
-            Debug.Log("Cell111  + " + c.position);
+            //Debug.Log("Cell111  + " + c.position);
         }
     }
 

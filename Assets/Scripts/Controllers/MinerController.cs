@@ -42,6 +42,7 @@ public class MinerController : CharacterControllerBase
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (IsPuppet()) return;
         Debug.Log("Trigger " + collision.gameObject.tag);
         if (collision.gameObject.tag == "ToMineTeleporter")
         {

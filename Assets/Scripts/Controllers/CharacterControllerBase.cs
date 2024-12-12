@@ -13,13 +13,20 @@ public class CharacterControllerBase : NetworkBehaviour
     private float moveSpeed = 5f;
     [SerializeField] LayerMask layerMask;
 
+    string hash;
 
     protected PlayerNetworking networkPlayer;
     protected Animator animator;
     protected NetworkAnimator networkAnimator;
 
-    private float scaleX;
+    private Vector3 lastPosition;
+    private Vector3 lastScale;
 
+    private string ownerUsername;
+    private string matchID;
+
+    private float scaleX;
+    private bool isPuppet = false;
 
     // Start is called before the first frame update
     virtual protected void Start()
@@ -30,30 +37,46 @@ public class CharacterControllerBase : NetworkBehaviour
             networkAnimator = GetComponent<NetworkAnimator>();
             animator = GetComponent<Animator>();
             scaleX = transform.localScale.x;
+            lastPosition = transform.position;
+            lastScale = transform.localScale;
+
+
+            PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+            ownerUsername = player.GetUserData().username;
+            matchID = player.synchronizedPlayerGameData.matchPtr.matchID;
+
         }
     }
 
     virtual protected void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log("Entered collision with " + collision.gameObject.tag);
-        
-        //if (collision.gameObject.tag == "Collectible" && resourcesInHand < maxResourcesInHand)
-        //{
-        //    ResourceScript resource = collision.gameObject.GetComponent<ResourceScript>();
-        //    if (resourceTypeInHand == Resource.NONE)
-        //    {
-        //        resourceTypeInHand = resource.GetResourceType();
-        //        UpdateResourceIcon(resource.GetResourceSprite());
-        //    }
-        //    if (resource.GetResourceType() == resourceTypeInHand)
-        //    {
-        //        resourcesInHand++;
-        //        UpdateResourceCountText(resourcesInHand);
-        //        Destroy(collision.gameObject);
-        //    }            
-        //}
-    }      
+       
+    }
 
+    public void SetHash(string hash)
+    {
+        this.hash = hash;
+    }
+    public string GetHash() { return hash; }
+
+    [Client]
+    private void CheckTransformChanges()
+    {
+        if (transform.position != lastPosition || transform.localScale != lastScale)
+        {
+            Debug.Log("Change of transform!!");
+            GameManager.instance.CMDUpdateTransformCharacter(matchID, ownerUsername, hash, transform.position, transform.localScale);
+
+            lastPosition = transform.position;
+            lastScale = transform.localScale;
+        }
+    }    
+
+    public void SetIsPuppet(bool isPuppet)
+    {
+        this.isPuppet = isPuppet;
+    }
+    public bool IsPuppet() { return this.isPuppet; }
     protected void MoveCharacter()
     {
         float movementX = Input.GetAxis("Horizontal");
@@ -72,10 +95,21 @@ public class CharacterControllerBase : NetworkBehaviour
     void FixedUpdate()
     {
         if (!isServer)
-        MoveCharacter();
+        {
+            if (!isPuppet)
+            {
+                MoveCharacter();
+            }
+            
+        }
+
     }
 
     virtual protected void Update()
     {
+        if (!isPuppet && !isServer)
+        {
+            CheckTransformChanges();
+        }
     }
 }
