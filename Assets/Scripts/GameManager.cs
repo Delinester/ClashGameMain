@@ -145,6 +145,8 @@ public class GameManager : NetworkBehaviour
     private Vector3 minerShack2Location = new Vector3(0, 1000, 0);
     private Vector3 minerSpawnPosOffset = new Vector3(1, -3, -1);
 
+    private Vector3 worldMapSpawnPos = new Vector3(0, 4999, 0);
+
     [Header("Town stuff")]
     [SerializeField]
     private GameObject townPrefab;
