@@ -167,6 +167,10 @@ public class GameManager : NetworkBehaviour
     private GameObject minerShack1;
     private GameObject minerShack2;
 
+    [Header("Warrior stuff")]
+    [SerializeField]
+    private GameObject worldMap;
+
     private GameUI gameUI;
 
     // It will be updated accordingly
@@ -320,6 +324,16 @@ public class GameManager : NetworkBehaviour
                 LocalStateManager.instance.localPlayerCharacter = minerCharacter;
 
                 mineManager.SpawnMine(player.synchronizedPlayerGameData.teamNumber);
+            }
+
+            else if (role == GameRole.WARRIOR)
+            {
+                Debug.Log("You are warrior");
+                gameUI.TurnMinerUI(false);
+                gameUI.TurnTownManagerUI(false);
+
+                Instantiate(worldMap, worldMapSpawnPos, worldMap.transform.rotation);
+                LocalStateManager.instance.localPlayer.transform.position.Set(worldMapSpawnPos.x, worldMapSpawnPos.y, worldMapSpawnPos.z); //= worldMapSpawnPos;
             }
         }
     }

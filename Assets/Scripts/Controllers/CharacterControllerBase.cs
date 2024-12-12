@@ -24,10 +24,13 @@ public class CharacterControllerBase : NetworkBehaviour
     // Start is called before the first frame update
     virtual protected void Start()
     {
-        networkPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-        networkAnimator = GetComponent<NetworkAnimator>();
-        animator = GetComponent<Animator>();
-        scaleX = transform.localScale.x;
+        if (!isServer)
+        {
+            networkPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+            networkAnimator = GetComponent<NetworkAnimator>();
+            animator = GetComponent<Animator>();
+            scaleX = transform.localScale.x;
+        }
     }
 
     virtual protected void OnCollisionEnter2D(Collision2D collision)
@@ -68,6 +71,7 @@ public class CharacterControllerBase : NetworkBehaviour
 
     void FixedUpdate()
     {
+        if (!isServer)
         MoveCharacter();
     }
 

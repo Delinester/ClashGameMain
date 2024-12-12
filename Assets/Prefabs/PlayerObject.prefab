@@ -78,6 +78,7 @@ MonoBehaviour:
     isInMatch: 0
     teamNumber: 1
     role: 0
+  worldMapCharacter: {fileID: 0}
   localPlayerGameData:
     matchPtr:
       matchID: 

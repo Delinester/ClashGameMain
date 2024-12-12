@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour
         float bottom = cameraPosition.y - height / 2;
 
         //Debug.Log($"Left: {left}, Right: {right}, Top: {top}, Bottom: {bottom}" + " BOUNDS " + currentBoundaries.min + " max " + currentBoundaries.max);
-
+        
         Vector3 newPos = new Vector3(playerToFollow.transform.position.x, playerToFollow.transform.position.y, m_camera.transform.position.z);
         if (currentBoundaries.min.x != 0)
         {

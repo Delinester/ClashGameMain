@@ -34,10 +34,7 @@ public class PlayerNetworking : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnGameDataUpdate))]
     public PlayerGameData synchronizedPlayerGameData = new PlayerGameData();
-
-    [SerializeField]
-    private GameObject worldMapCharacter;
-    
+        
     public PlayerGameData localPlayerGameData = new PlayerGameData();
 
 
@@ -115,12 +112,6 @@ public class PlayerNetworking : NetworkBehaviour
             LocalStateManager.instance.localPlayer = gameObject;
             clientConnection = GetComponent<NetworkIdentity>().connectionToClient;
         }
-    }
-
-    public void SetWorldMapCharacterActive()
-    {
-        worldMapCharacter.SetActive(true);
-        LocalStateManager.instance.localPlayer = worldMapCharacter;
     }
     private void Awake()
     {
