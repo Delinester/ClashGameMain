@@ -13,6 +13,7 @@ TagManager:
   - RoomBoundary
   - Destructible
   - TeleportToShack
+  - PlayerBase
   layers:
   - Default
   - TransparentFX
