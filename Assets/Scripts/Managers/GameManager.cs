@@ -19,7 +19,9 @@ public enum Resource
     GOLD,
     FOOD,
     GOLD_ORE,
-    MINERAL
+    MINERAL,
+    BARBARIAN,
+    MERCENARY
 }
 
 [System.Serializable]
@@ -31,11 +33,15 @@ public class GameData
     public int foodTeam1;
     public int mineralsTeam1;
     public int minerGoldOre1;
+    public int barbarians1;
+    public int mercenaries1;
 
     public int goldTeam2;
     public int foodTeam2;
     public int mineralsTeam2;
     public int minerGoldOre2;
+    public int barbarians2;
+    public int mercenaries2;
 
     public GameData()
     {
@@ -60,11 +66,15 @@ public class GameData
         this.foodTeam1 = newData.foodTeam1;
         this.mineralsTeam1 = newData.mineralsTeam1;
         this.minerGoldOre1 = newData.minerGoldOre1;
+        this.barbarians1 = newData.barbarians1;
+        this.mercenaries1 = newData.mercenaries1;
 
         this.goldTeam2 = newData.goldTeam2;
         this.foodTeam2 = newData.foodTeam2;
         this.mineralsTeam2 = newData.mineralsTeam2;
         this.minerGoldOre2 = newData.minerGoldOre2;
+        this.barbarians2 = newData.barbarians2;
+        this.mercenaries2 = newData.barbarians2;
     }
 
     public int GetGold(int teamNum)
@@ -83,17 +93,25 @@ public class GameData
     {
         return teamNum == 1 ? minerGoldOre1 : minerGoldOre2;
     }
-    public void AddGold(int gold, int teamNum) 
+    public int GetBarbarians(int teamNum)
+    {
+        return teamNum == 1 ? barbarians1 : barbarians2;
+    }
+    public int GetMercenaries(int teamNum)
+    {
+        return teamNum == 1 ? mercenaries1 : mercenaries2;
+    }
+    public void AddGold(int gold, int teamNum)
     {
         if (teamNum == 1) goldTeam1 += gold;
         else goldTeam2 += gold;
     }
-    public void AddFood(int food, int teamNum) 
+    public void AddFood(int food, int teamNum)
     {
         if (teamNum == 1) foodTeam1 += food;
         else foodTeam2 += food;
     }
-    public void AddMinerals(int minerals, int teamNum) 
+    public void AddMinerals(int minerals, int teamNum)
     {
         if (teamNum == 1) mineralsTeam1 += minerals;
         else mineralsTeam2 += minerals;
@@ -102,6 +120,16 @@ public class GameData
     {
         if (teamNum == 1) minerGoldOre1 += ore;
         else minerGoldOre2 += ore;
+    }
+    public void AddBarbarians(int amount, int teamNum)
+    {
+        if (teamNum == 1) barbarians1 += amount;
+        else barbarians2 += amount;
+    }
+    public void AddMercenaries(int amount, int teamNum)
+    {
+        if (teamNum == 1) mercenaries1 += amount;
+        else mercenaries2 += amount;
     }
 }
 
@@ -456,8 +484,30 @@ public class GameManager : NetworkBehaviour
                 case Resource.GOLD: gameData.AddGold(msg.amount, msg.teamNumber); break;
                 case Resource.MINERAL: gameData.AddMinerals(msg.amount, msg.teamNumber); break;
                 case Resource.GOLD_ORE: gameData.AddGoldOre(msg.amount, msg.teamNumber); break;
+                case Resource.BARBARIAN: gameData.AddBarbarians(msg.amount, msg.teamNumber); break;
+                case Resource.MERCENARY: gameData.AddMercenaries(msg.amount, msg.teamNumber); break;
             }
             UpdateGameDataAndSync(matchID, gameData);
+        }
+
+        // Cheats
+        if (Input.GetKey(KeyCode.K))
+        {
+            PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
+            string matchID = player.synchronizedPlayerGameData.matchPtr.matchID;
+            int teamNum = player.synchronizedPlayerGameData.teamNumber;
+            if (Input.GetKey(KeyCode.M))
+            {                
+                ResourceUpdateMsg msg = new ResourceUpdateMsg(matchID, teamNum, 10, Resource.FOOD);
+                CMDUpdateResource(msg);
+                Debug.Log("Added cheated food");
+            }
+            else if (Input.GetKey(KeyCode.G))
+            {
+                ResourceUpdateMsg msg = new ResourceUpdateMsg(matchID, teamNum, 10, Resource.GOLD);
+                CMDUpdateResource(msg);
+                Debug.Log("Added cheated gold");
+            }
         }
     }
 }

@@ -38,6 +38,7 @@ public class CameraController : MonoBehaviour
     {        
         playerToFollow = LocalStateManager.instance.localPlayerCharacter;
         currentRole = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.role;
+        m_camera.transform.position = new Vector3(playerToFollow.transform.position.x, playerToFollow.transform.position.y, m_camera.transform.position.z);
         // Set camera position to the location according to player's role!
         //Vector3 townPos = GameManager.instance.GetTownTeamPosition(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
         //m_camera.transform.position = new Vector3(townPos.x, townPos.y, m_camera.transform.position.z);
