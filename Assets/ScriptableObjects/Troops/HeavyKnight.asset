@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 895302db4e096854c9ac3e7b8bc0f5ad, type: 3}
-  m_Name: Barbarian
+  m_Name: HeavyKnight
   m_EditorClassIdentifier: 
-  troopName: Barbarian
-  hp: 20
-  damage: 5
-  goldCost: 0
-  meatCost: 20
+  troopName: HeavyKnight
+  hp: 200
+  damage: 15
+  goldCost: 50
+  meatCost: 100
   moveSpeed: 2
-  trainTimeSeconds: 2
-  attackSpeed: 1.2
-  troopIcon: {fileID: 21300000, guid: acd66dde5a379f946ae09266fa379118, type: 3}
+  trainTimeSeconds: 6
+  attackSpeed: 0.8
+  troopIcon: {fileID: 21300000, guid: fc0ccc2316a7399408ca58e67fb51e13, type: 3}
   prefab: {fileID: 0}
-  troopType: 5
+  troopType: 7

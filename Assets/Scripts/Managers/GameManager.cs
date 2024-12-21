@@ -21,7 +21,8 @@ public enum Resource
     GOLD_ORE,
     MINERAL,
     BARBARIAN,
-    MERCENARY
+    MERCENARY,
+    HEAVY_KNIGHT
 }
 
 [System.Serializable]
@@ -35,6 +36,7 @@ public class GameData
     public int minerGoldOre1;
     public int barbarians1;
     public int mercenaries1;
+    public int heavyKnights1;
 
     public int goldTeam2;
     public int foodTeam2;
@@ -42,6 +44,7 @@ public class GameData
     public int minerGoldOre2;
     public int barbarians2;
     public int mercenaries2;
+    public int heavyKnights2;
 
     public GameData()
     {
@@ -50,10 +53,17 @@ public class GameData
         foodTeam1 = 0;
         mineralsTeam1 = 0;
         minerGoldOre1 = 0;
+        barbarians1 = 0;
+        mercenaries1 = 0;   
+        heavyKnights1 = 0;
+
         goldTeam2 = 0;
         foodTeam2 = 0;
         mineralsTeam2 = 0;
         minerGoldOre2 = 0;
+        barbarians2 = 0;
+        mercenaries2 = 0;
+        heavyKnights2 = 0;
     }
     public GameData(GameData newData)
     {
@@ -68,6 +78,7 @@ public class GameData
         this.minerGoldOre1 = newData.minerGoldOre1;
         this.barbarians1 = newData.barbarians1;
         this.mercenaries1 = newData.mercenaries1;
+        this.heavyKnights1 = newData.heavyKnights1;
 
         this.goldTeam2 = newData.goldTeam2;
         this.foodTeam2 = newData.foodTeam2;
@@ -75,6 +86,7 @@ public class GameData
         this.minerGoldOre2 = newData.minerGoldOre2;
         this.barbarians2 = newData.barbarians2;
         this.mercenaries2 = newData.barbarians2;
+        this.heavyKnights2 = newData.heavyKnights2;
     }
 
     public int GetGold(int teamNum)
@@ -100,6 +112,10 @@ public class GameData
     public int GetMercenaries(int teamNum)
     {
         return teamNum == 1 ? mercenaries1 : mercenaries2;
+    }
+    public int GetHeavyKnights(int teamNum)
+    {
+        return teamNum == 1 ? heavyKnights1 : heavyKnights2;
     }
     public void AddGold(int gold, int teamNum)
     {
@@ -130,6 +146,11 @@ public class GameData
     {
         if (teamNum == 1) mercenaries1 += amount;
         else mercenaries2 += amount;
+    }
+    public void AddHeavyKnights(int amount, int teamNum)
+    {
+        if (teamNum == 1) heavyKnights1 += amount;
+        else heavyKnights2 += amount;
     }
 }
 
@@ -486,6 +507,7 @@ public class GameManager : NetworkBehaviour
                 case Resource.GOLD_ORE: gameData.AddGoldOre(msg.amount, msg.teamNumber); break;
                 case Resource.BARBARIAN: gameData.AddBarbarians(msg.amount, msg.teamNumber); break;
                 case Resource.MERCENARY: gameData.AddMercenaries(msg.amount, msg.teamNumber); break;
+                case Resource.HEAVY_KNIGHT: gameData.AddHeavyKnights(msg.amount, msg.teamNumber); break;
             }
             UpdateGameDataAndSync(matchID, gameData);
         }

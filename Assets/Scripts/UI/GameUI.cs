@@ -34,6 +34,13 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI damageBuffText;
     //////////////////////////////////////////////
+    [Header("Warrior tab")]
+    [SerializeField]
+    private TextMeshProUGUI barbariansCountText;
+    [SerializeField]
+    private TextMeshProUGUI mercenariesCountText;
+    [SerializeField]
+    private TextMeshProUGUI heavyKnightsCountText;
 
     private bool isInBuildingMode = false;
     private GameObject currentBuildingObject;
@@ -107,8 +114,7 @@ public class GameUI : MonoBehaviour
         foreach (BuildingListSelectButtonScript entry in entries)
         {
             int goldInPossession;
-            if (player.synchronizedPlayerGameData.teamNumber == 1) goldInPossession = LocalStateManager.instance.localGameData.goldTeam1;
-            else goldInPossession = LocalStateManager.instance.localGameData.goldTeam2;
+            goldInPossession = LocalStateManager.instance.localGameData.GetGold(player.synchronizedPlayerGameData.teamNumber);
             entry.UpdateGoldInteractable(goldInPossession);
         }
     }
@@ -153,19 +159,24 @@ public class GameUI : MonoBehaviour
 
         // Update resources text
         GameData gameData = LocalStateManager.instance.localGameData;
+        int playerTeam = player.synchronizedPlayerGameData.teamNumber;
         if (player.synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER)
         {
-            int playerTeam = player.synchronizedPlayerGameData.teamNumber;
             goldAmountText.text = gameData.GetGold(playerTeam).ToString();
             foodAmountText.text = gameData.GetFood(playerTeam).ToString();
             mineralsAmountText.text = gameData.GetMinerals(playerTeam).ToString();
         }
         else if (player.synchronizedPlayerGameData.role == GameRole.MINER)
-        {
-            int playerTeam = player.synchronizedPlayerGameData.teamNumber;
+        {           
             goldOreAmountText.text = gameData.GetGoldOre(playerTeam).ToString();
             mineralOreAmountText.text = gameData.GetMinerals(playerTeam).ToString(); 
             damageBuffText.text = ((MinerController)playerController).GetDamageBuffPercent().ToString() + "%";
+        }
+        else if (player.synchronizedPlayerGameData.role == GameRole.WARRIOR)
+        {
+            barbariansCountText.text = gameData.GetBarbarians(playerTeam).ToString();
+            mercenariesCountText.text = gameData.GetMercenaries(playerTeam).ToString();
+            heavyKnightsCountText.text = gameData.GetHeavyKnights(playerTeam).ToString();
         }
     }
 }

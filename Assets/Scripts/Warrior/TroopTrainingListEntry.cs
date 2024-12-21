@@ -22,6 +22,7 @@ public class TroopTrainingListEntry : MonoBehaviour
     private PlayerTown playerTown;
     private TroopData data;
 
+
     private string matchID;
     private int teamNum;
 
@@ -83,7 +84,7 @@ public class TroopTrainingListEntry : MonoBehaviour
         int teamNum = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber;
         if (gameData == null) Debug.LogError("GAME DATA IS NULL");
         
-        if (gameData.GetGold(teamNum) >= data.goldCost && gameData.GetFood(teamNum) >= data.meatCost)
+        if (!playerTown.isTroopTraining() && gameData.GetGold(teamNum) >= data.goldCost && gameData.GetFood(teamNum) >= data.meatCost)
         {
             ResourceUpdateMsg msg = new ResourceUpdateMsg(matchID, teamNum, -data.goldCost, Resource.GOLD);
             ResourceUpdateMsg msg2 = new ResourceUpdateMsg(matchID, teamNum, -data.meatCost, Resource.FOOD);

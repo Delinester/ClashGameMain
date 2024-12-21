@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 895302db4e096854c9ac3e7b8bc0f5ad, type: 3}
-  m_Name: Barbarian
+  m_Name: Mercenary
   m_EditorClassIdentifier: 
-  troopName: Barbarian
-  hp: 20
-  damage: 5
-  goldCost: 0
-  meatCost: 20
-  moveSpeed: 2
-  trainTimeSeconds: 2
-  attackSpeed: 1.2
-  troopIcon: {fileID: 21300000, guid: acd66dde5a379f946ae09266fa379118, type: 3}
+  troopName: Mercenary
+  hp: 70
+  damage: 7
+  goldCost: 15
+  meatCost: 0
+  moveSpeed: 4
+  trainTimeSeconds: 1
+  attackSpeed: 2
+  troopIcon: {fileID: 21300000, guid: bcaf0801c4c1d7c43a931f04d0dc7a1b, type: 3}
   prefab: {fileID: 0}
-  troopType: 5
+  troopType: 6

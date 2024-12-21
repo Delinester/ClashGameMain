@@ -583,6 +583,8 @@ MonoBehaviour:
   troopListEntryPrefab: {fileID: 2863985358254583110, guid: ee6c6fcfc6232e14b87454e2e706d0bc, type: 3}
   troopsDataArray:
   - {fileID: 11400000, guid: 17e358febfe9b984288413fc3568292b, type: 2}
+  - {fileID: 11400000, guid: e449b98d4b377b44abdf05de62b3f897, type: 2}
+  - {fileID: 11400000, guid: 0615adcc5237bb04b8a663167ccbf29c, type: 2}
   localUIcanvas: {fileID: 1815590392887323622}
 --- !u!114 &6224539854651001090
 MonoBehaviour:
@@ -653,7 +655,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5954911739062713674
 RectTransform:
   m_ObjectHideFlags: 0
@@ -755,7 +757,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9208765162943466381}
   m_HandleRect: {fileID: 8586353969054580001}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -897,7 +899,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0004224219, y: 0}
+  m_AnchoredPosition: {x: -0.0004224219, y: 0.00037148574}
   m_SizeDelta: {x: -35.136597, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5127435616172828087
@@ -916,7 +918,7 @@ MonoBehaviour:
     m_Left: 15
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 29
   m_ChildAlignment: 6
   m_StartCorner: 0
   m_StartAxis: 1
@@ -1172,7 +1174,7 @@ RectTransform:
   m_Father: {fileID: 4943790542773544400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
