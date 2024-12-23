@@ -32,6 +32,7 @@ public class ArmyCreateListEntry : MonoBehaviour
     public void ResetTroopsCount()
     {
         troopCount = 0;
+        troopsCountText.text = "0";
     }
 
     public int GetTroopCount()

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 846579442184799406}
   m_Layer: 0
   m_Name: Army
-  m_TagString: Untagged
+  m_TagString: Army
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: be7c4b02fb7e602428941ebfd010f2b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

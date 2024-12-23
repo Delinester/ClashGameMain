@@ -49,6 +49,8 @@ public class GameUI : MonoBehaviour
     private GameObject createArmyMenuObject;
 
     private bool isInBuildingMode = false;
+    private bool isArmyChosen = false;
+
     private GameObject currentBuildingObject;
     private BuildingData currentBuildingData;
     private Camera mainCamera;
@@ -155,10 +157,10 @@ public class GameUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isInBuildingMode && currentBuildingObject)
+        Vector3 mousePos = Input.mousePosition;
+        mousePos = mainCamera.ScreenToWorldPoint(mousePos);
+        if (player.synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER && isInBuildingMode && currentBuildingObject)
         {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos = mainCamera.ScreenToWorldPoint(mousePos);
             Vector3 buildingPos = new Vector3(mousePos.x, mousePos.y, -3);
             currentBuildingObject.gameObject.transform.position = buildingPos;
             Building buildingComponent = currentBuildingObject.GetComponent<Building>();
@@ -176,7 +178,7 @@ public class GameUI : MonoBehaviour
                 ResourceUpdateMsg msg = new ResourceUpdateMsg(matchID, teamNum, -currentBuildingData.costGold, Resource.GOLD);
                 GameManager.instance.CMDUpdateResource(msg);
             }
-        }
+        }        
 
         // Update resources text
         GameData gameData = LocalStateManager.instance.localGameData;

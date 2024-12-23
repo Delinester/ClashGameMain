@@ -263,7 +263,7 @@ public class GameManager : NetworkBehaviour
     {
         if (!gameDataHashTable.TryGetValue(matchID, out GameData data))
         {
-            Debug.LogError("Error in GetGameData");
+            Debug.LogError("Error in GetGameData of matchID: " + matchID);
             return null;
         }
         return data;
@@ -518,7 +518,7 @@ public class GameManager : NetworkBehaviour
         while (resourcesUpdateQueue.Count > 0)
         {
             ResourceUpdateMsg msg = resourcesUpdateQueue.Dequeue();
-            Debug.LogError("Message received " + msg);
+            Debug.LogError("Message received " + msg.matchID + " " + msg.resource + " " + msg.amount);
             string matchID = msg.matchID;
             GameData gameData = GetGameData(matchID);
             if (gameData == null)
