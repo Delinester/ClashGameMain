@@ -41,6 +41,12 @@ public class GameUI : MonoBehaviour
     private TextMeshProUGUI mercenariesCountText;
     [SerializeField]
     private TextMeshProUGUI heavyKnightsCountText;
+    [SerializeField]
+    private TextMeshProUGUI warriorGoldResourceText;
+    [SerializeField]
+    private TextMeshProUGUI warriorFoodResourceText;
+    [SerializeField]
+    private GameObject createArmyMenuObject;
 
     private bool isInBuildingMode = false;
     private GameObject currentBuildingObject;
@@ -82,6 +88,8 @@ public class GameUI : MonoBehaviour
         playerCharacter = player.gameObject.GetComponentInChildren<CharacterControllerBase>().gameObject;
 
         playerController = player.gameObject.GetComponentInChildren<CharacterControllerBase>();
+
+        createArmyMenuObject.GetComponentInChildren<Canvas>().enabled = false;
     }
    
     public void EnterBuidingMode(BuildingData building)
@@ -131,6 +139,18 @@ public class GameUI : MonoBehaviour
         else minerUI.SetActive(false) ;
     }
 
+    public void DisplayArmyCreationMenu(Vector3 position)
+    {
+        createArmyMenuObject.transform.position = position;
+        createArmyMenuObject.GetComponentInChildren<Canvas>().enabled = true;
+    }
+
+    public void DisableArmyCreationMenu()
+    {
+        createArmyMenuObject.GetComponentInChildren<Canvas>().enabled = false;
+        createArmyMenuObject.GetComponent<CreateArmyListScript>().ResetTroopsCount();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -177,6 +197,8 @@ public class GameUI : MonoBehaviour
             barbariansCountText.text = gameData.GetBarbarians(playerTeam).ToString();
             mercenariesCountText.text = gameData.GetMercenaries(playerTeam).ToString();
             heavyKnightsCountText.text = gameData.GetHeavyKnights(playerTeam).ToString();
+            warriorGoldResourceText.text = gameData.GetGold(playerTeam).ToString();
+            warriorFoodResourceText.text = gameData.GetFood(playerTeam).ToString();
         }
     }
 }

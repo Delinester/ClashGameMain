@@ -410,9 +410,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2027813732258999561}
     m_Modifications:
+    - target: {fileID: 1809430443742183997, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3794908645841242371, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_Name
       value: Top-Down Forest Tileset_Building - Castle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8694130549130144693, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -555,9 +567,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2027813732258999561}
     m_Modifications:
+    - target: {fileID: 1809430443742183997, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3794908645841242371, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_Name
       value: Top-Down Forest Tileset_Building - Castle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8694130549130144693, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_LocalPosition.x
