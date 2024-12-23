@@ -143,6 +143,7 @@ public class GameUI : MonoBehaviour
     {
         createArmyMenuObject.transform.position = position;
         createArmyMenuObject.GetComponentInChildren<Canvas>().enabled = true;
+        createArmyMenuObject.GetComponent<CreateArmyListScript>().SetClickPosition(position);
     }
 
     public void DisableArmyCreationMenu()

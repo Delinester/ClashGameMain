@@ -77,7 +77,7 @@ public class CharacterControllerBase : NetworkBehaviour
         this.isPuppet = isPuppet;
     }
     public bool IsPuppet() { return this.isPuppet; }
-    protected void MoveCharacter()
+    protected virtual void MoveCharacter()
     {
         float movementX = Input.GetAxis("Horizontal");
         float movementY = Input.GetAxis("Vertical");
@@ -91,6 +91,11 @@ public class CharacterControllerBase : NetworkBehaviour
         if (movementX < 0) transform.localScale = new Vector3(-scaleX, transform.localScale.y, transform.localScale.z);
         else if (movementX > 0) transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
         
+    }
+
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
     }
 
     void FixedUpdate()

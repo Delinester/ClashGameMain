@@ -2645,6 +2645,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArmySpawnMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 1865383583617611327, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865383583617611327, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865383583617611327, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4472805102155343223, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2657,13 +2669,17 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5321480280893620462, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
+      propertyPath: worldMapArmyPrefab
+      value: 
+      objectReference: {fileID: 1118383858983047829, guid: 323cfb39e21bfb6408890e0c71211436, type: 3}
     - target: {fileID: 7928493732761487139, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7928493732761487139, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.0069439015
+      value: 0.003601269
       objectReference: {fileID: 0}
     - target: {fileID: 7928493732761487139, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -1097,10 +1097,16 @@ MonoBehaviour:
     foodTeam1: 0
     mineralsTeam1: 0
     minerGoldOre1: 0
+    barbarians1: 0
+    mercenaries1: 0
+    heavyKnights1: 0
     goldTeam2: 0
     foodTeam2: 0
     mineralsTeam2: 0
     minerGoldOre2: 0
+    barbarians2: 0
+    mercenaries2: 0
+    heavyKnights2: 0
   localPlayerCharacter: {fileID: 0}
 --- !u!1 &559728954
 GameObject:
@@ -1518,6 +1524,10 @@ PrefabInstance:
       propertyPath: minerShackPrefab
       value: 
       objectReference: {fileID: 375612016174204231, guid: 6a89f1171ac9ecb40ac8fd60a6a4b05c, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: worldMapArmyPrefab
+      value: 
+      objectReference: {fileID: 1118383858983047829, guid: 323cfb39e21bfb6408890e0c71211436, type: 3}
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: minerCharacterPrefab
       value: 
