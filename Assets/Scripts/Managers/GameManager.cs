@@ -1,8 +1,5 @@
 using Mirror;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -98,7 +95,7 @@ public class GameData
         this.mineralsTeam2 = newData.mineralsTeam2;
         this.minerGoldOre2 = newData.minerGoldOre2;
         this.barbarians2 = newData.barbarians2;
-        this.mercenaries2 = newData.barbarians2;
+        this.mercenaries2 = newData.mercenaries2;
         this.heavyKnights2 = newData.heavyKnights2;
     }
 
@@ -247,6 +244,8 @@ public class GameManager : NetworkBehaviour
     private GameObject heavyKnightPrefab;
     [SerializeField]
     private GameObject worldMapArmyPrefab;
+    [SerializeField]
+    private TroopData[] troopDataArray;
     ///
     private GameObject worldMapCharacter;
 
@@ -375,6 +374,7 @@ public class GameManager : NetworkBehaviour
                 Debug.Log("You are TOWN MANAGER");
                 gameUI.TurnTownManagerUI(true);
                 gameUI.TurnMinerUI(false);
+                gameUI.TurnWarriorUI(false);
                 townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
                 townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
 
@@ -395,6 +395,7 @@ public class GameManager : NetworkBehaviour
                 Debug.Log("You are MINER");
                 gameUI.TurnMinerUI(true);
                 gameUI.TurnTownManagerUI(false);
+                gameUI.TurnWarriorUI(false);
                 Vector3 minerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? minerShack1Location + minerSpawnPosOffset : minerShack2Location + minerSpawnPosOffset;
 
                 minerShack1 = Instantiate(minerShackPrefab, minerShack1Location, minerCharacterPrefab.transform.rotation);
@@ -417,7 +418,7 @@ public class GameManager : NetworkBehaviour
                 Debug.Log("You are warrior");
                 gameUI.TurnMinerUI(false);
                 gameUI.TurnTownManagerUI(false);
-
+                gameUI.TurnWarriorUI(true);
                 GameObject worldMapInstance = Instantiate(worldMap, worldMapSpawnPos, worldMap.transform.rotation);
 
                 worldMapCharacter = Instantiate(worldMapCharacterPrefab, player.transform);
@@ -434,6 +435,11 @@ public class GameManager : NetworkBehaviour
                 CMDSpawnPuppetOnClients(player.synchronizedPlayerGameData.matchPtr.matchID, player.GetUserData().username, hash, PuppetType.WARRIOR, spawnPos);
 
                 //LocalStateManager.instance.localPlayer.transform.position.Set(worldMapSpawnPos.x, worldMapSpawnPos.y, worldMapSpawnPos.z); //= worldMapSpawnPos;
+            }
+
+            else if (role == GameRole.ADMIN)
+            {
+
             }
         }
     }
@@ -479,6 +485,49 @@ public class GameManager : NetworkBehaviour
                 RPCSpawnPuppetOnClients(conn,hash, puppetType, position);
             }
         }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CMDSpawnArmyPuppetOnClients(string matchID, string ownerUser, string hash, Army army, Vector3 position)
+    {
+        Debug.LogError("Calling ARMY RPC " + " " + position);
+        foreach (PlayerNetworking p in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            NetworkConnectionToClient conn = p.GetComponent<NetworkIdentity>().connectionToClient;
+            string user = p.GetUserData().username;
+            if (ownerUser != user)
+            {
+                RPCSpawnArmyPuppetOnClients(conn, hash, army, position);
+            }
+        }
+    }
+
+    [TargetRpc]
+    public void RPCSpawnArmyPuppetOnClients(NetworkConnectionToClient conn, string hash, Army army, Vector3 position)
+    {
+        Debug.Log("Spawning PUPPET ARMY with " + army.troopTypes.Length + " troops count");
+        GameObject character = worldMapArmyPrefab;
+        GameObject obj = Instantiate(character, position, character.transform.rotation);
+        Debug.Log("Puppet is spawned!");
+        CharacterControllerBase charac = obj.GetComponent<CharacterControllerBase>();
+        charac.SetIsPuppet(true);
+        charac.SetHash(hash);
+
+        Troop[] troops = new Troop[3];
+        for (int i = 0; i < army.troopTypes.Length; i++)
+        {
+            foreach (TroopData data in troopDataArray)
+            {
+                if (data.troopType == army.troopTypes[i])
+                {
+                    troops[i] = new Troop();
+                    troops[i].data = data;
+                    troops[i].count = army.counts[i];
+                }
+            }
+        }
+        obj.GetComponent<WorldMapArmyAI>().SetTroopsInArmy(troops);
+        puppetsList.Add(charac);
     }
 
     [TargetRpc]

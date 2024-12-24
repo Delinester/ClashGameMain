@@ -46,7 +46,7 @@ public class PlayerTown : MonoBehaviour
         if (teamNum == 2)
         {
             Vector3 pos = interactionUI.transform.position;
-            interactionUI.transform.position = new Vector3(pos.x, pos.y + 7f, pos.z);    
+            interactionUI.transform.position = new Vector3(pos.x, pos.y + 3f, pos.z);    
         }
     }
 

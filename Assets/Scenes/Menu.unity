@@ -1537,9 +1537,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5022896179827055719, guid: 8f53ee39b3739184bb2dbf850c7bdecd, type: 3}
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: troopDataArray.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: townManagerCharacterPrefab
       value: 
       objectReference: {fileID: 1104465774215058, guid: ce35193a39275224397f65748f404ba6, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: troopDataArray.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 17e358febfe9b984288413fc3568292b, type: 2}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: troopDataArray.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: e449b98d4b377b44abdf05de62b3f897, type: 2}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: troopDataArray.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0615adcc5237bb04b8a663167ccbf29c, type: 2}
     - target: {fileID: 7032030901291204185, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 310.1982

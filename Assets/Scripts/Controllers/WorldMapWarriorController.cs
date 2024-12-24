@@ -66,13 +66,18 @@ public class WorldMapWarriorController : CharacterControllerBase
             {
                 DeselectArmy();
             }
-                foreach (Collider2D collider in colliders)
+            foreach (Collider2D collider in colliders)
             {
                 if (collider.gameObject.tag == "Army")
                 {
                     isArmySelected = true;
                     selectedArmy = collider.GetComponent<WorldMapArmyAI>();
                     selectedArmy.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Thickness", 5);
+                    //
+                    foreach(Troop troop in selectedArmy.GetComponent<WorldMapArmyAI>().GetTroopsInArmy())
+                    {
+                        Debug.Log("Troop " + troop.data.troopName + " counts " + troop.count);
+                    }
                     break;
                 }
                 else

@@ -780,6 +780,7 @@ MonoBehaviour:
   createArmyMenuObject: {fileID: 1062683322}
   townManagerUI: {fileID: 404841346}
   minerUI: {fileID: 476926862}
+  warriorWorldMapUI: {fileID: 1493966566}
   buildingMenuAnimator: {fileID: 1556742594}
 --- !u!1 &180500725
 GameObject:
@@ -2679,7 +2680,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7928493732761487139, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.003601269
+      value: -0.011506376
       objectReference: {fileID: 0}
     - target: {fileID: 7928493732761487139, guid: 3541b2eed114fe848bdd1b28f449915c, type: 3}
       propertyPath: m_AnchoredPosition.y

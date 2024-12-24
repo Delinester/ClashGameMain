@@ -414,17 +414,33 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3592771295214894100, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3592771295214894100, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3592771295214894100, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3794908645841242371, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_Name
       value: Top-Down Forest Tileset_Building - Castle
       objectReference: {fileID: 0}
-    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 7300703999439241258, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8694130549130144693, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -571,17 +587,33 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3592771295214894100, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3592771295214894100, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3592771295214894100, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3794908645841242371, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_Name
       value: Top-Down Forest Tileset_Building - Castle (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 7300703999439241258, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8586353969054580001, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8694130549130144693, guid: 0ba3eaae82a2dda4680b6a5fd3e633ea, type: 3}
       propertyPath: m_LocalPosition.x

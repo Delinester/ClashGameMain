@@ -1,13 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 [System.Serializable]
 public class Troop
 {
+    [SerializeField]
     public TroopData data;
+    [SerializeField]
     public int count;
+}
+
+[System.Serializable]
+public class Army
+{
+    [SerializeField]
+    public Resource[] troopTypes;
+    [SerializeField]
+    public int[] counts;
+
+    public Army()
+    {
+        troopTypes = null;
+        counts = null;
+    }
+
+
+    public Army(Troop[] troops)
+    {
+        this.troopTypes = new Resource[troops.Length];
+        this.counts = new int[troops.Length];
+
+        for (int i = 0; i < troopTypes.Length; i++)
+        {
+            this.troopTypes[i] = troops[i].data.troopType;
+            this.counts[i] = troops[i].count;
+        }
+    }
 }
 
 public class WorldMapArmyAI : CharacterControllerBase
@@ -17,6 +45,8 @@ public class WorldMapArmyAI : CharacterControllerBase
 
     private bool isMovingSomewhere = false;
     private Vector2 destinationPoint = Vector2.zero;
+
+
 
     private Troop[] troops = new Troop[3];
     protected override void MoveCharacter()
@@ -44,6 +74,11 @@ public class WorldMapArmyAI : CharacterControllerBase
             armySize += troops[i].count;
         }
         armyCountText.text = armySize.ToString();
+    }
+
+    public Troop[] GetTroopsInArmy()
+    {
+        return troops;
     }
 
     public void MoveToPoint(Vector2 point)

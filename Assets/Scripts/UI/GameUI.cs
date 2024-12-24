@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
-using Mirror.Examples.Common.Controllers.Player;
 
 public class GameUI : MonoBehaviour
 {
@@ -65,6 +61,8 @@ public class GameUI : MonoBehaviour
     private GameObject townManagerUI;
     [SerializeField]
     private GameObject minerUI;
+    [SerializeField]
+    private GameObject warriorWorldMapUI;
 
     [SerializeField]
     private Animator buildingMenuAnimator;
@@ -139,6 +137,12 @@ public class GameUI : MonoBehaviour
     {
         if (turnOn) minerUI.SetActive(true) ;
         else minerUI.SetActive(false) ;
+    }
+
+    public void TurnWarriorUI(bool turnOn)
+    {
+        if (turnOn) warriorWorldMapUI.SetActive(true);
+        else warriorWorldMapUI.SetActive(false);
     }
 
     public void DisplayArmyCreationMenu(Vector3 position)
