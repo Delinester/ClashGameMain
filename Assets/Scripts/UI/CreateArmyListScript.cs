@@ -73,10 +73,13 @@ public class CreateArmyListScript : MonoBehaviour
         armyObject.GetComponent<CharacterControllerBase>().SetHash(hash);
         //GameManager.instance.CMDSpawnPuppetOnClients(player.synchronizedPlayerGameData.matchPtr.matchID, player.GetUserData().username, hash, PuppetType.ARMY, playerPosition);
         Army army = new Army(troopsList);
+        army.ownerTeamNum = teamNumber;
         GameManager.instance.CMDSpawnArmyPuppetOnClients(player.synchronizedPlayerGameData.matchPtr.matchID, player.GetUserData().username, hash, army, playerPosition);
-        armyObject.GetComponent<WorldMapArmyAI>().MoveToPoint(clickPosition);
-        
+        armyObject.GetComponent<WorldMapArmyAI>().MoveToPoint(clickPosition);        
         armyObject.GetComponent<WorldMapArmyAI>().SetTroopsInArmy(troopsList);
+        armyObject.GetComponent<WorldMapArmyAI>().SetArmyOwnerTeam(teamNumber);
+        armyObject.GetComponent<WorldMapArmyAI>().SetBaseOutline();
+        GameManager.instance.battlesManager.AddNewArmy(armyObject.GetComponent<WorldMapArmyAI>());
     }
     public void SetClickPosition(Vector2 pos)
     {

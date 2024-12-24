@@ -1623,6 +1623,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7198235366432209557, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 923787419}
+    - targetCorrespondingSourceObject: {fileID: 7198235366432209557, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 923787424}
   m_SourcePrefab: {fileID: 100100000, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
 --- !u!1 &923787418 stripped
 GameObject:
@@ -1652,6 +1655,18 @@ MonoBehaviour:
   - {fileID: 3265380737329317892, guid: 6a25103a7fb800f428af6893690e5444, type: 3}
   mine1Location: {x: 0, y: 6669, z: 0}
   mine2Location: {x: 0, y: -6669, z: 0}
+--- !u!114 &923787424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923787418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ce096b70569534796c3eb6070c9fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &997535176
 GameObject:
   m_ObjectHideFlags: 0

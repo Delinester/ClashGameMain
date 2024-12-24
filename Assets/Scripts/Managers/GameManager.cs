@@ -196,6 +196,8 @@ public class GameManager : NetworkBehaviour
     public BuildingManager buildingManager;
     [HideInInspector]
     public MineManager mineManager;
+    [HideInInspector]
+    public BattlesManager battlesManager;
 
     private Vector3 town1Pos = new Vector3(0, 0, 0);
     private Vector3 town2Pos = new Vector3(0, 100, 0);
@@ -348,9 +350,11 @@ public class GameManager : NetworkBehaviour
         }
 
         buildingManager = gameObject.GetComponent<BuildingManager>();
-        if (buildingManager == null) Debug.Log("Building manager is null!!");
+        if (buildingManager == null) Debug.LogError("Building manager is null!!");
         mineManager = GetComponent<MineManager>();
-        if (mineManager == null) Debug.Log("Mine manager is NULL");
+        if (mineManager == null) Debug.LogError("Mine manager is NULL");
+        battlesManager = GetComponent<BattlesManager>();
+        if (battlesManager == null) Debug.LogError("Battles manager is null");
         //else if (instance != this)
         //{
         //    Destroy(gameObject);
@@ -527,6 +531,7 @@ public class GameManager : NetworkBehaviour
             }
         }
         obj.GetComponent<WorldMapArmyAI>().SetTroopsInArmy(troops);
+        obj.GetComponent<WorldMapArmyAI>().SetNoOutline();
         puppetsList.Add(charac);
     }
 

@@ -53,7 +53,7 @@ public class CharacterControllerBase : NetworkBehaviour
        
     }
 
-    public void SetHash(string hash)
+    public virtual void SetHash(string hash)
     {
         this.hash = hash;
     }
@@ -64,7 +64,7 @@ public class CharacterControllerBase : NetworkBehaviour
     {
         if (transform.position != lastPosition || transform.localScale != lastScale)
         {
-            Debug.Log("Change of transform!!");
+            //Debug.Log("Change of transform!!");
             GameManager.instance.CMDUpdateTransformCharacter(matchID, ownerUsername, hash, transform.position, transform.localScale);
 
             lastPosition = transform.position;

@@ -15,6 +15,7 @@ public class TroopData : ScriptableObject
     public int moveSpeed;
     public int trainTimeSeconds;
     public float attackSpeed;
+    public int weightInBattle;
     public Sprite troopIcon;
     public GameObject prefab;
     public Resource troopType;

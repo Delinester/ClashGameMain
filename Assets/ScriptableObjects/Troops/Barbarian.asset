@@ -20,6 +20,7 @@ MonoBehaviour:
   moveSpeed: 2
   trainTimeSeconds: 2
   attackSpeed: 1.2
+  weightInBattle: 1
   troopIcon: {fileID: 21300000, guid: acd66dde5a379f946ae09266fa379118, type: 3}
   prefab: {fileID: 0}
   troopType: 5

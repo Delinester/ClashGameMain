@@ -26,7 +26,7 @@ public class WorldMapWarriorController : CharacterControllerBase
     {
         isArmySelected = false;
         if (selectedArmy != null) 
-            selectedArmy.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Thickness", 0);
+            selectedArmy.SetBaseOutline();
     }
 
     // Update is called once per frame
@@ -72,7 +72,14 @@ public class WorldMapWarriorController : CharacterControllerBase
                 {
                     isArmySelected = true;
                     selectedArmy = collider.GetComponent<WorldMapArmyAI>();
-                    selectedArmy.gameObject.GetComponent<SpriteRenderer>().material.SetFloat("_Thickness", 5);
+                    Debug.LogError("Selected army hash is " + selectedArmy.GetHash());
+                    int teamNumber = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber;
+                    if (selectedArmy.GetOwnerTeamNum() != teamNumber || selectedArmy.IsInCombat())
+                    {
+                        isArmySelected = false;
+                        return;
+                    }
+                    selectedArmy.SetThickOutline();
                     //
                     foreach(Troop troop in selectedArmy.GetComponent<WorldMapArmyAI>().GetTroopsInArmy())
                     {
