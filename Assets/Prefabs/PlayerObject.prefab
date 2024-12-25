@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8207589966528740690}
   - component: {fileID: 7884364409693297101}
   - component: {fileID: 545934103899441761}
+  - component: {fileID: -5484415609136929950}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -78,7 +79,6 @@ MonoBehaviour:
     isInMatch: 0
     teamNumber: 1
     role: 0
-  worldMapCharacter: {fileID: 0}
   localPlayerGameData:
     matchPtr:
       matchID: 
@@ -101,6 +101,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eaf4936cd7028a14f899b984fb3dbac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &-5484415609136929950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2341773407361778410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c8617dd98417414c9a6c8cf8ee8d9ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0

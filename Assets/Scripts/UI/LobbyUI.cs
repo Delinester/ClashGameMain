@@ -184,6 +184,7 @@ public class LobbyUI : MonoBehaviour
         }
         for (int i = 0; i < manager.matchesList.Count; i++)
         {
+            if (manager.matchesList[i].inMatch) continue;
             GameObject obj = Instantiate(listEntryPrefab, listContentObject.transform);
             RoomListEntry listEntry = obj.GetComponent<RoomListEntry>();
             listEntry.matchPtr = manager.matchesList[i];

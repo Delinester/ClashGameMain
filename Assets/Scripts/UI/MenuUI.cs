@@ -14,7 +14,7 @@ public class MenuUI : MonoBehaviour
     public TMP_InputField usernameInputField;
 
     private PlayerNetworking playerNetworking;
-    private AuthScript authScript;
+    private APIConnector apiConnector;
     private NetworkConnectionToClient clientConn;
 
     [SerializeField]
@@ -79,28 +79,28 @@ public class MenuUI : MonoBehaviour
 
     public void OnLoginButtonPressed()
     {
-        authScript = FindObjectOfType<AuthScript>();
+        apiConnector = FindObjectOfType<APIConnector>();
         playerNetworking = FindObjectOfType<PlayerNetworking>();
-        clientConn = authScript.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+        clientConn = apiConnector.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
 
         if (!CheckInputFields()) { return; }
         PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
         userData.username = usernameInputField.text;
-        authScript.Login(userData, clientConn);
+        apiConnector.Login(userData, clientConn);
     }
 
     public void OnRegisterButtonPressed()
     {
-        authScript = FindObjectOfType<AuthScript>();
+        apiConnector = FindObjectOfType<APIConnector>();
         playerNetworking = FindObjectOfType<PlayerNetworking>();
-        clientConn = authScript.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+        clientConn = apiConnector.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
 
         if (!CheckInputFields()) { return; }
 
         PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
         userData.username = usernameInputField.text;
         Debug.Log("MenuUI userData is " + userData.GetType());
-        authScript.Register(userData, clientConn);
+        apiConnector.Register(userData, clientConn);
     }
 
     public void OnPlayButtonPressed()

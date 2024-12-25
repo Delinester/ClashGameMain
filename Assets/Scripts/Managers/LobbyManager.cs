@@ -221,6 +221,10 @@ public class LobbyManager : NetworkBehaviour
     [Command (requiresAuthority = false)]
     public void StartGame(Match match)
     {
+        foreach (Match m in matchesList)
+        {
+            if (m.matchID == match.matchID) m.inMatch = true;
+        }
         foreach (PlayerNetworking player in match.players)
         {
             NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;

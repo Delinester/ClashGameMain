@@ -84,6 +84,15 @@ public class WorldMapArmyAI : CharacterControllerBase
         }
     }
 
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag == "PlayerBase")
+    //    {
+    //        string matchID = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID;
+    //        GameManager.instance.battlesManager.CMDSpawnArmyInTown(matchID, new Army(), LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
+    //    }
+    //}
+
     public override void SetHash(string hash)
     {
         base.SetHash(hash);

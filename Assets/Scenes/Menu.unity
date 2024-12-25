@@ -1521,9 +1521,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8860949393878427013, guid: 75006561e14e4824182cdf0c6f311be6, type: 3}
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: barbarianPrefab
+      value: 
+      objectReference: {fileID: 1756856227512238, guid: bb116251660ef714fa60e4bc1766d712, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: mercenaryPrefab
+      value: 
+      objectReference: {fileID: 1238682946563954, guid: 196a84248049ba34f922132d9d9a1a48, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: minerShackPrefab
       value: 
       objectReference: {fileID: 375612016174204231, guid: 6a89f1171ac9ecb40ac8fd60a6a4b05c, type: 3}
+    - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
+      propertyPath: heavyKnightPrefab
+      value: 
+      objectReference: {fileID: 1397322852328600, guid: ac7b5ae9795d5c14f8723b64ba870e99, type: 3}
     - target: {fileID: 4036296986935498750, guid: 8cfd5a063fe14864583dadfb3e3bae0a, type: 3}
       propertyPath: worldMapArmyPrefab
       value: 
@@ -1667,6 +1679,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ce096b70569534796c3eb6070c9fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  baseBattleTimeSecs: 6
+  minBattleTimeSecs: 2
 --- !u!1 &997535176
 GameObject:
   m_ObjectHideFlags: 0

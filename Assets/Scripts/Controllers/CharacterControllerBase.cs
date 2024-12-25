@@ -48,11 +48,6 @@ public class CharacterControllerBase : NetworkBehaviour
         }
     }
 
-    virtual protected void OnCollisionEnter2D(Collision2D collision)
-    {
-       
-    }
-
     public virtual void SetHash(string hash)
     {
         this.hash = hash;

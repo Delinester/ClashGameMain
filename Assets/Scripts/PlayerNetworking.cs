@@ -27,9 +27,18 @@ public class PlayerGameData
 public class PlayerNetworking : NetworkBehaviour
 {
     [System.Serializable]
-    public class UserData 
+    public class UserData
     {
         public string username;
+        public string name;
+        public string surename;
+        public string gender;
+        public string b_date;
+        public int age;
+        public string address;
+        public string email;
+        public string password;
+        public int icon_id;
     }
 
     [SyncVar(hook = nameof(OnGameDataUpdate))]

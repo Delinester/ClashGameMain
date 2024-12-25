@@ -208,7 +208,7 @@ public class GameManager : NetworkBehaviour
     private Vector3 minerSpawnPosOffset = new Vector3(1, -3, -1);
 
     private Vector3 worldMapSpawnPos = new Vector3(0, 3000, 0);
-    private Vector3 worldMapCharacterSpawnOffset = new Vector3(0, 2f, 0);
+    private Vector3 worldMapCharacterSpawnOffset = new Vector3(0, 5f, 0);
 
     List<CharacterControllerBase> puppetsList = new List<CharacterControllerBase>();
 
@@ -341,6 +341,27 @@ public class GameManager : NetworkBehaviour
         else return townTeam2.gameObject.transform.position;
     }
 
+    public GameObject GetTroopPrefab(Resource type)
+    {
+        GameObject character = null;
+        switch (type)
+        {
+            case Resource.BARBARIAN: character = barbarianPrefab; break;
+            case Resource.MERCENARY: character = mercenaryPrefab; break;
+            case Resource.HEAVY_KNIGHT: character = heavyKnightPrefab; break;
+        }
+        return character;
+    }
+
+    public ArmySpawnBounds GetTownArmySpawnBounds(int teamNum)
+    {
+        GameObject townObject = null;
+        if (teamNum == 1) townObject = townTeam1;
+        else townObject = townTeam2;
+
+        return townObject.GetComponentInChildren<ArmySpawnBounds>();
+    }
+
     void Awake()
     {
         if (instance == null)
@@ -371,6 +392,17 @@ public class GameManager : NetworkBehaviour
 
             GameRole role = player.synchronizedPlayerGameData.role;
 
+
+            townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
+            townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
+
+
+            minerShack1 = Instantiate(minerShackPrefab, minerShack1Location, minerCharacterPrefab.transform.rotation);
+            minerShack2 = Instantiate(minerShackPrefab, minerShack2Location, minerCharacterPrefab.transform.rotation);
+
+
+            GameObject worldMapInstance = Instantiate(worldMap, worldMapSpawnPos, worldMap.transform.rotation);
+
             //mineManager.CMDGenerateMine(player.synchronizedPlayerGameData.matchPtr.matchID);
 
             if (role == GameRole.TOWN_MANAGER)
@@ -379,8 +411,6 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnTownManagerUI(true);
                 gameUI.TurnMinerUI(false);
                 gameUI.TurnWarriorUI(false);
-                townTeam1 = Instantiate(townPrefab, town1Pos, townPrefab.transform.rotation);
-                townTeam2 = Instantiate(townPrefab, town2Pos, townPrefab.transform.rotation);
 
                 Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
                 //townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
@@ -402,8 +432,6 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnWarriorUI(false);
                 Vector3 minerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? minerShack1Location + minerSpawnPosOffset : minerShack2Location + minerSpawnPosOffset;
 
-                minerShack1 = Instantiate(minerShackPrefab, minerShack1Location, minerCharacterPrefab.transform.rotation);
-                minerShack2 = Instantiate(minerShackPrefab, minerShack2Location, minerCharacterPrefab.transform.rotation);
 
                 // Miner should be visible for all clients!
                 minerCharacter = Instantiate(minerCharacterPrefab, player.gameObject.transform);
@@ -423,7 +451,6 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnMinerUI(false);
                 gameUI.TurnTownManagerUI(false);
                 gameUI.TurnWarriorUI(true);
-                GameObject worldMapInstance = Instantiate(worldMap, worldMapSpawnPos, worldMap.transform.rotation);
 
                 worldMapCharacter = Instantiate(worldMapCharacterPrefab, player.transform);
                 Vector3 spawnPos = worldMapSpawnPos + (player.synchronizedPlayerGameData.teamNumber == 1 ? worldMapCharacterSpawnOffset : -worldMapCharacterSpawnOffset);
@@ -480,7 +507,13 @@ public class GameManager : NetworkBehaviour
     {
 
         Debug.LogError("Calling RPC on " + puppetType + " " + position);
-        foreach (PlayerNetworking p in LobbyManager.instance.GetPlayersInMatch(matchID))
+        List<PlayerNetworking> playersInMatch = LobbyManager.instance.GetPlayersInMatch(matchID);
+        if (playersInMatch == null)
+        {
+            Debug.LogError("Plaers in match is NULL");
+            return;
+        }
+        foreach (PlayerNetworking p in playersInMatch)
         {
             NetworkConnectionToClient conn = p.GetComponent<NetworkIdentity>().connectionToClient;
             string user = p.GetUserData().username;
@@ -549,12 +582,25 @@ public class GameManager : NetworkBehaviour
             case PuppetType.HEAVY_KNIGHT: character = heavyKnightPrefab; break;
             case PuppetType.ARMY: character = worldMapArmyPrefab; break; 
         }
+        if (character == null)
+        {
+            Debug.LogError("RPCSpawnPuppetOnClients character is NULL");
+            return;
+        }
         GameObject obj = Instantiate(character, position, character.transform.rotation);
         Debug.Log("Puppet is spawned!");
         CharacterControllerBase charac = obj.GetComponent<CharacterControllerBase>();
         charac.SetIsPuppet(true);
         charac.SetHash(hash);
         puppetsList.Add(charac);
+    }
+
+    public static PuppetType ConvertResourceToPuppet(Resource res)
+    {
+        if (res == Resource.BARBARIAN) return PuppetType.BARBARIAN;
+        else if (res == Resource.MERCENARY) return PuppetType.MERCENARY;
+        else if (res == Resource.HEAVY_KNIGHT) return PuppetType.HEAVY_KNIGHT;
+        return PuppetType.BARBARIAN;
     }
     // Start is called before the first frame update
     

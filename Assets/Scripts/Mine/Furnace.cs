@@ -30,11 +30,14 @@ public class Furnace : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        minerController = LocalStateManager.instance.localPlayerCharacter.GetComponentInChildren<MinerController>();
-        if (!minerController) Debug.LogError("Error accessing Miner Controller: Furnace");
         PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-        teamNum = player.synchronizedPlayerGameData.teamNumber;
-        matchID = player.synchronizedPlayerGameData.matchPtr.matchID;
+        if (player.synchronizedPlayerGameData.role == GameRole.MINER)
+        {
+            minerController = LocalStateManager.instance.localPlayerCharacter.GetComponentInChildren<MinerController>();
+            if (!minerController) Debug.LogError("Error accessing Miner Controller: Furnace");
+            teamNum = player.synchronizedPlayerGameData.teamNumber;
+            matchID = player.synchronizedPlayerGameData.matchPtr.matchID;
+        }
     }
 
     private IEnumerator ForgeGold()

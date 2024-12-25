@@ -9,6 +9,7 @@ public class PlayerTown : MonoBehaviour
     private GameObject interactionUI;
 
     private string matchID;
+    [SerializeField]
     private int teamNum;
 
     private bool isTrainingTroop;
@@ -34,12 +35,27 @@ public class PlayerTown : MonoBehaviour
         GameManager.instance.CMDUpdateResource(msg);
         isTrainingTroop = false;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Town collided with " + collision.name);
+        if (collision.gameObject.tag == "Army" && teamNum != collision.GetComponent<WorldMapArmyAI>().GetOwnerTeamNum())
+        {
+            matchID = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID;
+
+            Debug.Log("TOWN COLLIDED WITH ARMY! MatchID: " + matchID);
+            WorldMapArmyAI army = collision.GetComponent<WorldMapArmyAI>();
+            GameManager.instance.battlesManager.CMDSpawnArmyInTown(matchID, new Army(collision.gameObject.GetComponent<WorldMapArmyAI>().GetTroopsInArmy()), teamNum);
+
+            GameManager.instance.battlesManager.CMDDestroyArmyByHash(matchID, army.GetHash());
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
         PlayerNetworking playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         matchID = playerNetworking.synchronizedPlayerGameData.matchPtr.matchID;
-        teamNum = playerNetworking.synchronizedPlayerGameData.teamNumber;
+        //teamNum = playerNetworking.synchronizedPlayerGameData.teamNumber;
 
         canvas = GetComponentInChildren<Canvas>();
 

@@ -118,6 +118,55 @@ public class BattlesManager : NetworkBehaviour
 
     }
 
+    [Command(requiresAuthority =false)]
+    public void CMDSpawnArmyInTown(string matchID, Army army, int teamNumber)
+    {
+        Debug.LogError("CMD SpawnArmyInTown Initiated!");
+        foreach (PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
+            if (player.synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER && player.synchronizedPlayerGameData.teamNumber == teamNumber)
+            {
+                Debug.LogError("Requested ARMY spawn in town for " + player.GetUserData().username + " in team " + teamNumber);
+                RPCSpawnArmyInTown(conn, army, teamNumber);
+            }
+        }
+    }
+
+    [TargetRpc]
+    private void RPCSpawnArmyInTown(NetworkConnectionToClient conn, Army army, int teamNumber)
+    {        
+        for (int i = 0; i < army.counts.Length; i++)
+        {
+            GameObject troopPrefab = GameManager.instance.GetTroopPrefab(army.troopTypes[i]);
+            if (troopPrefab == null)
+            {
+                Debug.Log("Troop prefab is null!");
+            }
+            for (int j = 0; j < army.counts[i]; j++)
+            {
+                string puppetHash = LobbyManager.instance.GenerateRandomString(20);
+                Debug.Log("Loop of army spawning!");
+                ArmySpawnBounds spawnBounds = GameManager.instance.GetTownArmySpawnBounds(teamNumber);
+                Collider2D[] bounds = spawnBounds.GetComponents<Collider2D>();
+                Bounds bound = bounds[Random.Range(0, bounds.Length)].bounds;
+                float randX = Random.Range(bound.min.x, bound.max.x);
+                float randY = Random.Range(bound.min.y, bound.max.y);
+                Vector2 spawnPos = new Vector2(randX, randY);
+
+                GameObject troop = Instantiate(troopPrefab, spawnPos, troopPrefab.transform.rotation);
+                troop.GetComponent<CharacterControllerBase>().SetHash(puppetHash);
+                string username = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username;
+
+                
+
+                Debug.Log("RPC Spawn army in Town called on " + matchID);
+                string match_id = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID;
+                GameManager.instance.CMDSpawnPuppetOnClients(match_id, username, puppetHash, GameManager.ConvertResourceToPuppet(army.troopTypes[i]), spawnPos);
+            }
+        }
+    }
+
     private IEnumerator ArmyBattleCoroutine(float time, WorldMapArmyAI army1, WorldMapArmyAI army2)
     {
         yield return new WaitForSeconds(time);
