@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8563792869672932462}
   - component: {fileID: 4036296986935498750}
   - component: {fileID: 7543914281797886095}
+  - component: {fileID: 8534503635947333063}
+  - component: {fileID: 1314070331382787913}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -67,8 +69,23 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   buildingManager: {fileID: 0}
+  mineManager: {fileID: 0}
+  battlesManager: {fileID: 0}
+  navMesh: {fileID: 0}
   townPrefab: {fileID: 8377242900698384207, guid: 5e56e561600cf2a49a1432baa2308024, type: 3}
-  townManagerCharacterPrefab: {fileID: 1959210465276336, guid: 80009d592906c7b4f8b0948f687288cf, type: 3}
+  townManagerCharacterPrefab: {fileID: 1104465774215058, guid: ce35193a39275224397f65748f404ba6, type: 3}
+  minerCharacterPrefab: {fileID: 1208990338294124, guid: c1b8545ec4e5e7743a4e08be784c1590, type: 3}
+  minerShackPrefab: {fileID: 375612016174204231, guid: 6a89f1171ac9ecb40ac8fd60a6a4b05c, type: 3}
+  worldMap: {fileID: 8860949393878427013, guid: 75006561e14e4824182cdf0c6f311be6, type: 3}
+  worldMapCharacterPrefab: {fileID: 5022896179827055719, guid: 8f53ee39b3739184bb2dbf850c7bdecd, type: 3}
+  barbarianPrefab: {fileID: 1756856227512238, guid: bb116251660ef714fa60e4bc1766d712, type: 3}
+  mercenaryPrefab: {fileID: 1238682946563954, guid: 196a84248049ba34f922132d9d9a1a48, type: 3}
+  heavyKnightPrefab: {fileID: 1397322852328600, guid: ac7b5ae9795d5c14f8723b64ba870e99, type: 3}
+  worldMapArmyPrefab: {fileID: 1118383858983047829, guid: 323cfb39e21bfb6408890e0c71211436, type: 3}
+  troopDataArray:
+  - {fileID: 11400000, guid: 17e358febfe9b984288413fc3568292b, type: 2}
+  - {fileID: 11400000, guid: e449b98d4b377b44abdf05de62b3f897, type: 2}
+  - {fileID: 11400000, guid: 0615adcc5237bb04b8a663167ccbf29c, type: 2}
 --- !u!114 &7543914281797886095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,3 +105,45 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0273d7e7e875dd24baab7439080be67d, type: 2}
   - {fileID: 11400000, guid: 9cf0d41130d8d1342ba0e8443923bbcc, type: 2}
   - {fileID: 11400000, guid: d3961f57f1a2efd478d7fb9cd35a60eb, type: 2}
+  - {fileID: 11400000, guid: d8d34db9d4473f049920c6bb6b403bf8, type: 2}
+  - {fileID: 11400000, guid: 3e4d118001f582f44b704a18d4fe01c1, type: 2}
+--- !u!114 &8534503635947333063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198235366432209557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f264bf2c04d584081dffebea1fb1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  destructibleObjectsList:
+  - {fileID: 11400000, guid: a2b0a4ed4ae9b6a4d94d2c7ed87aca88, type: 2}
+  - {fileID: 11400000, guid: b52648c03e6d2a543b6bd6fb62e5a9e1, type: 2}
+  mineRoomPrefabs:
+  - {fileID: 3265380737329317892, guid: 4e47d2c2a562bda4c82646287c14ad50, type: 3}
+  - {fileID: 3265380737329317892, guid: 6a25103a7fb800f428af6893690e5444, type: 3}
+  mine1Location: {x: 0, y: 6669, z: 0}
+  mine2Location: {x: 0, y: -6669, z: 0}
+--- !u!114 &1314070331382787913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198235366432209557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ce096b70569534796c3eb6070c9fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  baseBattleTimeSecs: 6
+  minBattleTimeSecs: 2

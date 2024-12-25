@@ -158,6 +158,8 @@ public class BattlesManager : NetworkBehaviour
                 troop.GetComponent<CharacterControllerBase>().SetHash(puppetHash);
                 string username = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData().username;
 
+                troop.GetComponent<TroopAI>().SetTeamNumber(army.ownerTeamNum);
+                //troop.GetComponent<TroopAI>().SetMovingSpeed(2.5f);
                 
 
                 Debug.Log("RPC Spawn army in Town called on " + matchID);

@@ -23,6 +23,8 @@ public class MenuUI : MonoBehaviour
     private GameObject playButtonObject;
     [SerializeField]
     private GameObject connectButtonObject;
+    [SerializeField]
+    private GameObject registrationMenu;
 
     [SerializeField]
     private TMP_InputField ipField;
@@ -91,16 +93,17 @@ public class MenuUI : MonoBehaviour
 
     public void OnRegisterButtonPressed()
     {
-        apiConnector = FindObjectOfType<APIConnector>();
-        playerNetworking = FindObjectOfType<PlayerNetworking>();
-        clientConn = apiConnector.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+        registrationMenu.SetActive(true);
+        //apiConnector = FindObjectOfType<APIConnector>();
+        //playerNetworking = FindObjectOfType<PlayerNetworking>();
+        //clientConn = apiConnector.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
 
-        if (!CheckInputFields()) { return; }
+        //if (!CheckInputFields()) { return; }
 
-        PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
-        userData.username = usernameInputField.text;
-        Debug.Log("MenuUI userData is " + userData.GetType());
-        apiConnector.Register(userData, clientConn);
+        //PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
+        //userData.username = usernameInputField.text;
+        //Debug.Log("MenuUI userData is " + userData.GetType());
+        //apiConnector.Register(userData, clientConn);
     }
 
     public void OnPlayButtonPressed()

@@ -188,7 +188,7 @@ public class LobbyUI : MonoBehaviour
             GameObject obj = Instantiate(listEntryPrefab, listContentObject.transform);
             RoomListEntry listEntry = obj.GetComponent<RoomListEntry>();
             listEntry.matchPtr = manager.matchesList[i];
-            listEntry.numberOfPlayers.text = manager.matchesList[i].players.Count.ToString() + "/4";
+            listEntry.numberOfPlayers.text = manager.matchesList[i].players.Count.ToString() + "/6";
             listEntry.nameText.text = manager.matchesList[i].matchName;
 
             //obj.GetComponentInChildren<JoinRoomButtonScript>().gameObject.GetComponent<Button>().clicked += () => OnJoinRoomPressed(listEntry);

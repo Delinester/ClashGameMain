@@ -1,4 +1,5 @@
 using Mirror;
+using NavMeshPlus.Components;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -199,6 +200,9 @@ public class GameManager : NetworkBehaviour
     [HideInInspector]
     public BattlesManager battlesManager;
 
+    [SerializeField]
+    private GameObject navMesh;
+
     private Vector3 town1Pos = new Vector3(0, 0, 0);
     private Vector3 town2Pos = new Vector3(0, 100, 0);
     private Vector3 townManagerSpawnPosOffset = new Vector3(5, 5, -1);
@@ -333,7 +337,10 @@ public class GameManager : NetworkBehaviour
     }
 
    
-
+    public void BakeNavMesh()
+    {
+        navMesh.GetComponent<NavMeshSurface>().BuildNavMeshAsync();
+    }
     public Vector2 GetTownTeamPosition(int teamNum)
     {
         if (teamNum == 1)
@@ -402,6 +409,8 @@ public class GameManager : NetworkBehaviour
 
 
             GameObject worldMapInstance = Instantiate(worldMap, worldMapSpawnPos, worldMap.transform.rotation);
+
+            BakeNavMesh();
 
             //mineManager.CMDGenerateMine(player.synchronizedPlayerGameData.matchPtr.matchID);
 
@@ -494,6 +503,7 @@ public class GameManager : NetworkBehaviour
     {
         foreach(CharacterControllerBase puppet in puppetsList)
         {
+            if (puppet == null) continue;
             if (puppet.GetHash() == hash)
             {
                 puppet.gameObject.transform.position = position;
@@ -593,6 +603,23 @@ public class GameManager : NetworkBehaviour
         charac.SetIsPuppet(true);
         charac.SetHash(hash);
         puppetsList.Add(charac);
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CMDDoGameOver(string matchID)
+    {
+        foreach(PlayerNetworking player in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            NetworkConnectionToClient conn = player.GetComponent<NetworkIdentity>().connectionToClient;
+            RPCDoGameOver(conn);
+            //LobbyManager.instance.ServerPlayerLeaveMatch(player, matchID);
+        }
+    }
+
+    [TargetRpc]
+    private void RPCDoGameOver(NetworkConnectionToClient conn)
+    {
+        gameUI.ShowGameOver();
     }
 
     public static PuppetType ConvertResourceToPuppet(Resource res)

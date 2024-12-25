@@ -44,6 +44,10 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private GameObject createArmyMenuObject;
 
+    [Header("Misc")]
+    [SerializeField]
+    private GameObject gameOverUI;
+
     private bool isInBuildingMode = false;
     private bool isArmyChosen = false;
 
@@ -145,6 +149,14 @@ public class GameUI : MonoBehaviour
         else warriorWorldMapUI.SetActive(false);
     }
 
+    public void ShowGameOver()
+    {
+        TurnWarriorUI(false);
+        TurnMinerUI(false);
+        TurnTownManagerUI(false);
+        gameOverUI.SetActive(true);
+    }
+
     public void DisplayArmyCreationMenu(Vector3 position)
     {
         createArmyMenuObject.transform.position = position;
@@ -165,14 +177,15 @@ public class GameUI : MonoBehaviour
         mousePos = mainCamera.ScreenToWorldPoint(mousePos);
         if (player.synchronizedPlayerGameData.role == GameRole.TOWN_MANAGER && isInBuildingMode && currentBuildingObject)
         {
-            Vector3 buildingPos = new Vector3(mousePos.x, mousePos.y, -3);
+            Vector3 buildingPos = new Vector3(mousePos.x, mousePos.y,0);
             currentBuildingObject.gameObject.transform.position = buildingPos;
             Building buildingComponent = currentBuildingObject.GetComponent<Building>();
 
             if (Input.GetMouseButtonDown(0) && !buildingComponent.IsColliding() && !buildingComponent.IsOutOfBounds() && !buildingComponent.IsFarFromPlayer())
             {
                 PlayerNetworking currentPlayer = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-                GameManager.instance.buildingManager.PlaceBuilding(currentBuildingData.buildingName, buildingPos, currentPlayer.synchronizedPlayerGameData.matchPtr.matchID, currentPlayer); ;
+                string buildingHash = LobbyManager.instance.GenerateRandomString(20);
+                GameManager.instance.buildingManager.PlaceBuilding(currentBuildingData.buildingName, buildingPos, currentPlayer.synchronizedPlayerGameData.matchPtr.matchID, currentPlayer, buildingHash);
                 Destroy(currentBuildingObject);
                 isInBuildingMode = false;
                 currentBuildingData.currentlyBuiltAmount += 1;

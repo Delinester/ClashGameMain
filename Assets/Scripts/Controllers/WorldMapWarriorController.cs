@@ -33,7 +33,7 @@ public class WorldMapWarriorController : CharacterControllerBase
     override protected void Update()
     {
         base.Update();
-
+        if (LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.role != GameRole.WARRIOR) return;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if (Input.GetKeyDown(KeyCode.Mouse1))

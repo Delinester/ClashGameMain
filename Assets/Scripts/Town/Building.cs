@@ -23,6 +23,7 @@ public class Building : MonoBehaviour
     private bool isBuildingMode = false;
     private bool isFarFromPlayer = false;
 
+    private string hash;
 
     float maxDistanceToPlayerToBuild = 5f;
     void Awake()
@@ -42,6 +43,19 @@ public class Building : MonoBehaviour
 
 
         // Play animation and spawn resource on ground??? for pawn to pick it up and bring to base or for player himself
+    }
+    public void SetHash(string hash)
+    {
+        this.hash = hash;
+    }
+    public string GetHash()
+    {
+        return hash;
+    }
+    public void DamageBy(int damage)
+    {
+        currentHp -= damage;
+        Debug.Log("Building  " + hash + " 's health is " + currentHp);
     }
 
     public void SetPlayer(PlayerNetworking player)
@@ -176,7 +190,15 @@ public class Building : MonoBehaviour
             if (isColliding || isFarFromPlayer || isOutOfBounds) PaintItRed();
             else PaintItGreen();
         }
-
+        if (currentHp <= 0)
+        {
+            if (buildingData.buildingName == "TownHall")
+            {
+                GameManager.instance.CMDDoGameOver(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.matchPtr.matchID);
+                return;
+            }
+            GameManager.instance.buildingManager.CMDDestroyBuilding(player.synchronizedPlayerGameData.matchPtr.matchID, hash);
+        }
         //if (isFarFromPlayer) PaintItRed();
         //else PaintItGreen();
     }
