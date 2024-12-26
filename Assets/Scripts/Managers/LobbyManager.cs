@@ -99,12 +99,17 @@ public class LobbyManager : NetworkBehaviour
 
 
     [Command(requiresAuthority =false)]
-    public void CreateMatch(string matchName, PlayerNetworking player)
+    public void CreateMatch(string matchName, string password, PlayerNetworking player)
     {
         string matchId = GenerateRandomString(10);
        // PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         matchIDs.Add(matchId);
         Match match = new Match(matchId, matchName, false);
+        if (password != "")
+        {
+            match.passwordProtected = true;
+            match.password = password;
+        }
         matchesList.Add(match);
         GameManager.instance.InsertGameDataServer(matchId, new GameData());
         //player.matchPtr = match;

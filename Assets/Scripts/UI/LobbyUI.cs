@@ -16,12 +16,20 @@ public class LobbyUI : MonoBehaviour
     private GameObject listContentObject;
     [SerializeField]
     private GameObject listEntryPrefab;
+    [SerializeField]
+    private GameObject passwordEntryObj;
+    [SerializeField]
+    private TextMeshProUGUI passwordEntryHeaderText;
+    [SerializeField]
+    private TMP_InputField roomPassField;
 
     [Header("Room creation")]
     [SerializeField]
     private GameObject createRoomPanel;
     [SerializeField]
     private TMP_InputField nameInputField;
+    [SerializeField]
+    private TMP_InputField passwordInputField;
 
     [Header("Waiting Room")]
     [SerializeField]
@@ -38,6 +46,8 @@ public class LobbyUI : MonoBehaviour
     private Sprite townmanagerIcon;
     [SerializeField]
     private Sprite minerIcon;
+
+    private Match selectedMatch;
 
     // Start is called before the first frame update
     public void OpenCreateRoomPanel()
@@ -190,6 +200,7 @@ public class LobbyUI : MonoBehaviour
             listEntry.matchPtr = manager.matchesList[i];
             listEntry.numberOfPlayers.text = manager.matchesList[i].players.Count.ToString() + "/6";
             listEntry.nameText.text = manager.matchesList[i].matchName;
+            if (manager.matchesList[i].passwordProtected) listEntry.lockIconObj.SetActive(true);
 
             //obj.GetComponentInChildren<JoinRoomButtonScript>().gameObject.GetComponent<Button>().clicked += () => OnJoinRoomPressed(listEntry);
             
@@ -200,15 +211,47 @@ public class LobbyUI : MonoBehaviour
     public void OnConfirmCreateRoomPressed()
     {
         string matchName = nameInputField.text;
+        string password = passwordInputField.text;
         Debug.Log("Match is " + matchName);
-        LobbyManager.instance.CreateMatch(matchName, LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>());
+        LobbyManager.instance.CreateMatch(matchName, password, LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>());
     }
 
     public void OnJoinRoomPressed(RoomListEntry entry)
     {
         Debug.Log("Join Button Pressed");
         Match match = entry.matchPtr;
+        selectedMatch = match;
+        if (match.passwordProtected)
+        {
+            passwordEntryObj.SetActive(true);
+            passwordEntryHeaderText.text = $"Enter {match.matchName}'s password";
+            return;
+        }
         LobbyManager.instance.CMDJoinMatch(match.matchID, LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>());
+    }
+
+    public void OnJoinPasswordPressed()
+    {
+        string enteredPass = passwordInputField.text;
+        if (selectedMatch != null)
+        {
+            if (selectedMatch.password != enteredPass)
+            {
+                Debug.Log($"Entered {enteredPass} and should be {selectedMatch.password}");
+                passwordEntryHeaderText.text = "Password is incorrect";
+            }
+            else
+            {
+                PasswordEntryClose();
+                LobbyManager.instance.CMDJoinMatch(selectedMatch.matchID, LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>());
+            }
+        }
+    }
+
+    public void PasswordEntryClose()
+    {
+        passwordEntryHeaderText.text = "Enter match password";
+        passwordEntryObj.SetActive(false);
     }
 
     void Start()

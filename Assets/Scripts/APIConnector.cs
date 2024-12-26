@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System.Text;
 using System;
 using System.Collections.Generic;
+using static PlayerNetworking;
 
 public class APIConnector : NetworkBehaviour
 {
@@ -25,7 +26,7 @@ public class APIConnector : NetworkBehaviour
     {
         LoadingCanvas.instance.gameObject.SetActive(true);
         playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
-        playerNetworking.AssignUserData(userData);
+        playerNetworking.AssignUserData(userData, playerNetworking.gameObject.GetComponent<NetworkIdentity>().connectionToClient);
         menuController = FindObjectOfType<MenuUI>();
 
         LoginPlayer_Server(JsonUtility.ToJson(userData), conn);
@@ -49,11 +50,13 @@ public class APIConnector : NetworkBehaviour
             menuController.SetStatusString("Welcome back, " + playerNetworking.GetUserData().username);
             Debug.Log("Username: " + playerNetworking.GetUserData().username);
             menuController.UnlockPlayButton();
+            GetPlayer(playerNetworking.GetUserData().username, conn);
         }
         else
         {
             menuController.SetStatusString("Login failed!");
             Debug.LogError("Login failed with code " + code);
+            menuController.LockPlayButton();
         }
     }
 
@@ -129,6 +132,9 @@ public class APIConnector : NetworkBehaviour
         if (player != null)
         {
             Debug.Log("Player found! Player username: " + player.username);
+            
+            playerNetworking.AssignUserData(player, playerNetworking.gameObject.GetComponent<NetworkIdentity>().connectionToClient);
+            menuController.UnlockProfile();
         }
         else
         {

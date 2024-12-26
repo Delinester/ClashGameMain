@@ -72,6 +72,26 @@ MonoBehaviour:
   mineManager: {fileID: 0}
   battlesManager: {fileID: 0}
   navMesh: {fileID: 0}
+  avatarsList:
+  - {fileID: 21300000, guid: a7b74a69451d76841bb300f5ab1fac57, type: 3}
+  - {fileID: 21300000, guid: 73916de4b5e9be74490c4757444199f2, type: 3}
+  - {fileID: 21300000, guid: 777eaf23d1d2c584685c78509be5d9ab, type: 3}
+  - {fileID: 21300000, guid: 7daefc7f44836274c949476780641697, type: 3}
+  - {fileID: 21300000, guid: 26c5da56c5121994da257fe0b6406c16, type: 3}
+  - {fileID: 21300000, guid: 2a2e0f3bd28377747a142837e6b08c28, type: 3}
+  - {fileID: 21300000, guid: 3f0ea84524e1feb449289360dd619920, type: 3}
+  - {fileID: 21300000, guid: 81a2c51eb0420b54db3cc42e54fa9a58, type: 3}
+  - {fileID: 21300000, guid: 3c86014b3b47c7d44a910d02b1016c09, type: 3}
+  - {fileID: 21300000, guid: 8ced3a7469df83d4aa3cbb2a212f5d0b, type: 3}
+  - {fileID: 21300000, guid: 2a4374ace76a62441b7b7d3822d5c383, type: 3}
+  - {fileID: 21300000, guid: 29438ff36a828c8468fe05b5ad699518, type: 3}
+  - {fileID: 21300000, guid: 7e930b242f2c60a4daafe45757b6a5ea, type: 3}
+  - {fileID: 21300000, guid: e52cafee3fc25d54da31c58301dd8b20, type: 3}
+  - {fileID: 21300000, guid: 32662032341d9d0478bc971860f76e85, type: 3}
+  - {fileID: 21300000, guid: ffb85fd818adffa4089d49c2409ed8a4, type: 3}
+  - {fileID: 21300000, guid: 937cbe4b4310fe24fad4ef2d33861d56, type: 3}
+  - {fileID: 21300000, guid: 38b08e52be324454a8cff25468244c90, type: 3}
+  - {fileID: 21300000, guid: 7aab9247f5704e14fb7c467caab2c78b, type: 3}
   townPrefab: {fileID: 8377242900698384207, guid: 5e56e561600cf2a49a1432baa2308024, type: 3}
   townManagerCharacterPrefab: {fileID: 1104465774215058, guid: ce35193a39275224397f65748f404ba6, type: 3}
   minerCharacterPrefab: {fileID: 1208990338294124, guid: c1b8545ec4e5e7743a4e08be784c1590, type: 3}

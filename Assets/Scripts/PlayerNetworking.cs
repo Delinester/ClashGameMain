@@ -51,10 +51,10 @@ public class PlayerNetworking : NetworkBehaviour
     //public Match matchPtr = null;
     public NetworkConnectionToClient clientConnection;
 
-    private UserData localUserData = new UserData();
+    public UserData localUserData = new UserData();
 
-    [SyncVar(hook = nameof(OnUserDataUpdate))]
-    private UserData syncronizedUserData = new UserData();
+    //[SyncVar(hook = nameof(OnUserDataUpdate))]
+    //private UserData syncronizedUserData = new UserData();
 
     private void OnUserDataUpdate(UserData _old, UserData _new)
     {
@@ -76,9 +76,37 @@ public class PlayerNetworking : NetworkBehaviour
     }
 
     [Command]
-    public void AssignUserData(UserData data)
+    public void AssignUserData(UserData data, NetworkConnectionToClient conn)
     {
-        syncronizedUserData = data;
+        Debug.LogError("Got UserData " + data.email);
+        // syncronizedUserData = data;
+        RPCAssignUserData(conn, data);
+    }
+
+    [Command]
+    public void AssignUserData( APIConnector.PlayerOut data, NetworkConnectionToClient conn)
+    {
+        Debug.LogError("Got PlayerOutData " + data.email);
+        UserData userdata = new UserData();
+        userdata.username = data.username;
+        userdata.name = data.name;
+        userdata.surname = data.surname;
+        userdata.b_date = data.b_date;
+        userdata.email = data.email;
+        userdata.address = data.address;
+        userdata.icon_id = data.icon_id;
+        userdata.age = data.age;
+        userdata.gender = data.gender;
+
+        RPCAssignUserData(conn, userdata);
+    }
+
+    [TargetRpc]
+    private void RPCAssignUserData(NetworkConnectionToClient conn, UserData data)
+    {
+        Debug.Log("Got RPC assignUserData");
+        //syncronizedUserData = data;
+        localUserData = data;
     }
 
     [Server]
@@ -98,7 +126,8 @@ public class PlayerNetworking : NetworkBehaviour
 
     public UserData GetUserData()
     {
-        return syncronizedUserData;
+        //return syncronizedUserData;
+        return localUserData;
     }
 
     public PlayerGameData GetGameData()

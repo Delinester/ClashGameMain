@@ -216,6 +216,12 @@ public class GameManager : NetworkBehaviour
 
     List<CharacterControllerBase> puppetsList = new List<CharacterControllerBase>();
 
+    [Header("Avatars and Profile")]
+    [SerializeField]
+    public List<Sprite> avatarsList;
+    [SerializeField]
+    public List<Sprite> achievementsList;
+
     [Header("Town stuff")]
     [SerializeField]
     private GameObject townPrefab;

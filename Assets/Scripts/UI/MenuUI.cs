@@ -25,8 +25,17 @@ public class MenuUI : MonoBehaviour
     public TMP_InputField addressRegField;
     public TMP_InputField passwordRegField;
     public TMP_InputField iconidRegField;
-
     public TextMeshProUGUI regStatusString;
+
+    [Header("Profile")]
+    [SerializeField]
+    private GameObject miniprofileObj;
+    [SerializeField]
+    private TextMeshProUGUI miniProfileusername;
+    [SerializeField]
+    private Image miniProfileImage;
+    [SerializeField]
+    private GameObject profileUI;
 
     private PlayerNetworking playerNetworking;
     private APIConnector apiConnector;
@@ -130,7 +139,8 @@ public class MenuUI : MonoBehaviour
         userData.username = usernameRegField.text;
         userData.name = nameRegField.text;
         userData.surname = surnameRegField.text;
-        userData.gender = genderDropdown.itemText.text;
+        int selectedIdx = genderDropdown.value;
+        userData.gender = genderDropdown.options[selectedIdx].text;
         userData.b_date = bdayRegField.text;
         userData.age = int.Parse(ageRegField.text);
         userData.email = emailRegField.text;
@@ -147,6 +157,29 @@ public class MenuUI : MonoBehaviour
         playerNetworking.ChangeScene("Lobby");
     }
 
+    public void OnProfileButtonPressed()
+    {
+        profileUI.SetActive(true);
+        PlayerNetworking.UserData data = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData();
+        profileUI.GetComponent<profileUI>().SetData(data);
+
+        Debug.Log("UserData details:");
+        Debug.Log($"Username: {data.username}");
+        Debug.Log($"Name: {data.name}");
+        Debug.Log($"Surname: {data.surname}");
+        Debug.Log($"Gender: {data.gender}");
+        Debug.Log($"Birth Date: {data.b_date}");
+        Debug.Log($"Age: {data.age}");
+        Debug.Log($"Address: {data.address}");
+        Debug.Log($"Email: {data.email}");
+        Debug.Log($"Icon ID: {data.icon_id}");
+    }
+
+    public void CloseProfile()
+    {
+        profileUI.SetActive(false);
+    }
+
     public void UnlockClientConnectMenu()
     {
         allowWhenClientConnected.SetActive(true);
@@ -157,6 +190,18 @@ public class MenuUI : MonoBehaviour
         playButtonObject.SetActive(true);
     }
 
+    public void UnlockProfile()
+    {
+        miniprofileObj.SetActive(true);
+        PlayerNetworking.UserData data = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().GetUserData();
+        miniProfileImage.sprite = GameManager.instance.avatarsList[data.icon_id];
+        miniProfileusername.text = data.username;
+    }
+
+    public void LockPlayButton()
+    {
+        playButtonObject.SetActive(false);
+    }
     private bool CheckInputFields()
     {
         if (usernameInputField.text.Length < 5 || usernameInputField.text.Length > 12)
