@@ -31,7 +31,7 @@ public class PlayerNetworking : NetworkBehaviour
     {
         public string username;
         public string name;
-        public string surename;
+        public string surname;
         public string gender;
         public string b_date;
         public int age;

@@ -12,6 +12,21 @@ public class MenuUI : MonoBehaviour
     public TextMeshProUGUI statusText;
     public Button connectButton;
     public TMP_InputField usernameInputField;
+    public TMP_InputField passwordInputField;
+
+    [Header("Registration")]
+    public TMP_InputField usernameRegField;
+    public TMP_InputField nameRegField;
+    public TMP_InputField surnameRegField;
+    public TMP_Dropdown genderDropdown;
+    public TMP_InputField bdayRegField;
+    public TMP_InputField ageRegField;
+    public TMP_InputField emailRegField;
+    public TMP_InputField addressRegField;
+    public TMP_InputField passwordRegField;
+    public TMP_InputField iconidRegField;
+
+    public TextMeshProUGUI regStatusString;
 
     private PlayerNetworking playerNetworking;
     private APIConnector apiConnector;
@@ -88,22 +103,43 @@ public class MenuUI : MonoBehaviour
         if (!CheckInputFields()) { return; }
         PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
         userData.username = usernameInputField.text;
+        userData.password = passwordInputField.text;
         apiConnector.Login(userData, clientConn);
+    }
+
+    public void OpenRegistrationMenu()
+    {
+
+        registrationMenu.SetActive(true);
+    }
+
+    public void CloseRegistrationMenu()
+    {
+        registrationMenu.SetActive(false);
     }
 
     public void OnRegisterButtonPressed()
     {
-        registrationMenu.SetActive(true);
-        //apiConnector = FindObjectOfType<APIConnector>();
-        //playerNetworking = FindObjectOfType<PlayerNetworking>();
-        //clientConn = apiConnector.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
+        apiConnector = FindObjectOfType<APIConnector>();
+        playerNetworking = FindObjectOfType<PlayerNetworking>();
+        clientConn = apiConnector.transform.gameObject.GetComponent<NetworkIdentity>().connectionToClient;
 
         //if (!CheckInputFields()) { return; }
 
-        //PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
-        //userData.username = usernameInputField.text;
+        PlayerNetworking.UserData userData = new PlayerNetworking.UserData();
+        userData.username = usernameRegField.text;
+        userData.name = nameRegField.text;
+        userData.surname = surnameRegField.text;
+        userData.gender = genderDropdown.itemText.text;
+        userData.b_date = bdayRegField.text;
+        userData.age = int.Parse(ageRegField.text);
+        userData.email = emailRegField.text;
+        userData.address = addressRegField.text;
+        userData.password = passwordRegField.text;
+        userData.icon_id = int.Parse(iconidRegField.text);
+        
         //Debug.Log("MenuUI userData is " + userData.GetType());
-        //apiConnector.Register(userData, clientConn);
+        apiConnector.Register(userData, clientConn);
     }
 
     public void OnPlayButtonPressed()
@@ -138,6 +174,10 @@ public class MenuUI : MonoBehaviour
         statusText.text = text;
     }
 
+    public void SetRegStatusString(string text)
+    {
+        regStatusString.text = text;
+    }
     void Awake()
     {
         playButtonObject.SetActive(false);

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class APIConnector : NetworkBehaviour
 {
     //private const string baseAPIurl = "https://os-project-ten.vercel.app";
-    private const string baseAPIurl = "http://192.168.0.50:3306";
+    private const string baseAPIurl = "http://127.0.0.1:8000";
 
     private delegate void ResponseHandler(NetworkConnection conn, string response);
     private delegate void PostResponseHandler(NetworkConnectionToClient conn, int code);
@@ -28,15 +28,15 @@ public class APIConnector : NetworkBehaviour
         playerNetworking.AssignUserData(userData);
         menuController = FindObjectOfType<MenuUI>();
 
-        LoginPlayer_Server(userData, conn);
+        LoginPlayer_Server(JsonUtility.ToJson(userData), conn);
 
     }
 
     [Command]
-    private void LoginPlayer_Server(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
+    private void LoginPlayer_Server(string json, NetworkConnectionToClient conn)
     {
-        LoginData loginData = new LoginData { username = userData.username, password = userData.password };
-        StartCoroutine(PostRequest(baseAPIurl, "/players/LoginPlayer", LoginPlayer_Client, loginData, conn));
+        //LoginData loginData = new LoginData { username = userData.username, password = userData.password };
+        StartCoroutine(PostRequest(baseAPIurl, "/players/LoginPlayer", LoginPlayer_Client, json, conn));
     }
 
     [TargetRpc]
@@ -44,7 +44,7 @@ public class APIConnector : NetworkBehaviour
     {
         LoadingCanvas.instance.gameObject.SetActive(false);
 
-        if (true)//code == 200)
+        if (code == 200)
         {
             menuController.SetStatusString("Welcome back, " + playerNetworking.GetUserData().username);
             Debug.Log("Username: " + playerNetworking.GetUserData().username);
@@ -62,27 +62,40 @@ public class APIConnector : NetworkBehaviour
         LoadingCanvas.instance.gameObject.SetActive(true);
         playerNetworking = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         menuController = FindObjectOfType<MenuUI>();
-        RegisterPlayer_Server(userData, conn);
+        Debug.Log("Serialized UserData: " + JsonUtility.ToJson(userData, true));
+        Debug.Log("UserData details:");
+        Debug.Log($"Username: {userData.username}");
+        Debug.Log($"Name: {userData.name}");
+        Debug.Log($"Surname: {userData.surname}");
+        Debug.Log($"Gender: {userData.gender}");
+        Debug.Log($"Birth Date: {userData.b_date}");
+        Debug.Log($"Age: {userData.age}");
+        Debug.Log($"Address: {userData.address}");
+        Debug.Log($"Email: {userData.email}");
+        Debug.Log($"Password: {userData.password}"); 
+        Debug.Log($"Icon ID: {userData.icon_id}");
+
+        RegisterPlayer_Server(JsonUtility.ToJson(userData), conn);
     }
 
     [Command]
-    private void RegisterPlayer_Server(PlayerNetworking.UserData userData, NetworkConnectionToClient conn)
+    private void RegisterPlayer_Server(string data, NetworkConnectionToClient conn)
     {
-        PlayerBase registerData = new PlayerBase
-        {
-            username = userData.username,
-            name = userData.name, // You might want to change this
-            surname = userData.surename,
-            gender = userData.gender,
-            b_date = userData.b_date,
-            age = userData.age,
-            address = userData.address,
-            email = userData.email,
-            password = userData.password,
-            icon_id = userData.icon_id,
-        };
+        //PlayerBase registerData = new PlayerBase
+        //{
+        //    username = userData.username,
+        //    name = userData.name, // You might want to change this
+        //    surname = userData.surname,
+        //    gender = userData.gender,
+        //    b_date = userData.b_date,
+        //    age = userData.age,
+        //    address = userData.address,
+        //    email = userData.email,
+        //    password = userData.password,
+        //    icon_id = userData.icon_id,
+        //};
 
-        StartCoroutine(PostRequest(baseAPIurl, "/players/RegisterPlayer", RegisterPlayer_Client, registerData, conn));
+        StartCoroutine(PostRequest(baseAPIurl, "/players/RegisterPlayer", RegisterPlayer_Client, data, conn));
     }
 
     [TargetRpc]
@@ -91,11 +104,11 @@ public class APIConnector : NetworkBehaviour
         LoadingCanvas.instance.gameObject.SetActive(false);
         if (code == 201)
         {
-            menuController.SetStatusString("Registered successfully");
+            menuController.SetRegStatusString("Registered successfully");
         }
         else
         {
-            menuController.SetStatusString("User cannot be registered. Code: " + code);
+            menuController.SetRegStatusString("User cannot be registered. Code: " + code);
         }
     }
 
@@ -152,7 +165,7 @@ public class APIConnector : NetworkBehaviour
     [Command]
     private void AddPlayerAchievement_Server(int achievementId, string username, NetworkConnectionToClient conn)
     {
-        StartCoroutine(PostRequest<object>(baseAPIurl, $"/achievements/AddPlayerAchievement?achievement_id={achievementId}&username={username}", AddPlayerAchievement_Client, null, conn));
+        StartCoroutine(PostRequest(baseAPIurl, $"/achievements/AddPlayerAchievement?achievement_id={achievementId}&username={username}", AddPlayerAchievement_Client, null, conn));
     }
     [TargetRpc]
     private void AddPlayerAchievement_Client(NetworkConnectionToClient conn, int code)
@@ -232,7 +245,7 @@ public class APIConnector : NetworkBehaviour
     private void CreateMatch_Server(string gamePass, NetworkConnectionToClient conn)
     {
         string query = (!string.IsNullOrEmpty(gamePass)) ? $"?game_pass={gamePass}" : "";
-        StartCoroutine(PostRequest<object>(baseAPIurl, "/games/CreateMatch" + query, CreateMatch_Client, null, conn));
+        StartCoroutine(PostRequest(baseAPIurl, "/games/CreateMatch" + query, CreateMatch_Client, null, conn));
     }
     [TargetRpc]
     private void CreateMatch_Client(NetworkConnectionToClient conn, int code)
@@ -249,10 +262,11 @@ public class APIConnector : NetworkBehaviour
 
     public void AddPlayerToMatch(AddPlayerToMatchRequest requestData, NetworkConnectionToClient conn)
     {
-        AddPlayerToMatch_Server(requestData, conn);
+        string json = JsonUtility.ToJson(requestData);
+        AddPlayerToMatch_Server(json, conn);
     }
     [Command]
-    private void AddPlayerToMatch_Server(AddPlayerToMatchRequest requestData, NetworkConnectionToClient conn)
+    private void AddPlayerToMatch_Server(string requestData, NetworkConnectionToClient conn)
     {
         StartCoroutine(PostRequest(baseAPIurl, "/games/AddPlayerToMatch", AddPlayerToMatch_Client, requestData, conn));
     }
@@ -271,10 +285,11 @@ public class APIConnector : NetworkBehaviour
 
     public void ChangePlayerRole(ChangePlayerRoleRequest requestData, NetworkConnectionToClient conn)
     {
-        ChangePlayerRole_Server(requestData, conn);
+        string json = JsonUtility.ToJson(requestData);
+        ChangePlayerRole_Server(json, conn);
     }
     [Command]
-    private void ChangePlayerRole_Server(ChangePlayerRoleRequest requestData, NetworkConnectionToClient conn)
+    private void ChangePlayerRole_Server(string requestData, NetworkConnectionToClient conn)
     {
         StartCoroutine(PutRequest(baseAPIurl, "/games/ChangePlayerRole", ChangePlayerRole_Client, requestData, conn));
     }
@@ -294,10 +309,11 @@ public class APIConnector : NetworkBehaviour
 
     public void EndGame(EndGameRequest requestData, NetworkConnectionToClient conn)
     {
-        EndGame_Server(requestData, conn);
+        string json = JsonUtility.ToJson(requestData);
+        EndGame_Server(json, conn);
     }
     [Command]
-    private void EndGame_Server(EndGameRequest requestData, NetworkConnectionToClient conn)
+    private void EndGame_Server(string requestData, NetworkConnectionToClient conn)
     {
         StartCoroutine(PutRequest(baseAPIurl, "/games/EndGame", EndGame_Client, requestData, conn));
     }
@@ -365,13 +381,14 @@ public class APIConnector : NetworkBehaviour
 
     }
 
-    private IEnumerator PostRequest<T>(string uri, string endpoint, PostResponseHandler handler, T? postData, NetworkConnectionToClient conn) where T : class
+    private IEnumerator PostRequest(string uri, string endpoint, PostResponseHandler handler, string json, NetworkConnectionToClient conn)
     {
         handler(conn, 200);//(int)www.responseCode);
-        string json = (postData != null) ? JsonUtility.ToJson(postData) : "";
+        //string json = (postData != null) ? JsonUtility.ToJson(postData) : "";
+        Debug.LogError("Post data is " + json);
         using (UnityWebRequest www = new UnityWebRequest(uri + endpoint, "POST"))
         {
-            if (postData != null)
+            if (json != null)
             {
                 byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
                 www.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -403,12 +420,12 @@ public class APIConnector : NetworkBehaviour
 
     }
 
-    private IEnumerator PutRequest<T>(string uri, string endpoint, PutResponseHandler handler, T putData, NetworkConnectionToClient conn)
+    private IEnumerator PutRequest(string uri, string endpoint, PutResponseHandler handler, string json, NetworkConnectionToClient conn)
     {
-        string json = (putData != null) ? JsonUtility.ToJson(putData) : "";
+        //string json = (putData != null) ? JsonUtility.ToJson(putData) : "";
         using (UnityWebRequest www = new UnityWebRequest(uri + endpoint, "PUT"))
         {
-            if (putData != null)
+            if (json != null)
             {
                 byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
                 www.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -440,7 +457,7 @@ public class APIConnector : NetworkBehaviour
     }
 
     // ------------------------ Data Classes ------------------------
-    [Serializable]
+    [System.Serializable]
     public class PlayerBase
     {
         public string username;
@@ -448,21 +465,21 @@ public class APIConnector : NetworkBehaviour
         public string surname;
         public string gender;
         public string b_date;
-        public int? age;
+        public int age;
         public string address;
         public string email;
         public string password;
-        public int? icon_id;
+        public int icon_id;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class LoginData
     {
         public string username;
         public string password;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class PlayerOut
     {
         public string username;
@@ -470,13 +487,13 @@ public class APIConnector : NetworkBehaviour
         public string surname;
         public string gender;
         public string b_date;
-        public int? age;
+        public int age;
         public string address;
         public string email;
-        public int? icon_id;
+        public int icon_id;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class AchievementOut
     {
         public string name;
@@ -484,7 +501,7 @@ public class APIConnector : NetworkBehaviour
         public int achieve_id;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class AddPlayerToMatchRequest
     {
         public string username;
@@ -492,7 +509,7 @@ public class APIConnector : NetworkBehaviour
         public string team;
         public string game_pass;
     }
-    [Serializable]
+    [System.Serializable]
     public class ChangePlayerRoleRequest
     {
         public string username;
@@ -501,7 +518,7 @@ public class APIConnector : NetworkBehaviour
         public string role;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class EndGameRequest
     {
         public int game_id;
