@@ -407,6 +407,7 @@ public class GameManager : NetworkBehaviour
             gameUI = FindObjectOfType<GameUI>();
             PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
 
+
             GameRole role = player.synchronizedPlayerGameData.role;
 
 
@@ -489,7 +490,11 @@ public class GameManager : NetworkBehaviour
 
             else if (role == GameRole.ADMIN)
             {
-
+                Debug.Log("You are ADMIN");
+                gameUI.TurnMinerUI(false);
+                gameUI.TurnTownManagerUI(false);
+                gameUI.TurnWarriorUI(false);
+                gameUI.TurnAdminUI(true);
             }
         }
     }
@@ -652,6 +657,25 @@ public class GameManager : NetworkBehaviour
     private void RPCDoGameOver(NetworkConnectionToClient conn)
     {
         gameUI.ShowGameOver();
+    }
+
+    public void SetLocalCharacter(GameRole role)
+    {
+        foreach (CharacterControllerBase c in puppetsList)
+        {
+            if (c is TownManagerController && role == GameRole.TOWN_MANAGER)
+            {
+                LocalStateManager.instance.localPlayerCharacter = c.gameObject;
+            }
+            else if (c is MinerController && role == GameRole.MINER)
+            {
+                LocalStateManager.instance.localPlayerCharacter = c.gameObject;
+            }
+            else if (c is WorldMapWarriorController && role == GameRole.WARRIOR)
+            {
+                LocalStateManager.instance.localPlayerCharacter = c.gameObject;
+            }
+        }
     }
 
     public static PuppetType ConvertResourceToPuppet(Resource res)

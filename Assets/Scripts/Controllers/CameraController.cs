@@ -36,9 +36,11 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {        
-        playerToFollow = LocalStateManager.instance.localPlayerCharacter;
+        if (LocalStateManager.instance.localPlayerCharacter)
+            playerToFollow = LocalStateManager.instance.localPlayerCharacter;
         currentRole = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.role;
-        m_camera.transform.position = new Vector3(playerToFollow.transform.position.x, playerToFollow.transform.position.y, m_camera.transform.position.z);
+        if (playerToFollow)
+            m_camera.transform.position = new Vector3(playerToFollow.transform.position.x, playerToFollow.transform.position.y, m_camera.transform.position.z);
         // Set camera position to the location according to player's role!
         //Vector3 townPos = GameManager.instance.GetTownTeamPosition(LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>().synchronizedPlayerGameData.teamNumber);
         //m_camera.transform.position = new Vector3(townPos.x, townPos.y, m_camera.transform.position.z);
@@ -52,6 +54,11 @@ public class CameraController : MonoBehaviour
     public void SetFollowingPlayer(bool isFollowing)
     {
         isFollowingPlayer = isFollowing;
+    }
+
+    public void SetPlayerToFollow(GameObject player)
+    {
+        playerToFollow = player;
     }
 
     

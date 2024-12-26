@@ -6981,7 +6981,7 @@ MonoBehaviour:
   roomPassField: {fileID: 985010697}
   createRoomPanel: {fileID: 619171327}
   nameInputField: {fileID: 2005972144}
-  passwordInputField: {fileID: 985010697}
+  passwordInputField: {fileID: 1135374656}
   waitingRoomObject: {fileID: 953686315}
   playerListEntryPrefab: {fileID: 4918799134815409226, guid: 301acd02af161434fa6b70a4e6382112, type: 3}
   playerList1ContentObject: {fileID: 827038127}

@@ -53,8 +53,8 @@ public class PlayerNetworking : NetworkBehaviour
 
     public UserData localUserData = new UserData();
 
-    //[SyncVar(hook = nameof(OnUserDataUpdate))]
-    //private UserData syncronizedUserData = new UserData();
+    [SyncVar(hook = nameof(OnUserDataUpdate))]
+    private UserData syncronizedUserData = new UserData();
 
     private void OnUserDataUpdate(UserData _old, UserData _new)
     {
@@ -79,6 +79,7 @@ public class PlayerNetworking : NetworkBehaviour
     public void AssignUserData(UserData data, NetworkConnectionToClient conn)
     {
         Debug.LogError("Got UserData " + data.email);
+        syncronizedUserData = data;
         // syncronizedUserData = data;
         RPCAssignUserData(conn, data);
     }
@@ -97,7 +98,7 @@ public class PlayerNetworking : NetworkBehaviour
         userdata.icon_id = data.icon_id;
         userdata.age = data.age;
         userdata.gender = data.gender;
-
+        syncronizedUserData = userdata;
         RPCAssignUserData(conn, userdata);
     }
 
@@ -105,7 +106,7 @@ public class PlayerNetworking : NetworkBehaviour
     private void RPCAssignUserData(NetworkConnectionToClient conn, UserData data)
     {
         Debug.Log("Got RPC assignUserData");
-        //syncronizedUserData = data;
+        syncronizedUserData = data;
         localUserData = data;
     }
 
@@ -126,8 +127,8 @@ public class PlayerNetworking : NetworkBehaviour
 
     public UserData GetUserData()
     {
-        //return syncronizedUserData;
-        return localUserData;
+        return syncronizedUserData;
+        //return localUserData;
     }
 
     public PlayerGameData GetGameData()

@@ -67,6 +67,8 @@ public class GameUI : MonoBehaviour
     private GameObject minerUI;
     [SerializeField]
     private GameObject warriorWorldMapUI;
+    [SerializeField]
+    private GameObject adminUi;
 
     [SerializeField]
     private Animator buildingMenuAnimator;
@@ -89,9 +91,13 @@ public class GameUI : MonoBehaviour
             GameObject obj = Instantiate(buildingListEntryPrefab, buildingViewPortContent.transform);
             obj.GetComponent<BuildingListEntryScript>().SetBuildingData(building);
         }
-        playerCharacter = player.gameObject.GetComponentInChildren<CharacterControllerBase>().gameObject;
 
-        playerController = player.gameObject.GetComponentInChildren<CharacterControllerBase>();
+        if (player.gameObject.GetComponentInChildren<CharacterControllerBase>())
+        {
+            playerCharacter = player.gameObject.GetComponentInChildren<CharacterControllerBase>().gameObject;
+
+            playerController = player.gameObject.GetComponentInChildren<CharacterControllerBase>();
+        }
 
         createArmyMenuObject.GetComponentInChildren<Canvas>().enabled = false;
     }
@@ -148,13 +154,44 @@ public class GameUI : MonoBehaviour
         if (turnOn) warriorWorldMapUI.SetActive(true);
         else warriorWorldMapUI.SetActive(false);
     }
-
+    public void TurnAdminUI(bool turnOn)
+    {
+        if (turnOn) adminUi.SetActive(true);
+        else adminUi.SetActive(false);
+    }
     public void ShowGameOver()
     {
         TurnWarriorUI(false);
         TurnMinerUI(false);
         TurnTownManagerUI(false);
         gameOverUI.SetActive(true);
+    }
+
+    public void SpyOnTownManager()
+    {
+        GameManager.instance.SetLocalCharacter(GameRole.TOWN_MANAGER);
+        CameraController.instance.SetPlayerToFollow(LocalStateManager.instance.localPlayerCharacter);
+        CameraController.instance.SetFollowingPlayer(true);
+        Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 99999);
+        CameraController.instance.SetBounds(bounds);
+    }
+
+    public void SpyOnMiner()
+    {
+        GameManager.instance.SetLocalCharacter(GameRole.MINER);
+        CameraController.instance.SetPlayerToFollow(LocalStateManager.instance.localPlayerCharacter);
+        CameraController.instance.SetFollowingPlayer(true);
+        Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 99999);
+        CameraController.instance.SetBounds(bounds);
+    }
+
+    public void SpyOnWarrior()
+    {
+        GameManager.instance.SetLocalCharacter(GameRole.WARRIOR);
+        CameraController.instance.SetPlayerToFollow(LocalStateManager.instance.localPlayerCharacter);
+        CameraController.instance.SetFollowingPlayer(true);
+        Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 99999);
+        CameraController.instance.SetBounds(bounds);
     }
 
     public void DisplayArmyCreationMenu(Vector3 position)

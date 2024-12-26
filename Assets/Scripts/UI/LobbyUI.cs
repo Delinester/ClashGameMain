@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class LobbyUI : MonoBehaviour
 {
@@ -86,7 +87,7 @@ public class LobbyUI : MonoBehaviour
             Debug.Log("MUST CHANGE TEAM TO 1");
             PlayerGameData playerGameData = new PlayerGameData(gameData);
             playerGameData.teamNumber = 1;
-
+            if (player.GetUserData().username == "admin") playerGameData.role = GameRole.ADMIN;
             //Debug.Log("Before assigning matchID is " + player.GetGameData().matchPtr.matchID);
             player.CMDAssignGameData(playerGameData);
             StartCoroutine(DelayedRoomUpdateRPCRequest());
@@ -106,6 +107,7 @@ public class LobbyUI : MonoBehaviour
             Debug.Log("MUST CHANGE TEAM TO 2");
             PlayerGameData playerGameData = new PlayerGameData(gameData);
             playerGameData.teamNumber = 2;
+            if (player.GetUserData().username == "admin") playerGameData.role = GameRole.ADMIN;
             player.CMDAssignGameData(playerGameData);
 
             //LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
@@ -118,6 +120,7 @@ public class LobbyUI : MonoBehaviour
         PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         PlayerGameData playerGameData = new PlayerGameData(player.synchronizedPlayerGameData);
         playerGameData.role = button.GetComponent<RoleChangeButton>().buttonRole;
+        if (player.GetUserData().username == "admin") playerGameData.role = GameRole.ADMIN;
         player.CMDAssignGameData(playerGameData);
 
         // LobbyManager.instance.CMDSendWaitingRoomUpdateRPC(player.synchronizedPlayerGameData.matchPtr);
@@ -180,6 +183,7 @@ public class LobbyUI : MonoBehaviour
                 case GameRole.WARRIOR: playerListEntry.roleImage.sprite = warriorIcon; break;
                 case GameRole.TOWN_MANAGER: playerListEntry.roleImage.sprite = townmanagerIcon; break;
                 case GameRole.MINER: playerListEntry.roleImage.sprite = minerIcon; break;
+                case GameRole.ADMIN: playerListEntry.roleImage.sprite = null; break;
             }
         }
     }

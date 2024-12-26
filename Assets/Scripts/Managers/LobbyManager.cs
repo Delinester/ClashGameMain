@@ -101,6 +101,7 @@ public class LobbyManager : NetworkBehaviour
     [Command(requiresAuthority =false)]
     public void CreateMatch(string matchName, string password, PlayerNetworking player)
     {
+        Debug.LogError("Creating match " + matchName +" with pass: " + password);
         string matchId = GenerateRandomString(10);
        // PlayerNetworking player = LocalStateManager.instance.localPlayer.GetComponent<PlayerNetworking>();
         matchIDs.Add(matchId);
@@ -171,6 +172,7 @@ public class LobbyManager : NetworkBehaviour
                 {
                     if (p.GetUserData().username == player.GetUserData().username)
                     {
+                        if (p.GetUserData().username == "admin") newData.role = GameRole.ADMIN;
                         p.synchronizedPlayerGameData = new PlayerGameData(newData);
                         matchesList[i] = new Match(m);
                        // Debug.LogError("Update match for " + p.GetUserData().username + " to TEAM " + p.synchronizedPlayerGameData.teamNumber);
