@@ -13,6 +13,8 @@ public class TownManagerController : CharacterControllerBase
     private Image resourceInHandImage;
     [SerializeField]
     private TextMeshProUGUI resourceInHandCountText;
+    [SerializeField]
+    private GameObject depositResourcesUI;
 
     [SerializeField]
     private float collectItemsRadius = 1.5f;
@@ -22,6 +24,7 @@ public class TownManagerController : CharacterControllerBase
     private const int maxResourcesInHand = 5;
     private Resource resourceTypeInHand = Resource.NONE;
 
+    private Vector2 townHallPos = new Vector2(9999,9999);
 
 
     // Start is called before the first frame update
@@ -63,14 +66,14 @@ public class TownManagerController : CharacterControllerBase
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Building")
-            CheckBuildingIfTownHallAndDepositResources(collision.collider);
+        
     }
     void AttractNearbyResources()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, collectItemsRadius);
 
         int attractedAmount = 0;
+        bool townHallNearby = false;
         foreach (Collider2D collider in colliders)
         {
             if (collider.gameObject.tag == "Collectible")
@@ -86,7 +89,13 @@ public class TownManagerController : CharacterControllerBase
                     attractedAmount++;
                 }
             }
+            else if (collider.gameObject.tag == "Building" && collider.gameObject.GetComponent<Building>().GetBuildingData().buildingName == "TownHall")
+            {
+                townHallNearby = true;
+                CheckBuildingIfTownHallAndDepositResources(collider);                
+            }
         }
+        if (!townHallNearby) depositResourcesUI.SetActive(false);
     }
 
     private void CheckBuildingIfTownHallAndDepositResources(Collider2D collider)
@@ -94,6 +103,9 @@ public class TownManagerController : CharacterControllerBase
         BuildingData buildingData = collider.gameObject.GetComponent<Building>().GetBuildingData();
         if (buildingData.buildingName == "TownHall")
         {
+            depositResourcesUI.SetActive(true);
+            townHallPos = collider.transform.position;
+
             if (Input.GetKeyDown(KeyCode.E) && resourcesInHand != 0 && resourceTypeInHand != Resource.NONE)
             {
                 Debug.Log("Depositing resource in amount " + resourcesInHand);
@@ -115,6 +127,7 @@ public class TownManagerController : CharacterControllerBase
     override protected void Update()
     {
         base.Update();
-        AttractNearbyResources();
+        AttractNearbyResources();       
+
     }
 }

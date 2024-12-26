@@ -17,7 +17,7 @@ MonoBehaviour:
   buildingPrefab: {fileID: 4723251347989904215, guid: 26107491b8e20134e93d13e789bb7352, type: 3}
   spawnResourcePrefab: {fileID: 5062447884923603565, guid: 1417bc19232520248a562b1d03e96996, type: 3}
   resourceProduces: 2
-  hp: 0
+  hp: 100
   costGold: 1
   producingAmount: 5
   producingTimeSecs: 10

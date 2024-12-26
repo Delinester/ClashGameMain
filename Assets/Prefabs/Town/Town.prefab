@@ -26010,7 +26010,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 14.18804, y: -0.4421959}
+  m_Offset: {x: 13.885432, y: -0.4085722}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -26021,7 +26021,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.8162422, y: 10.969563}
+  m_Size: {x: 2.2110271, y: 9.288412}
   m_EdgeRadius: 0
 --- !u!61 &7255353505694733600
 BoxCollider2D:
@@ -26055,7 +26055,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -12.730508, y: -0.4757185}
+  m_Offset: {x: -12.259787, y: -0.24035835}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -26066,7 +26066,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.911665, y: 10.588236}
+  m_Size: {x: 1.9702225, y: 9.176071}
   m_EdgeRadius: 0
 --- !u!114 &3593799917250136496
 MonoBehaviour:
@@ -26217,7 +26217,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.07666667
+  m_VoxelSize: 0.043333333
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0

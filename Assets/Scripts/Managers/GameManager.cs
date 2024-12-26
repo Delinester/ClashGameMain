@@ -340,6 +340,10 @@ public class GameManager : NetworkBehaviour
     public void BakeNavMesh()
     {
         navMesh.GetComponent<NavMeshSurface>().BuildNavMeshAsync();
+        foreach (TroopAI troop in FindObjectsOfType<TroopAI>())
+        {
+            troop.ResetPath();
+        }
     }
     public Vector2 GetTownTeamPosition(int teamNum)
     {
@@ -530,6 +534,28 @@ public class GameManager : NetworkBehaviour
             if (ownerUser != user)
             {
                 RPCSpawnPuppetOnClients(conn,hash, puppetType, position);
+            }
+        }
+    }
+
+    [Command(requiresAuthority =false)]
+    public void CMDDestroyPuppetOnClients(string matchID, string hash)
+    {
+        foreach(PlayerNetworking p in LobbyManager.instance.GetPlayersInMatch(matchID))
+        {
+            NetworkConnectionToClient conn = p.GetComponent<NetworkIdentity>().connectionToClient;
+            RPCDestroyPuppetOnClients(conn, hash);
+        }
+    }
+    [TargetRpc]
+    private void RPCDestroyPuppetOnClients(NetworkConnectionToClient conn, string hash)
+    {
+        foreach (CharacterControllerBase c in puppetsList)
+        {
+            if (c.GetHash() == hash)
+            {
+              // puppetsList.Remove(c);
+                Destroy(c.gameObject);
             }
         }
     }

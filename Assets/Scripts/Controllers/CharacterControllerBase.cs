@@ -13,6 +13,9 @@ public class CharacterControllerBase : NetworkBehaviour
     private float moveSpeed = 5f;
     [SerializeField] LayerMask layerMask;
 
+    [SerializeField]
+    private GameObject canvas;
+
     string hash;
 
     protected PlayerNetworking networkPlayer;
@@ -83,8 +86,18 @@ public class CharacterControllerBase : NetworkBehaviour
         GetComponent<Rigidbody2D>().MovePosition((Vector2)(gameObject.transform.position) + new Vector2(movementX, movementY) * moveSpeed * Time.deltaTime);
         if (animator)
             animator.SetFloat("MoveSpeed", Mathf.Abs(movementX) + Mathf.Abs(movementY));
-        if (movementX < 0) transform.localScale = new Vector3(-scaleX, transform.localScale.y, transform.localScale.z);
-        else if (movementX > 0) transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
+        if (movementX < 0)
+        {
+            transform.localScale = new Vector3(-scaleX, transform.localScale.y, transform.localScale.z);
+            if (canvas)
+                canvas.transform.localScale = new Vector3(-Mathf.Abs(canvas.transform.localScale.x), canvas.transform.localScale.y, canvas.transform.localScale.z);
+        }
+        else if (movementX > 0)
+        {
+            transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
+            if (canvas)
+                canvas.transform.localScale = new Vector3(Mathf.Abs(canvas.transform.localScale.x), canvas.transform.localScale.y, canvas.transform.localScale.z);
+        }
         
     }
 

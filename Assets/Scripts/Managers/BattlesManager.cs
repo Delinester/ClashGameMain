@@ -7,6 +7,7 @@ public class BattlesManager : NetworkBehaviour
 { 
     private Dictionary<string, WorldMapArmyAI> armiesHashTable = new Dictionary<string, WorldMapArmyAI>();
 
+
     private string matchID;
 
     [SerializeField]
