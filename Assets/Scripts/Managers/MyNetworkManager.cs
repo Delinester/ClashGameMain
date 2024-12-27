@@ -5,6 +5,10 @@ using Mirror;
 
 public class MyNetworkManager : NetworkManager
 {
+    public override void OnServerConnect(NetworkConnectionToClient conn)
+    {
+        Debug.LogError($"The client with IP {conn.address} connected!");
+    }
     
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {

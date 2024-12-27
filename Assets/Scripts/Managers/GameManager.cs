@@ -431,7 +431,7 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnTownManagerUI(true);
                 gameUI.TurnMinerUI(false);
                 gameUI.TurnWarriorUI(false);
-
+                gameUI.TurnAdminUI(false);
                 Vector3 townManagerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? town1Pos + townManagerSpawnPosOffset : town2Pos + townManagerSpawnPosOffset;
                 //townManagerCharacter = Instantiate(townManagerCharacterPrefab, townManagerSpawnPos, townManagerCharacterPrefab.transform.rotation);
 
@@ -450,6 +450,7 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnMinerUI(true);
                 gameUI.TurnTownManagerUI(false);
                 gameUI.TurnWarriorUI(false);
+                gameUI.TurnAdminUI(false);
                 Vector3 minerSpawnPos = player.synchronizedPlayerGameData.teamNumber == 1 ? minerShack1Location + minerSpawnPosOffset : minerShack2Location + minerSpawnPosOffset;
 
 
@@ -471,6 +472,7 @@ public class GameManager : NetworkBehaviour
                 gameUI.TurnMinerUI(false);
                 gameUI.TurnTownManagerUI(false);
                 gameUI.TurnWarriorUI(true);
+                gameUI.TurnAdminUI(false);
 
                 worldMapCharacter = Instantiate(worldMapCharacterPrefab, player.transform);
                 Vector3 spawnPos = worldMapSpawnPos + (player.synchronizedPlayerGameData.teamNumber == 1 ? worldMapCharacterSpawnOffset : -worldMapCharacterSpawnOffset);
